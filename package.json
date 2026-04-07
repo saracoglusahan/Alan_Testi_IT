@@ -1,0 +1,25 @@
+{
+  "name": "it-alan-sec",
+  "version": "1.0.0",
+  "description": "Bu depoda henüz hangi bilgi teknolojisi alanında ilerleyeceğine karar vermemiş öğrencilerin kendilerini keşfetmesine yardımcı olacakları bir yetenek testi bulunmaktadır.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zehragulbuyukarslan/IT-Alan-Sec.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/zehragulbuyukarslan/IT-Alan-Sec/issues"
+  },
+  "homepage": "https://github.com/zehragulbuyukarslan/IT-Alan-Sec#readme",
+  "devDependencies": {
+    "vite": "^8.0.5"
+  }
+}

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>IT Yetenek Testi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- Arka plan parçacıkları -->
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <header id="header">
+    <nav class="menu">
+      <div class="logo-mark">
+        <span class="logo-dot"></span>
+        IT<span class="logo-accent">Test</span>
+      </div>
+      <div class="menu-links">
+        <a href="#about-section" class="menu-item">Hakkında</a>
+        <a href="#categories-section" class="menu-item">Kategoriler</a>
+        <a href="#references-section" class="menu-item">Kaynaklar</a>
+        <a href="#sayfa" class="menu-item cta-link">Teste Başla →</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main">
+
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        IEEE SWEBOK · AHP · Bloom Taksonomisi
+      </div>
+
+      <h1 class="hero-title">
+        Bilgisayar Teknolojileri<br>
+        <span class="title-gradient">Yolunu Keşfet</span>
+      </h1>
+
+      <p class="hero-sub">
+        Bu test, ezberlediğin teknik bilgiyi değil; <strong>problem çözme tarzını</strong>,
+        mantık yürütme biçimini ve teknolojiye doğal eğilimini ölçer.
+        Sorulara içgüdülerinle cevap ver — sana en uygun alanı birlikte keşfedelim.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">30</span>
+          <span class="stat-label">Soru</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">5</span>
+          <span class="stat-label">Alan</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">30</span>
+          <span class="stat-label">Dakika</span>
+        </div>
+      </div>
+
+      <a href="#sayfa" class="hero-cta-btn">
+        <span>Teste Kaydır</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+      <div class="hero-image-wrap">
+        <img src="assets/manzara.png" alt="Arka plan manzara" class="hero-img" />
+        <div class="hero-img-overlay"></div>
+      </div>
+    </section>
+
+    <!-- Sol alt logo -->
+    <div class="corner-logo corner-logo-left">
+      <img src="assets/logolar.png" alt="Sol alt logo">
+    </div>
+
+    <!-- ===== HAKKINDA ===== -->
+    <section id="about-section" class="info-section">
+      <div class="section-inner">
+
+        <div class="section-label">
+          <span class="section-dot"></span>Hakkında
+        </div>
+
+        <div class="about-grid">
+          <div class="about-text">
+            <h2 class="section-title">Test nasıl çalışır?</h2>
+            <p class="section-sub">
+              Bu yetenek testi, bilgisayar bilimleri ve bilgi teknolojileri alanında kariyer
+              yolculuğuna henüz başlayan öğrencilerin <strong>hangi alana daha yatkın olduğunu</strong>
+              keşfetmelerine yardımcı olmak için tasarlandı.
+            </p>
+            <p>
+              Sorular, seni belirli bir alana yönlendirmek için kurgulanmış teknik senaryolar içerir.
+              Her sorunun diğerlerine göre daha doğruya yakın bir yanıtı vardır; bu nedenle test
+              hem bilgi hem de <strong>problem çözme ve analitik düşünme yeteneğini</strong> ölçer.
+            </p>
+            <p>
+              Sonuçlar anlık hesaplanır ve herhangi bir kişisel veri toplanmaz.
+              Testin amacı seni yargılamak değil; doğru alana yönlendirmektir.
+            </p>
+          </div>
+
+          <div class="about-cards">
+            <div class="about-card">
+              <div class="about-card-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M10 2L12.4 7.4L18 8.3L14 12.2L14.9 18L10 15.4L5.1 18L6 12.2L2 8.3L7.6 7.4L10 2Z" stroke="var(--accent)" stroke-width="1.4" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="about-card-title">Bilimsel Metodoloji</div>
+                <div class="about-card-desc">Soru ağırlıkları Saaty'nin AHP modeli ile, kapsam IEEE SWEBOK çerçevesiyle, soru kalitesi Bloom Taksonomisi kriterleriyle belirlenmiştir.</div>
+              </div>
+            </div>
+            <div class="about-card">
+              <div class="about-card-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="8" stroke="var(--accent)" stroke-width="1.4"/>
+                  <path d="M10 6v4l3 2" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="about-card-title">30 Dakika</div>
+                <div class="about-card-desc">30 sorudan oluşan test; başladığında 30 dakikalık süre işler, son 5 dakikada uyarı alırsın. Yarıda bırakıp kaldığın yerden devam edebilirsin.</div>
+              </div>
+            </div>
+            <div class="about-card">
+              <div class="about-card-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <rect x="3" y="3" width="14" height="14" rx="3" stroke="var(--accent)" stroke-width="1.4"/>
+                  <path d="M7 10l2.5 2.5L13 7" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="about-card-title">5 Farklı Alan</div>
+                <div class="about-card-desc">Yazılım Geliştirme, Veri Yönetimi, Altyapı Yönetimi, Siber Güvenlik ve BT Süreç Yönetimi alanlarında yetkinlik profili çıkarılır.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== KATEGORİLER ===== -->
+    <section id="categories-section" class="info-section">
+      <div class="section-inner">
+
+        <div class="section-label">
+          <span class="section-dot"></span>Kategoriler
+        </div>
+        <h2 class="section-title">Hangi alanı keşfedebilirsin?</h2>
+        <p class="section-sub">
+          Test, 5 temel bilgi teknolojileri alanını kapsar. Her alan için sorular bağımsız olarak ağırlıklandırılmıştır;
+          sonuçta tüm alanlardaki puanın görünür, en yüksek skor alanın baskın yetkinliğini gösterir.
+        </p>
+
+        <div class="categories-grid">
+
+          <div class="category-card" data-code="SD">
+            <div class="cat-header">
+              <div class="cat-icon cat-icon--sd">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <polyline points="6,8 2,11 6,14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <polyline points="16,8 20,11 16,14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="13" y1="4" x2="9" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="cat-code">SD</span>
+            </div>
+            <h3 class="cat-title">Yazılım Geliştirme</h3>
+            <p class="cat-desc">Nesne yönelimli tasarım, API mimarisi, hata yönetimi, test stratejileri ve dağıtım süreçleri.</p>
+            <div class="cat-footer">
+            </div>
+          </div>
+
+          <div class="category-card" data-code="DM">
+            <div class="cat-header">
+              <div class="cat-icon cat-icon--dm">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <ellipse cx="11" cy="6" rx="8" ry="3" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M3 6v5c0 1.66 3.58 3 8 3s8-1.34 8-3V6" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M3 11v5c0 1.66 3.58 3 8 3s8-1.34 8-3v-5" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <span class="cat-code">DM</span>
+            </div>
+            <h3 class="cat-title">Veri Yönetimi</h3>
+            <p class="cat-desc">Veritabanı normalizasyonu, sorgu optimizasyonu, veri modelleme, depolama sistemleri ve büyük veri altyapıları.</p>
+            <div class="cat-footer">
+            </div>
+          </div>
+
+          <div class="category-card" data-code="IM">
+            <div class="cat-header">
+              <div class="cat-icon cat-icon--im">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <rect x="2" y="3" width="18" height="5" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                  <rect x="2" y="10" width="18" height="5" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                  <circle cx="18" cy="5.5" r="1" fill="currentColor"/>
+                  <circle cx="18" cy="12.5" r="1" fill="currentColor"/>
+                  <path d="M7 19h8M11 15v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="cat-code">IM</span>
+            </div>
+            <h3 class="cat-title">Altyapı Yönetimi</h3>
+            <p class="cat-desc">Bulut mimarisi, sunucu yapılandırması, ağ yönetimi, ölçekleme stratejileri ve yük dengeleme.</p>
+            <div class="cat-footer">
+            </div>
+          </div>
+
+          <div class="category-card" data-code="CS">
+            <div class="cat-header">
+              <div class="cat-icon cat-icon--cs">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <path d="M11 2L4 5v6c0 4.42 2.95 8.55 7 9.93C15.05 19.55 18 15.42 18 11V5L11 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                  <path d="M8 11l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class="cat-code">CS</span>
+            </div>
+            <h3 class="cat-title">Siber Güvenlik</h3>
+            <p class="cat-desc">Güvenlik açığı analizi, saldırı vektörleri, şifreleme, kimlik doğrulama ve olay müdahale süreçleri.</p>
+            <div class="cat-footer">
+            </div>
+          </div>
+
+          <div class="category-card" data-code="PM">
+            <div class="cat-header">
+              <div class="cat-icon cat-icon--pm">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M3 9h16" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M8 2v4M14 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M7 13h3M7 16h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="cat-code">PM</span>
+            </div>
+            <h3 class="cat-title">BT Süreç Yönetimi</h3>
+            <p class="cat-desc">Proje yönetimi metodolojileri, paydaş iletişimi, risk analizi, MVP planlaması ve teknik borç yönetimi.</p>
+            <div class="cat-footer">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KAYNAKLAR ===== -->
+    <section id="references-section" class="info-section">
+      <div class="section-inner">
+
+        <div class="section-label">
+          <span class="section-dot"></span>Kaynaklar
+        </div>
+        <h2 class="section-title">Bilimsel Dayanaklar</h2>
+        <p class="section-sub">
+          Bu testin metodolojisi üç temel çerçeveye dayanmaktadır. Her framework, testin
+          farklı bir katmanını şekillendirir.
+        </p>
+
+        <div class="references-list">
+
+          <div class="ref-item">
+            <div class="ref-num">01</div>
+            <div class="ref-body">
+              <div class="ref-top">
+                <h3 class="ref-title">IEEE SWEBOK — Yetkinlik Çerçevesi</h3>
+                <a href="https://www.computer.org/education/bodies-of-knowledge/software-engineering" target="_blank" rel="noopener" class="ref-link">
+                  ieee.org →
+                </a>
+              </div>
+              <p class="ref-desc">
+                IEEE Software Engineering Body of Knowledge, yazılım mühendisliğinin hangi alt alanlardan oluştuğunu ve
+                her alanda hangi bilgi ve becerilerin temel sayıldığını tanımlar. Bu test, ölçtüğü beş kategoriyi
+                SWEBOK'taki konu başlıklarıyla hizalamaktadır; böylece sonuçlar sektörün ortak diline karşılık gelir.
+              </p>
+              <div class="ref-tags">
+                <span class="ref-tag">Yazılım Geliştirme</span>
+                <span class="ref-tag">Altyapı Yönetimi</span>
+                <span class="ref-tag">Test Süreçleri</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ref-item">
+            <div class="ref-num">02</div>
+            <div class="ref-body">
+              <div class="ref-top">
+                <h3 class="ref-title">Saaty AHP — Analitik Hiyerarşi Süreci</h3>
+                <a href="https://en.wikipedia.org/wiki/Analytic_hierarchy_process" target="_blank" rel="noopener" class="ref-link">
+                  Daha fazla →
+                </a>
+              </div>
+              <p class="ref-desc">
+                Thomas L. Saaty'nin geliştirdiği bu karar verme modeli, birden fazla kriteri sistematik olarak karşılaştırmayı
+                sağlar. Bu testte her sorunun hangi kategoriye ne kadar ağırlıkla katkıda bulunduğu, ikili karşılaştırma
+                matrisleriyle belirlendi — böylece bir sorunun sonuca etkisi, kategorideki önem düzeyiyle orantılı hale getirildi.
+              </p>
+              <div class="ref-tags">
+                <span class="ref-tag">Ağırlıklandırma Matrisi</span>
+                <span class="ref-tag">Çok Kriterli Analiz</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ref-item">
+            <div class="ref-num">03</div>
+            <div class="ref-body">
+              <div class="ref-top">
+                <h3 class="ref-title">Bloom Taksonomisi — Soru Kalite Standardı</h3>
+                <a href="https://en.wikipedia.org/wiki/Bloom%27s_taxonomy" target="_blank" rel="noopener" class="ref-link">
+                  Daha fazla →
+                </a>
+              </div>
+              <p class="ref-desc">
+                Benjamin Bloom'un 1956'da geliştirdiği öğrenme hedefleri sınıflandırması, bilgi basamaklarını hatırlama,
+                anlama, uygulama, analiz, değerlendirme ve yaratma olarak tanımlar. Testteki sorular, düşük bilişsel
+                düzeydeki "doğru cevabı hatırla" sorularından kaçınarak <strong>analiz ve uygulama</strong>
+                düzeyinde kaleme alınmıştır.
+              </p>
+              <div class="ref-tags">
+                <span class="ref-tag">Analiz Düzeyi</span>
+                <span class="ref-tag">Uygulama Düzeyi</span>
+                <span class="ref-tag">Soru Tasarımı</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="sayfa" class="sayfa">
+
+      <!-- Giriş bölümü -->
+      <div id="intro-section">
+        <div class="intro-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="13" stroke="#38bdf8" stroke-width="1.5"/>
+            <path d="M14 8v6l4 2" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h2>Teste Başlamadan Önce</h2>
+        <p>
+          Her sorunun diğerlerine göre daha doğruya yakın bir cevabı vardır; seçenekleri dikkatlice oku
+          ve sana en mantıklı geleni işaretle. Teste başladığında <strong>30 dakikalık</strong> süre işler;
+          son 5 dakikada uyarı alırsın, süre bitince test otomatik tamamlanır. Test, temel teknik bilginin yanında
+          <strong>problem çözme ve mantık yürütme becerini</strong> de ölçmeyi hedefler.
+        </p>
+        <div class="intro-methodology">
+          <div class="method-tag">IEEE SWEBOK</div>
+          <div class="method-tag">Saaty AHP</div>
+          <div class="method-tag">Bloom Taksonomisi</div>
+        </div>
+        <button class="btn btn-primary" id="start-btn">
+          <span>Testi Başlat</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Test bölümü -->
+      <div id="quiz-section" class="hidden">
+
+        <div class="quiz-header">
+          <div class="quiz-header-row">
+            <div class="progress">
+              <span id="question-text-num" class="progress-label">Soru 1 / 30</span>
+              <span id="percent-text" class="progress-percent">0%</span>
+            </div>
+            <div class="quiz-timer" aria-live="polite">
+              <span class="quiz-timer-label">Kalan süre</span>
+              <span id="quiz-timer-display" class="quiz-timer-display">30:00</span>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div id="progress-bar-inner" class="progress-bar-inner"></div>
+          </div>
+        </div>
+
+        <div id="timer-warning-banner" class="timer-warning-banner hidden" role="alert">
+          <span class="timer-warning-icon" aria-hidden="true">⏱</span>
+          <span>Son 5 dakikaya girdin. Süre dolunca test otomatik olarak tamamlanır ve yanıtların kaydedilir.</span>
+        </div>
+
+        <div id="question-card" class="question-card">
+          <div id="question-text" class="question-text"></div>
+          <div id="options" class="options"></div>
+        </div>
+
+        <div id="error-message" class="error hidden"></div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="next-btn">
+            <span>Sonraki Soru</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sonuç göster butonu -->
+      <div id="after-quiz-actions" class="hidden after-quiz-wrap">
+        <div class="after-quiz-card">
+          <div class="after-quiz-icon">✓</div>
+          <h3>Test Tamamlandı!</h3>
+          <p>Yanıtların analiz ediliyor. Sonucunu görmek için devam et.</p>
+          <button class="btn btn-primary" id="show-result-btn">
+            <span>Analiz Sonucunu Gör</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sonuç bölümü -->
+      <div id="result-section" class="hidden-result">
+        <!-- Profil satırı (sonuç ekranı üstünde gösterilir) -->
+        <div id="result-profile-row" class="result-profile-row hidden"></div>
+        <div class="result-header">
+          <span class="result-eyebrow">Analiz Tamamlandı</span>
+          <h1>Test Sonucun</h1>
+        </div>
+
+        <div class="result-box">
+          <div class="result-top">
+            <div class="result-highlight" id="result-score"></div>
+            <div id="result-tag" class="tag"></div>
+          </div>
+          <div class="result-divider"></div>
+          <div id="result-summary" class="result-summary"></div>
+          <p class="result-note">
+            Bu sonuç, testte verdiğin yanıtlara göre oluşturulmuş bir analizdir.
+            Puan aralıkları IEEE SWEBOK yetkinlik çerçevesine dayanmaktadır.
+          </p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- progress-text için backward-compat alias -->
+  <div id="progress-text" style="display:none"></div>
+
+  <!-- ===== KAYIT MODAL ===== -->
+  <div id="reg-overlay" class="reg-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="reg-title">
+    <div class="reg-card">
+
+      <div class="reg-header">
+        <div class="reg-badge">Akademik Araştırma</div>
+        <h2 class="reg-title" id="reg-title">Teste Başlamadan Önce</h2>
+        <p class="reg-subtitle">
+          Profil bilgilerin tamamen anonimdir ve yalnızca bölüm/sınıf bazlı yetenek analizi için kullanılır.
+        </p>
+      </div>
+
+      <form id="reg-form" novalidate autocomplete="off">
+
+        <!-- Nickname -->
+        <div class="reg-field" id="field-nickname">
+          <label class="reg-label" for="input-nickname">
+            Takma Ad (Nickname)
+            <span class="reg-label-hint">Gerçek isim gerekmez</span>
+          </label>
+          <div class="reg-input-wrap">
+            <input
+              type="text"
+              id="input-nickname"
+              class="reg-input"
+              placeholder="örn. Turing99"
+              maxlength="24"
+              spellcheck="false"
+              autocomplete="off"
+            />
+            <span class="reg-input-status" id="nickname-status" aria-live="polite"></span>
+          </div>
+          <p class="reg-field-msg" id="nickname-msg"></p>
+        </div>
+
+        <!-- Eğitim Durumu -->
+        <div class="reg-field" id="field-egitim">
+          <label class="reg-label" for="input-egitim">Eğitim Durumu</label>
+          <div class="reg-select-wrap">
+            <select id="input-egitim" class="reg-select">
+              <option value="">— Seçiniz —</option>
+              <option value="Hazırlık">Hazırlık</option>
+              <option value="1. Sınıf">1. Sınıf</option>
+              <option value="2. Sınıf">2. Sınıf</option>
+              <option value="3. Sınıf">3. Sınıf</option>
+              <option value="4. Sınıf">4. Sınıf</option>
+              <option value="Mezun">Mezun</option>
+              <option value="Sektör Çalışanı">Sektör Çalışanı</option>
+            </select>
+          </div>
+          <p class="reg-field-msg" id="egitim-msg"></p>
+        </div>
+
+        <!-- Bölüm (Searchable) -->
+        <div class="reg-field" id="field-bolum">
+          <label class="reg-label" for="bolum-search-input">Bölüm</label>
+          <div class="reg-searchable" id="bolum-searchable">
+            <div class="reg-searchable-trigger" id="bolum-trigger" tabindex="0" role="combobox"
+                 aria-expanded="false" aria-haspopup="listbox" aria-controls="bolum-listbox">
+              <span id="bolum-display" class="reg-searchable-display">— Bölüm seçiniz —</span>
+              <svg class="reg-searchable-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="reg-searchable-dropdown hidden" id="bolum-dropdown" role="listbox" aria-label="Bölüm seçimi">
+              <div class="reg-searchable-search">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="reg-search-icon">
+                  <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/>
+                  <path d="M9.5 9.5l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                <input type="text" id="bolum-search-input" class="reg-searchable-input" placeholder="Ara..." autocomplete="off"/>
+              </div>
+              <ul class="reg-searchable-list" id="bolum-list"></ul>
+            </div>
+          </div>
+          <input type="hidden" id="input-bolum" value=""/>
+          <p class="reg-field-msg" id="bolum-msg"></p>
+        </div>
+
+        <!-- Aydınlatma Metni -->
+        <div class="reg-notice">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" class="reg-notice-icon">
+            <circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M7.5 5v.5M7.5 7.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <p>
+            Verileriniz akademik bir araştırma kapsamında <strong>anonim</strong> olarak kullanılacaktır.
+            Bu bilgiler, hangi sınıf ve bölümlerin hangi alanlara daha yatkın olduğunu bilimsel olarak
+            kanıtlamak amacıyla toplanmaktadır.
+          </p>
+        </div>
+
+        <button type="submit" class="btn btn-primary reg-submit" id="reg-submit-btn">
+          <span>Devam Et ve Testi Başlat</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+      </form>
+    </div>
+  </div>
+  <!-- /KAYIT MODAL -->
+
+  <!-- Firebase CDN (compat v10) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

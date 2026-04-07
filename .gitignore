@@ -1,0 +1,14 @@
+# Ortam değişkenleri — asla Git'e ekleme
+.env
+.env.local
+.env.*.local
+
+# Bağımlılıklar
+node_modules/
+
+# Vite build çıktısı
+dist/
+
+# Editor/OS dosyaları
+.DS_Store
+Thumbs.db
