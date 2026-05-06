@@ -17,554 +17,783 @@ try {
 }
 
 
-// --- KATEGORİ SABİTLERİ (Eklemeniz Gereken Kısım) ---
-const KATEGORILER = { 
-    "SD": "Yazılım Geliştirme", 
-    "DM": "Veri Yönetimi", 
-    "IM": "Altyapı Yönetimi", 
-    "CS": "Siber Güvenlik", 
-    "PM": "BT Süreç Yönetimi" 
+// --- KATEGORİ SABİTLERİ ---
+const KATEGORILER = {
+    "SD": "Yazılım Geliştirme",
+    "DS-AI": "Veri Bilimi ve Yapay Zeka",
+    "CS-NET": "Siber Güvenlik ve Ağ",
+    "IS-MT": "Bilişim Sistemleri ve BT Yönetimi",
+    "CL-DN": "Bulut, Altyapı ve DevOps",
 };
 const AGIRLIKLANDIRMA_MATRISI = {
-    // Matris verilerinizi buradan alıyoruz
-    "Q1":  { "SD": 0.7, "DM": 0.0, "IM": 0.2, "CS": 0.0, "PM": 0.1 },
-    "Q2":  { "SD": 0.9, "DM": 0.0, "IM": 0.0, "CS": 0.0, "PM": 0.1 },
-    "Q3":  { "SD": 0.4, "DM": 0.0, "IM": 0.0, "CS": 0.0, "PM": 0.6 },
-    "Q4": {
-        "SD": 0.5,
-        "DM": 0.0,
-        "IM": 0.2,
-        "CS": 0.0,
-        "PM": 0.3
-    },
-    "Q5": {
-        "SD": 0.8,
-        "DM": 0.0,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 0.2
-    },
-    "Q6": {
-        "SD": 0.8,
-        "DM": 0.0,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 0.2
-    },
-    "Q7": {
-        "SD": 0.0,
-        "DM": 0.8,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 0.2
-    },
-    "Q8": {
-        "SD": 0.3,
-        "DM": 0.7,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 0.0
-    },
-    "Q9": {
-        "SD": 0.0,
-        "DM": 0.9,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 0.1
-    },
-    "Q10": {
-        "SD": 0.0,
-        "DM": 0.6,
-        "IM": 0.4,
-        "CS": 0.0,
-        "PM": 0.0
-    },
-    "Q11": {
-        "SD": 0.0,
-        "DM": 0.9,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 0.1
-    },
-    "Q12": {
-        "SD": 0.1,
-        "DM": 0.9,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 0.0
-    },
-    "Q13": {
-        "SD": 0.0,
-        "DM": 0.0,
-        "IM": 0.7,
-        "CS": 0.3,
-        "PM": 0.0
-    },
-    "Q14": {
-        "SD": 0.4,
-        "DM": 0.0,
-        "IM": 0.6,
-        "CS": 0.0,
-        "PM": 0.0
-    },
-    "Q15": {
-        "SD": 0.0,
-        "DM": 0.0,
-        "IM": 0.8,
-        "CS": 0.0,
-        "PM": 0.2
-    },
-    "Q16": {
-        "SD": 0.0,
-        "DM": 0.0,
-        "IM": 0.5,
-        "CS": 0.5,
-        "PM": 0.0
-    },
-    "Q17": {
-        "SD": 0.1,
-        "DM": 0.0,
-        "IM": 0.7,
-        "CS": 0.0,
-        "PM": 0.2
-    },
-    "Q18": {
-        "SD": 0.0,
-        "DM": 0.0,
-        "IM": 0.8,
-        "CS": 0.0,
-        "PM": 0.2
-    },
-    "Q19": {
-        "SD": 0.0,
-        "DM": 0.0,
-        "IM": 0.1,
-        "CS": 0.9,
-        "PM": 0.0
-    },
-    "Q20": {
-        "SD": 0.4,
-        "DM": 0.0,
-        "IM": 0.0,
-        "CS": 0.6,
-        "PM": 0.0
-    },
-    "Q21": {
-        "SD": 0.1,
-        "DM": 0.0,
-        "IM": 0.1,
-        "CS": 0.8,
-        "PM": 0.0
-    },
-    "Q22": {
-        "SD": 0.0,
-        "DM": 0.0,
-        "IM": 0.0,
-        "CS": 0.7,
-        "PM": 0.3
-    },
-    "Q23": {
-        "SD": 0.2,
-        "DM": 0.0,
-        "IM": 0.0,
-        "CS": 0.8,
-        "PM": 0.0
-    },
-    "Q24": {
-        "SD": 0.0,
-        "DM": 0.0,
-        "IM": 0.3,
-        "CS": 0.7,
-        "PM": 0.0
-    },
-    "Q25": {
-        "SD": 0.4,
-        "DM": 0.0,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 0.6
-    },
-    "Q26": {
-        "SD": 0.0,
-        "DM": 0.4,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 0.6
-    },
-    "Q27": {
-        "SD": 0.3,
-        "DM": 0.0,
-        "IM": 0.4,
-        "CS": 0.0,
-        "PM": 0.3
-    },
-    "Q28": {
-        "SD": 0.3,
-        "DM": 0.0,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 0.7
-    },
-    "Q29": {
-        "SD": 0.0,
-        "DM": 0.0,
-        "IM": 0.0,
-        "CS": 0.0,
-        "PM": 1.0
-    },
-    "Q30_A": { "SD": 0.8, "DM": 0.0, "IM": 0.0, "CS": 0.1, "PM": 0.1 },
-    "Q30_B": { "SD": 0.0, "DM": 0.9, "IM": 0.0, "CS": 0.0, "PM": 0.1 },
-    "Q30_C": { "SD": 0.0, "DM": 0.0, "IM": 0.1, "CS": 0.9, "PM": 0.0 },
-    "Q30_D": { "SD": 0.0, "DM": 0.0, "IM": 0.0, "CS": 0.0, "PM": 1.0 }
+    "Q1":  { "SD": 0.35, "DS-AI": 0.10, "CS-NET": 0.00, "IS-MT": 0.20, "CL-DN": 0.35 },
+    "Q2":  { "SD": 0.10, "DS-AI": 0.55, "CS-NET": 0.15, "IS-MT": 0.20, "CL-DN": 0.00 },
+    "Q3":  { "SD": 0.20, "DS-AI": 0.00, "CS-NET": 0.55, "IS-MT": 0.10, "CL-DN": 0.15 },
+    "Q4":  { "SD": 0.20, "DS-AI": 0.10, "CS-NET": 0.00, "IS-MT": 0.60, "CL-DN": 0.10 },
+    "Q5":  { "SD": 0.30, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.10, "CL-DN": 0.50 },
+    "Q6":  { "SD": 0.55, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.15, "CL-DN": 0.20 },
+    "Q7":  { "SD": 0.10, "DS-AI": 0.55, "CS-NET": 0.00, "IS-MT": 0.25, "CL-DN": 0.10 },
+    "Q8":  { "SD": 0.25, "DS-AI": 0.00, "CS-NET": 0.50, "IS-MT": 0.10, "CL-DN": 0.15 },
+    "Q9":  { "SD": 0.15, "DS-AI": 0.20, "CS-NET": 0.00, "IS-MT": 0.55, "CL-DN": 0.10 },
+    "Q10": { "SD": 0.35, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.15, "CL-DN": 0.40 },
+    "Q11": { "SD": 0.55, "DS-AI": 0.15, "CS-NET": 0.00, "IS-MT": 0.15, "CL-DN": 0.15 },
+    "Q12": { "SD": 0.15, "DS-AI": 0.65, "CS-NET": 0.00, "IS-MT": 0.20, "CL-DN": 0.00 },
+    "Q13": { "SD": 0.00, "DS-AI": 0.00, "CS-NET": 0.60, "IS-MT": 0.20, "CL-DN": 0.20 },
+    "Q14": { "SD": 0.10, "DS-AI": 0.00, "CS-NET": 0.25, "IS-MT": 0.20, "CL-DN": 0.45 },
+    "Q15": { "SD": 0.45, "DS-AI": 0.00, "CS-NET": 0.00, "IS-MT": 0.45, "CL-DN": 0.10 },
+    "Q16": { "SD": 0.20, "DS-AI": 0.00, "CS-NET": 0.65, "IS-MT": 0.15, "CL-DN": 0.00 },
+    "Q17": { "SD": 0.10, "DS-AI": 0.45, "CS-NET": 0.00, "IS-MT": 0.35, "CL-DN": 0.10 },
+    "Q18": { "SD": 0.40, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.10, "CL-DN": 0.40 },
+    "Q19": { "SD": 0.00, "DS-AI": 0.00, "CS-NET": 0.55, "IS-MT": 0.25, "CL-DN": 0.20 },
+    "Q20": { "SD": 0.25, "DS-AI": 0.20, "CS-NET": 0.00, "IS-MT": 0.10, "CL-DN": 0.45 },
+    "Q21": { "SD": 0.50, "DS-AI": 0.00, "CS-NET": 0.00, "IS-MT": 0.30, "CL-DN": 0.20 },
+    "Q22": { "SD": 0.15, "DS-AI": 0.00, "CS-NET": 0.15, "IS-MT": 0.60, "CL-DN": 0.10 },
+    "Q23": { "SD": 0.10, "DS-AI": 0.55, "CS-NET": 0.00, "IS-MT": 0.25, "CL-DN": 0.10 },
+    "Q24": { "SD": 0.35, "DS-AI": 0.00, "CS-NET": 0.45, "IS-MT": 0.10, "CL-DN": 0.10 },
+    "Q25": { "SD": 0.25, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.15, "CL-DN": 0.50 },
+    "Q26": { "SD": 0.30, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.10, "CL-DN": 0.50 },
+    "Q27": { "SD": 0.45, "DS-AI": 0.15, "CS-NET": 0.00, "IS-MT": 0.30, "CL-DN": 0.10 },
+    "Q28": { "SD": 0.00, "DS-AI": 0.25, "CS-NET": 0.50, "IS-MT": 0.25, "CL-DN": 0.00 },
+    "Q29": { "SD": 0.00, "DS-AI": 0.40, "CS-NET": 0.30, "IS-MT": 0.20, "CL-DN": 0.10 },
+    "Q30": { "SD": 0.45, "DS-AI": 0.00, "CS-NET": 0.00, "IS-MT": 0.30, "CL-DN": 0.25 },
 };
 
 const DOGRU_CEVAPLAR = {
-    // Doğru cevaplarınızı buraya harf olarak tanımlayın
-    "Q1": "D", "Q2": "C", "Q3": "B", "Q4": "E", "Q5": "C", "Q6": "B", 
-    "Q7": "C", "Q8": "A", "Q9": "E", "Q10": "B", "Q11": "D", "Q12": "C",
-    "Q13": "C", "Q14": "C", "Q15": "B", "Q16": "D", "Q17": "C", "Q18": "A",
-    "Q19": "B", "Q20": "C", "Q21": "D", "Q22": "B", "Q23": "E", "Q24": "E",
-    "Q25": "B", "Q26": "A", "Q27": "B", "Q28": "A", "Q29": "D",
-    // Q30 burada yer almaz (Yönelim sorusu)
+    "Q1": "B", "Q2": "C", "Q3": "D", "Q4": "C", "Q5": "C", "Q6": "C",
+    "Q7": "B", "Q8": "E", "Q9": "C", "Q10": "C", "Q11": "C", "Q12": "B",
+    "Q13": "B", "Q14": "C", "Q15": "C", "Q16": "C", "Q17": "C", "Q18": "C",
+    "Q19": "C", "Q20": "C", "Q21": "A", "Q22": "B", "Q23": "C", "Q24": "C",
+    "Q25": "C", "Q26": "C", "Q27": "C", "Q28": "C", "Q29": "C", "Q30": "C",
 };
 
 // A, B, C, D harflerini tutan dizi
 const optionLabels = ["A", "B", "C", "D", "E"];
 
 // 30 soruluk test
-const questions = [
-  {
-    id: 1,
-    text: "Soru 1 \nBir mobil uygulama geliştiriyorsunuz. Uygulama, kullanıcı bir butona bastığında arka planda sunucudan veri çekiyor. Ancak, kullanıcı butona tekrar tekrar hızlıca bastığında, aynı veri çekme işlemi defalarca tetikleniyor ve bu da sunucuda gereksiz yüke neden oluyor. Bu durumu kodlama düzeyinde önlemek için en temel ve etkili yaklaşımınız ne olur?",
-    options:  [
-  "Sunucuya giden her istek için bir sayaç tutarak, bir saniye içinde belli bir sayının üzerindeki istekleri reddetmek.",
-  "Her istekten önce sunucuya, bu isteğin daha önce yapılıp yapılmadığını soran bir kontrol isteği göndermek.",
-  "Uygulamanın açılışında, kullanıcının bir saat içinde kaç istek yapabileceğini belirleyen bir limitasyon tanımlamak.",
-  "Butona basıldıktan hemen sonra butonu devre dışı bırakmak ve sadece veri çekme işlemi başarıyla tamamlandıktan veya bir hata aldıktan sonra butonu tekrar etkinleştirmek.",
-  " Veri çekme isteği başlamadan önce, mevcut durumda zaten devam eden başka bir veri çekme işlemi olup olmadığını kontrol etmek ve varsa yenisini başlatmamak.",
-],
-  },
-  {
-    id: 2,
-    text: "Soru 2 \nBir hastane yönetim sistemi tasarlıyorsunuz. Sistemde 'Doktor', 'Hemşire' ve 'Hasta' gibi temel roller var. Her rolün kendine has özellikleri (Doktor'un uzmanlığı, Hemşire'nin vardiyası, Hasta'nın hastalık geçmişi) ve ortak işlevleri (Kişisel bilgileri görüntüleme, randevu kaydı oluşturma) bulunuyor. Nesne Yönelimli Programlama (NYP) prensiplerini kullanarak bu yapıyı en verimli şekilde nasıl modelledirsiniz?",
-    options: [
-    "Her rol için tamamen bağımsız üç ayrı sınıf (Doktor, Hemşire, Hasta) oluşturur ve ortak işlevleri her sınıfta ayrı ayrı kopyalarım.", 
-  "Tüm rolleri temsil eden tek bir 'Kişi' sınıfı oluşturur ve her rol için özel bilgileri bu sınıf içindeki koşullu alanlarla (if/else) yönetirim.", 
-  "Ortak işlevleri ve temel bilgileri içeren bir 'Kullanıcı' üst sınıfı (Superclass) oluşturur ve 'Doktor', 'Hemşire', 'Hasta' sınıflarını bu sınıftan türeterek (Inheritance) özelleştiririm.", 
-  "Her bir rolün (Doktor, Hemşire, Hasta) özelliklerini saklayan ayrı tablolar oluşturur, ancak kodda bunları doğrudan birbirine bağlamadan kullanırım.",
- "Her rol için bir Arayüz (Interface) tanımlar, ancak her rolün ortak işlevlerinin implementasyonunu her sınıfta ayrı ayrı tekrarlarım.",
-],
-  },
-  {
-  id: 3,
-  text: "Soru 3 \nBir uygulamanın son sürümünde, nadiren ve tahmin edilemeyen zamanlarda kullanıcıların profil fotoğrafının kaybolduğu bildiriliyor. Kendi testlerinizde bu hatayı yeniden oluşturamıyorsunuz. Hatanın kaynağını bulmak için izleyeceğiniz en sistematik ilk adım ne olmalıdır?",
-  options: [
-    "Derhal tüm fotoğraf yükleme ve silme kodlarını gözden geçirerek olası senaryoları düşünmek.",
-    "Kullanıcıların cihaz türü, işletim sistemi sürümü ve kaybolmanın gerçekleştiği yaklaşık zaman gibi çevresel verileri toplayarak bir desen (pattern) aramak.",
-    "Hatanın oluştuğu anda çalışan sunucu loglarını incelemek, ancak önce hatanın tekrar oluşmasını beklemek.",
-    "Son sürümdeki tüm yeni kodları geri alarak eski sürüme dönmek ve sorunun ortadan kalkıp kalkmadığını kontrol etmek.",
-    "Hatanın oluştuğu anı kaydetmek için tüm kullanıcılara ekran kaydı yapmalarını söyleyen bir uyarı mesajı göndermek.",
-  ],
-},
-{
-  id: 4,
-  text: "Soru 4 \nBir ekip toplantısında, mevcut sistemin yavaşlığı tartışılıyor. Geliştiricilerin çoğu, kodun içindeki spesifik yavaş fonksiyonları optimize etmeyi önerirken, siz farklı bir görüş belirtiyorsunuz. Sizin yaklaşımınız aşağıdakilerden hangisidir?",
-  options: [
-    "Yavaş çalışan fonksiyonları bulmak için bir performans analiz aracı (profiler) kullanır, sadece en çok zaman tüketen kısımlara odaklanırım.",
-    "Sadece veritabanının sorgu sürelerini analiz eden bir araç kullanır, uygulamanın kodundaki performans sorunlarını göz ardı ederim.",
-    "Geliştiricilerden, her fonksiyonu daha hızlı hale getirmek için paralel işlem (multithreading) kullanmalarını isterim.",
-    "Kullanıcılardan en az kullandıkları özellikleri belirlemelerini ve bu özellikleri sistemden tamamen kaldırmayı öneririm.",
-    "Sistemin tüm katmanları arasındaki veri akışını ve iletişimi (örneğin, veritabanı sorgularının sayısını ve sunucu yanıt sürelerini) haritalandırarak mimari düzeyde bir tıkanıklık (bottleneck) ararım.",
-  ],
-},
-{
-  id: 5,
-  text: "Soru 5 \nBir çizgi film karakteri koleksiyonu uygulaması geliştiriyorsunuz. Her karakterin adı, rengi ve özel gücü var. Bazı karakterler uçabiliyor, bazıları hızlı koşabiliyor, bazıları ise görünmez olabiliyor. Bu farklı yetenekleri kod yapısına en esnek şekilde dahil etmek için hangi Nesne Yönelimli Tasarım Kalıbını (Design Pattern) kullanmayı tercih edersiniz?",
-  options: [
-    "Decorator: Karakterleri sürekli sarmallayarak (wrap) yetenek eklemek.",
-    "Factory: Her karakter tipini tek bir merkezi yerden oluşturmak.",
-    "Strategy: Uçma, koşma ve görünmezlik gibi yetenekleri ayrı sınıflar olarak tanımlayıp, karakter nesnesine çalışma zamanında bu yetenekleri atamak.",
-    "Singleton: Tüm karakterlerin tek bir örnek (instance) üzerinden erişilebilir olmasını sağlamak.",
-    " Observer: Karakterlerin yeteneklerini, yetenekleri kullanan diğer nesnelere anlık bildirim gönderecek şekilde tasarlamak.",
-  ],
-},
-{
-  id: 6,
-  text: "Soru 6 \nBir geliştirici olarak, 1000 satırlık bir fonksiyonun içindeki bir hatayı (bug) bulmaya çalışıyorsunuz. Fonksiyon, birçok farklı girdi (input) alıyor ve çıktı (output) üretiyor. Fonksiyonun çıktısı beklediğiniz gibi değil. Hata ayıklama sürecini hızlandırmak için ilk olarak ne yaparsınız?",
-  options: [
-    "Kodun ilk 500 satırını siler, çıktının değişip değişmediğini kontrol ederim.",
-    "Fonksiyonun ortasına, girdilerin ve o noktaya kadar hesaplanan kritik ara değerlerin ne olduğunu yazdıran (loglayan) bir çıktı eklerim (Binary Search yaklaşımı).",
-    "Tüm girdileri tek tek değiştirerek çıktıyı izlerim.",
-    "Fonksiyonu tamamen baştan yazmayı teklif ederim.",
-    "Fonksiyonun tamamını bir kerede hata ayıklayıcı (debugger) ile adım adım çalıştırmak yerine, sadece fonksiyonun en başında ve sonunda çıktıları kontrol ederim.",
-  ],
-},
-{
-  id: 7,
-  text: "Soru 7 \nBir A/B testi yaptınız. A versiyonunda dönüşüm oranı %5.0, B versiyonunda ise %5.2 çıktı. İstatistiksel olarak anlamlı bir fark olup olmadığını anlamak için hangi temel bilgiyi bilmeniz gerekir?",
-  options: [
-    "İki sürümün geliştirilmesi için harcanan toplam zaman.",
-    "Testin yapıldığı sunucunun işlemci gücü.",
-    "Her iki versiyon için toplanan örneklem büyüklüğü (kullanıcı sayısı).",
-    "B versiyonundaki kullanıcıların demografik bilgileri.",
-    "A versiyonundaki kullanıcıların demografik bilgileri.",
-  ],
-},
-{
-  id: 8,
-  text: "Soru 8 \nBir model kurucu olarak, müşterilerinizin bir sonraki ay ne kadar harcama yapacağını tahmin eden bir model tasarlıyorsunuz. Modelin tahmin sonuçlarını ne zaman ve nasıl güncelleyeceğinize dair bir strateji belirlemelisiniz. Aşağıdaki yaklaşımlardan hangisi, kaynak verimliliği ve tahmin güncelliği arasında en iyi dengeyi sağlar?",
-  options: [
-    "Modeli her ayın ilk günü, geçmiş bir yılın verisiyle yeniden eğitir ve tahmini yayınlarım.",
-    "Her müşteri sisteme her giriş yaptığında, modelin o müşteri için yeniden tahmin yapmasını sağlarım (Gerçek zamanlı yeniden eğitim).",
-    "Modeli bir kez eğitir, sonuçları bir yıla kadar kullanırım.",
-    "Sadece müşteri harcamaları büyük bir sapma gösterdiğinde (outlier) modeli yeniden eğitmek için manuel bir süreç başlatırım.",
-    "Modelin tahminlerini her hafta sonu, sadece son 7 günlük yeni veriyi ekleyerek güncellerim.",
-  ],
-},
-{
-  id: 9,
-  text: "Soru 9 \n10.000 farklı ürüne ait satış verisini analiz ediyorsunuz. Her ürünün Fiyatı, Satış Miktarı, Stok Durumu ve Kategori Bilgisi var. Yöneticinize, \"Hangi ürün kategorileri en yüksek kâr marjına sahiptir?\" sorusunu görsel olarak açıklamak istiyorsunuz. En uygun görselleştirme yöntemi ne olur?",
-  options: [
-    "Her bir ürünün ayrı ayrı fiyat-satış miktarını gösteren bir Dağılım Grafiği (Scatter Plot).",
-    "Kategorilerin toplam stok durumunu gösteren bir Halka Grafik (Donut Chart).",
-    "Kategorilerin ürün sayısı içindeki payını gösteren bir Pasta Grafik (Pie Chart).",
-    "Tüm ürünlerin satış miktarlarını zaman içindeki değişimini gösteren bir Çizgi Grafik (Line Chart).",
-    "Tüm kategorileri listeleyen ve her kategorinin toplam Kâr Marjını gösteren bir Çubuk Grafik (Bar Chart).",
-  ],
-},
-{
-  id: 10,
-  text: "Soru 10 \n100 GB büyüklüğünde, sık sık güncellenen bir müşteri verisi tablosuna sahipsiniz. Her ay, bu tablodaki verilere dayanarak karmaşık analizler yapmanız gerekiyor. Analiz sorgularının süresi giderek artıyor. Sorgu süresini düşürmek için veriye dayalı ilk müdahaleniz ne olur?",
-  options: [
-    "Daha hızlı bir sunucu satın almayı talep etmek.",
-    "En sık kullanılan arama kriterleri (örneğin, Müşteri ID, Kayıt Tarihi) üzerinde veri tabanı indeksleri (Indexes) oluşturmak.",
-    "Tüm veriyi daha küçük, aylık dosyalara bölmek ve analizi bu dosyalarda yapmak.",
-    "Tablodan, son 6 aydan eski olan tüm verileri kalıcı olarak silmek.",
-    "Tablodaki tüm verilerin bir kopyasını farklı bir veritabanı sistemine taşımak.",
-  ],
-},
-{
-  id: 11,
-  text: "Soru 11 \nBir e-posta pazarlama kampanyasının başarısını ölçüyorsunuz. Açıktır ki tıklama oranı (CTR) kampanyanın başarısının önemli bir göstergesidir. Ancak, yöneticiniz sadece CTR'ye bakmanın yeterli olmadığını iddia ediyor ve daha sağlam bir metrik önermenizi istiyor. Hangi metrik, sadece açılma ve tıklanma sayısından daha derin bir etkiyi ölçer?",
-  options: [
-    "Bounce Rate (Hemen Çıkma Oranı): E-postadan gelen kullanıcıların sitede hemen ayrılma oranı.",
-    "Spam Şikayet Oranı: E-postayı spam olarak işaretleyen kullanıcıların oranı.",
-    "Unsubscribe Rate (Abonelikten Çıkma Oranı): Kampanya sonrası listeden çıkan kullanıcıların oranı.",
-    "Goal Conversion Rate (Hedef Dönüşüm Oranı): E-postadan gelip, belirlenen bir satın alma veya kayıt hedefini tamamlayan kullanıcıların oranı.",
-    "Açılma Oranı (Open Rate): Gönderilen e-postaların kaç tanesinin açıldığının yüzdesi.",
-  ],
-},
-{
-  id: 12,
-  text: "Soru 12 \nBir Tahmin Modeli oluşturuyorsunuz. Modeliniz eğitim verilerinde %99 doğruluk gösteriyor, ancak gerçek dünyadan gelen yeni verilerde bu doğruluk %60'a düşüyor. Bu durum, modelinizin hangi temel problemi yaşadığını gösterir?",
-  options: [
-    "Underfitting (Eksik Öğrenme): Model, eğitim verisindeki genel trendi bile öğrenememiştir.",
-    "Data Leakage (Veri Sızıntısı): Test verisi yanlışlıkla eğitim verisine karışmıştır.",
-    "Overfitting (Aşırı Uyum): Model, eğitim verisindeki gürültüyü ve rastlantısal desenleri ezberlemiştir, genelleme yeteneği kaybolmuştur.",
-    "Feature Scaling (Özellik Ölçeklendirme) Eksikliği: Veri özellikleri doğru şekilde normalleştirilmemiştir.",
-    "Bias (Yanlılık): Eğitim verisi, temsil etmesi gereken gerçek dünya popülasyonunu yeterince yansıtmamaktadır.",
-  ],
-},
-{
-  id: 13,
-  text: "Soru 13 \nBir sunucu odasındaki kritik bir veritabanı sunucusunu yönetiyorsunuz. Bu sunucunun donanımsal bir arıza nedeniyle çökmesi durumunda sistemin işleyişini aksatmamasını sağlamak için uygulayacağınız en temel ve hayati altyapı stratejisi ne olur?",
-  options: [
-    "Sunucunun her gün, geceleri otomatik olarak yeniden başlatılmasını planlamak.",
-    "Sunucunun her saat başı tüm veriyi harici bir diske yedeklemesini sağlamak (Backup).",
-    "Aynı veritabanı yazılımını, aynı verinin kopyasıyla birlikte çalışan ikinci bir sunucu (Replication/Failover) kurmak.",
-    "Sunucunun işlemci ve bellek kullanımını sürekli izleyen bir araç kurmak.",
-    "Veritabanı sunucusunun yerine, tüm verileri bir depolama alanına (Storage Area Network) taşımak.",
-  ],
-},
-{
-  id: 14,
-  text: "Soru 14 \nUygulamanızın kullanıcı sayısı beklenenin çok üzerinde artıyor ve tek bir sunucu artık tüm isteklere yetişemiyor. Uygulamanızın mimarisini, kullanıcı sayısındaki gelecekteki artışlara kolayca uyum sağlayacak şekilde \"yatay olarak ölçeklenebilir\" (Horizontally Scalable) kılmak için ilk hangi adımı atarsınız?",
-  options: [
-    "Mevcut sunucunun CPU ve RAM'ini yükseltmek (Dikey Ölçekleme).",
-    "Uygulamayı tamamen mikro hizmetlere (microservices) dönüştürmek.",
-    "Uygulamanın durumsuz (Stateless) hale getirilmesini sağlamak ve isteği birden fazla sunucuya dağıtmak için bir Yük Dengeleyici (Load Balancer) eklemek.",
-    "Veri tabanını, sunucuyu yormaması için farklı bir konuma taşımak.",
-    "Tüm statik içerikleri (resimler, CSS dosyaları) bir İçerik Dağıtım Ağı (CDN) üzerinden sunmaya başlamak.",
-  ],
-},
-{
-  id: 15,
-  text: "Soru 15 \nBir bulut bilişim ortamında (Cloud Environment) bir e-posta bildirim hizmeti çalıştırıyorsunuz. Hizmet, günün büyük bir bölümünde boştadır ve sadece belirli saatlerde (örneğin, 09:00 ve 18:00) yoğun e-posta trafiği yaşar. Maliyetleri düşürmek için hangi altyapı stratejisini benimsemelisiniz?",
-  options: [
-    "Hizmeti, en yüksek trafik saatine göre boyutlandırılmış, 7/24 çalışan bir sanal sunucuda (VM) tutmak.",
-    "Hizmeti, sadece ihtiyaç duyulduğunda otomatik olarak başlatılıp, işi bittiğinde kapanan sunucusuz bir fonksiyona (Serverless Function) dönüştürmek.",
-    "Hizmeti, daha az güçlü ama daha ucuz bir sunucuya taşımak.",
-    "E-posta bildirimlerinin yoğun saatlerde gönderilmesini kısıtlamak.",
-    "Hizmetin çalıştırıldığı VM'yi, sadece yoğun saatlerde açıp manuel olarak geri kalan zamanda kapatmak.",
-  ],
-},
-{
-  id: 16,
-  text: "Soru 16 \nBir kullanıcının web tarayıcısından sunucunuza güvenli ve şifreli veri göndermesini sağlamak için hangi protokolün kullanılması esastır?",
-  options: [
-    "HTTP",
-    "FTP",
-    "SMTP",
-    "HTTPS",
-    "SSH",
-  ],
-},
-{
-  id: 17,
-  text: "Soru 17 \nYeni bir yazılımı üretim ortamına (Production Environment) dağıtmadan önce, yazılımın beklenen yük altında çalışıp çalışmayacağını test etmek istiyorsunuz. Bu amaçla yapılması gereken en uygun test türü nedir?",
-  options: [
-    "Unit Testing (Birim Testi): Kodun küçük parçalarının doğru çalışıp çalışmadığını kontrol etmek.",
-    "Smoke Testing (Duman Testi): En temel işlevlerin çalışıp çalışmadığını hızlıca kontrol etmek.",
-    "Load Testing (Yük Testi): Sisteme aynı anda binlerce kullanıcı isteği göndererek performans ve istikrarını ölçmek.",
-    "Regression Testing (Regresyon Testi): Yeni bir değişiklikten sonra eski işlevlerin bozulup bozulmadığını kontrol etmek.",
-    "Integration Testing (Entegrasyon Testi): Farklı modüllerin birbirleriyle doğru şekilde iletişim kurup kurmadığını kontrol etmek.",
-  ],
-},
-{
-  id: 18,
-  text: "Soru 18 \nBir ağ üzerindeki cihazlar arasında büyük dosyaların hızlı ve güvenilir bir şekilde transfer edilmesini sağlamak istiyorsunuz. Hangi yöntem, dosya transfer hızını artırmak ve ağ üzerindeki yükü azaltmak için dosyanın kendisini değiştirmeden en etkili şekilde kullanılabilir?",
-  options: [
-    "Dosyayı sıkıştırıp (compression) göndermek.",
-    "Transfer sırasında dosyayı daha küçük parçalara bölmek (chunking) ve bu parçaları paralel olarak göndermek.",
-    "Dosyanın kopyasını, gönderimden önce hedef makinaya manuel olarak yüklemek.",
-    "Transfer sırasında kullanılan ağ kablosunu daha uzun bir kabloyla değiştirmek.",
-    " Ağdaki tüm cihazların sadece bu dosya transferi süresince başka bir işlem yapmasını engellemek.",
-  ],
-},
-{
-  id: 19,
-  text: "Soru 19 \nKullanıcılarınızın parolalarını saklarken, bir güvenlik ihlali durumunda bile parolaların çalınmasını en zor hale getirecek yöntem hangisidir?",
-  options: [
-    "Parolaları, standart bir şifreleme algoritması (örneğin AES) ile şifreleyip bir veritabanında saklamak.",
-    "Parolaları, her birine rastgele bir değer (salt) ekleyip, ardından SHA-256 gibi tek yönlü bir hash algoritması ile karıştırıp saklamak.",
-    "Parolaları, sadece sunucunun kendisinin erişebileceği bir metin dosyasına şifresiz olarak kaydetmek.",
-    "Parolaları bir veritabanı tablosuna, tamamen şifresiz metin (plaintext) olarak kaydetmek.",
-    "Parolaları, kullanıcı adının bir parçası ile birlikte birleştirip, sadece hash'leyerek saklamak.",
-  ],
-},
-{
-  id: 20,
-  text: "Soru 20 \nBir web sitesinin giriş formunda, kullanıcı adının bir kod parçası (örneğin <script>alert('XSS')</script>) girmesini engelleyen bir güvenlik mekanizması tasarlıyorsunuz. Bu tür bir saldırıyı (XSS - Cross-Site Scripting) önlemek için kullanıcı girdisine yapmanız gereken temel işlem nedir?",
-  options: [
-    "Girdiyi, yalnızca rakam ve harf içermesi için zorunlu kılmak.",
-    "Girdiyi, veritabanına kaydetmeden önce şifrelemek.",
-    "Girdideki tüm özel HTML karakterlerini (örneğin <, >) onların HTML varlıklarına (&lt;, &gt;) dönüştürmek (Escaping).",
-    "Girdinin 50 karakterden uzun olmasını engellemek.",
-    "Girdiyi, kullanıcıya göstermeden önce yalnızca sunucuda saklamak.",
-  ],
-},
-{
-  id: 21,
-  text: "Soru 21 \nBir uygulama, dışarıdan gelen bir kullanıcının kimliğini doğrulamak için bir token (jeton) kullanıyor. Bu tokenin süresi dolduğunda (expired) kullanıcının otomatik olarak oturumunu kapatmak ve yeni bir oturum açmasını istemek, hangi güvenlik prensibini destekler?",
-  options: [
-    "Non-repudiation (İnkar Edilemezlik): Kullanıcının yaptığı eylemi sonradan inkar edememesini sağlamak.",
-    "Confidentiality (Gizlilik): Verinin yetkisiz kişilere karşı korunması.",
-    "Least Privilege (En Az Yetki Prensibi): Kullanıcıya sadece işini yapmak için ihtiyacı olan yetkiyi vermek.",
-    "Session Management (Oturum Yönetimi): Oturumların yaşam döngüsünü kontrol ederek, eski veya çalınmış tokenlerin kullanımını önlemek.",
-    "Integrity (Bütünlük): Verinin yetkisiz kişiler tarafından değiştirilmediğini garanti etmek.",
-  ],
-},
-{
-  id: 22,
-  text: "Soru 22 \nBir güvenlik açığı (vulnerability) tespit ettiniz: Veri tabanınızdaki hassas müşteri bilgileri, sistemdeki bir hata nedeniyle düz metin (plaintext) olarak görünür hale gelme riski taşıyor. Bu kritik durumda ilk yapmanız gereken nedir?",
-  options: [
-    "Hemen hatayı düzeltmek için kod yazmaya başlamak ve düzelttikten sonra kimseye haber vermemek.",
-    "Kritik verilerin erişimini geçici olarak kesmek, üst yönetime ve ilgili ekiplere (hukuk, iletişim) durumu acilen bildirmek ve bir düzeltme planı yapmak.",
-    "Veritabanındaki tüm verileri hemen silmek ve sıfırdan başlamak.",
-    "Durumu izlemek ve hiçbir sızıntı gerçekleşmezse kimseye haber vermemek.",
-    "Sistemin savunma duvarı (Firewall) ayarlarını daha katı hale getirmek.",
-  ],
-},
-{
-  id: 23,
-  text: "Soru 23 \nSaldırgan perspektifinden bakıldığında, bir web uygulamasının güvenlik açıklarını keşfetmeye çalışıyorsunuz. Başarılı bir SQL Enjeksiyonu (SQL Injection) saldırısı gerçekleştirmek için öncelikle hangi kodlama hatasını ararsınız?",
-  options: [
-    "HTML'de CSS sınıflarının yanlış kullanılması.",
-    "Kullanıcıların parolalarının çok kısa olmasına izin verilmesi.",
-    "JavaScript kodunun bir hataya neden olması.",
-    "Sunucunun, istemciye HTTP 404 hatası göndermesi.",
-    "Kullanıcıdan gelen girdilerin (input) doğrudan SQL sorgularında kullanılması ve temizlenmemesi (sanitization).",
-  ],
-},
-{
-  id: 24,
-  text: "Soru 24 \nBir şirketin dahili ağından dışarıya izinsiz veri sızdırılmasını önlemek istiyorsunuz. Bu tür bir sızıntıyı tespit etmek ve engellemek için tasarlanmış ana güvenlik aracı hangisidir?",
-  options: [
-    "Intrusion Detection System (IDS): İzinsiz girişleri tespit eden sistem.",
-    "Firewall: Ağ trafiğini kurallara göre filtreleyen sistem.",
-    "Anti-virüs Yazılımı: Bilgisayarlardaki kötü amaçlı yazılımları tespit eden sistem.",
-    "Virtual Private Network (VPN): Uzak kullanıcıların ağa güvenli bağlanmasını sağlayan sistem.",
-    "Data Loss Prevention (DLP) Sistemi: Hassas verinin ağdan veya cihazlardan ayrılmasını izleyen ve engelleyen sistem.",
-  ],
-},
-{
-  id: 25,
-  text: "Soru 25 \nBir yazılım projesinde, geliştiriciler kod kalitesine odaklanmak isterken, proje yöneticisi mümkün olduğunca çok özelliği kısa sürede teslim etme baskısı yapıyor. Bu çatışmayı yönetmek için hangi yaklaşım en dengeli çözümü sunar?",
-  options: [
-    "Kod kalitesini tamamen göz ardı ederek sadece hızlı teslimata odaklanmak.",
-    "Her sprintin (döngünün) bir kısmını (örneğin %20'sini) teknik borcu (technical debt) temizlemeye ve refaktör etmeye ayırarak, kalan zamanda özellik geliştirmeye odaklanmak.",
-    "Proje yöneticisine, kod kalitesinin önemli olmadığını söylemek.",
-    "Geliştiricilerin, proje yöneticisinden bağımsız olarak kendi hızlarında çalışmalarını sağlamak.",
-    "Tüm kod kalitesi tartışmasını, projenin tamamlanmasından sonraki bakım aşamasına ertelemek.",
-  ],
-},
-{
-  id: 26,
-  text: "Soru 26 \nÖnemli bir müşteri, yazılımınızın \"verileri yanlış gösterdiğini\" iddia ediyor. Kendi testlerinizde bir sorun bulamadınız. Müşteriyle olan iletişimi en verimli ve objektif şekilde yönetmek için ilk adımınız ne olmalıdır?",
-  options: [
-    "Müşteriden, sorunun nasıl oluştuğunu (hangi adımları izlediğini, hangi verileri gördüğünü) adım adım gösteren ekran görüntüleri veya video talep etmek.",
-    "Müşteriye test sonuçlarınızı gönderip yanıldığını söylemek.",
-    "Müşterinin hesap erişimini geçici olarak askıya almak.",
-    "Müşterinin verilerine dokunmadan, tüm veri tabanını sıfırlamak.",
-    "Müşterinin sorunuyla ilgili genel bir \"biliyoruz, düzeltiyoruz\" e-postası göndermek.",
-  ],
-},
-{
-  id: 27,
-  text: "Soru 27 \nYeni bir özellik geliştirdiniz. Bu özelliği, önce küçük bir kullanıcı grubunda test etmek ve herhangi bir sorun olursa hızla geri alabilmek (rollback) istiyorsunuz. Bu süreç için en uygun Dağıtım Stratejisi (Deployment Strategy) hangisidir?",
-  options: [
-    "Blue/Green Deployment: Tüm trafiği aniden yeni sürüme geçirmek.",
-    "Canary Deployment: Yeni sürümü, trafiğin küçük bir yüzdesine (örneğin %5) açmak, izlemek ve sorun yoksa kademeli olarak artırmak.",
-    "All-at-once (Hepsi Aynı Anda): Özelliği tüm kullanıcılara aynı anda dağıtmak.",
-    "Manual Deployment (Manuel Dağıtım): Her sunucuya manuel olarak kurmak.",
-    "Dark Launch (Karanlık Lansman): Özelliği arka planda tüm kullanıcılara dağıtmak, ancak kullanıcılara görünür hale getirmemek.",
-  ],
-},
-{
-  id: 28,
-  text: "Soru 28 \nBir hesaplama modülündeki hatayı arıyorsunuz. Modül, 10 farklı parametre alıyor ve 5 farklı sonuç üretiyor. Tüm olası girdi kombinasyonlarını test etmek pratik değil. Hata bulma şansınızı artırmak için hangi test stratejisini kullanırsınız?",
-  options: [
-    "Boundary Value Analysis (Sınır Değer Analizi): Her bir parametrenin minimum, maksimum ve bu değerlere yakın uç noktalarını girdi olarak kullanmak.",
-    "Random Testing (Rastgele Test Etme): Tamamen rastgele girdi değerleri üretmek.",
-    "Maximum Coverage Testing (Maksimum Kapsam Testi): Her bir kod satırının bir kez çalışmasını sağlamaya odaklanmak.",
-    "End-user Testing (Son Kullanıcı Testi): Modülü son kullanıcıya verip ne olduğunu görmek.",
-    "Security Testing (Güvenlik Testi): Modülün sadece güvenlik açıklarını test etmek.",
-  ],
-},
-{
-  id: 29,
-  text: "Soru 29 \nProjeniz iki hafta içinde teslim edilmeli, ancak en önemli ve karmaşık özellik hala bitmedi. Geri kalan tüm görevler tamamlandı. Takımınız tükenmiş durumda. Proje yöneticisi olarak bu durumu nasıl yönetirsiniz?",
-  options: [
-    "Takıma, en karmaşık özelliği bitirene kadar fazla mesai yapmalarını emretmek.",
-    "Projenin teslim tarihini, müşteriye bilgi vermeden iki hafta ileriye kaydırmak.",
-    "Özellikleri tamamlanmamış haliyle teslim etmek ve hatalı olduğunu ummak.",
-    "Müşteriyle görüşerek, yalnızca en önemli özelliğin kritik kısımlarını içeren bir \"Minimum Uygulanabilir Ürün\" (MVP) teslimatını ve geri kalanın bir sonraki aşamaya bırakılmasını müzakere etmek.",
-    "En karmaşık özellikten tamamen vazgeçmek ve teslimat tarihini korumak.",
-  ],
-},
-{
-  id: 30,
-  text: "Soru 30 \nAşağıdaki görev tanımlarından hangisi size mesleki açıdan en çok çekici gelmektedir?",
-  options: [
-    "Geliştirme ekibiyle yakın çalışarak yazılımın temiz ve bakımı kolay bir kod yapısına sahip olmasını sağlamak.",
-    "Büyük veri kümelerini analiz ederek iş süreçlerini optimize edecek yeni öngörüler (insights) bulmak.",
-    "Sürekli olarak değişen bir tehdit ortamında sistemlerin zayıf noktalarını tespit etmek ve saldırıları önleyici mekanizmalar geliştirmek.",
-    "Farklı paydaşlar (geliştirici, tasarımcı, müşteri) arasındaki koordinasyonu sağlamak ve projenin bütçe/zaman çizelgesine uygun ilerlemesini yönetmek.",
-    "Şirket içindeki tüm cihazların ve ağların sorunsuz çalışmasını sağlamak için donanım ve yazılım kurulumlarını yönetmek.",
-  ],
-},
-];
 
+const questions = [
+
+  {
+
+    id: 1,
+
+    text:
+
+      "Soru 1 \nAni performans düşüşü\n\nBir e-ticaret uygulamasında kampanya başladıktan sonra kullanıcılar sepet ekranında gecikme yaşamaya başlıyor. Hata loglarında kritik hata görünmüyor. Veritabanı, API ve önbellek sistemleri ayrı servisler olarak çalışıyor. İlk teknik yaklaşımınız ne olur?",
+
+    options: [
+
+      "Sunucu kapasitesini artırıp gecikmenin düşüp düşmediğini gözlemlemek",
+
+      "İstek yolunu uçtan uca izleyip gecikmenin API, veritabanı, ağ, önbellek veya dış servislerden hangisinde yoğunlaştığını metriklerle ayırmak",
+
+      "Sepet ekranının arayüzünü sadeleştirip kullanıcı tarafındaki işlem yükünü azaltmak",
+
+      "Kampanya süresince bazı raporlama servislerini geçici olarak kapatmak",
+
+      "Veritabanı indekslerini yeniden oluşturup sorgu planlarının değişmesini beklemek",
+
+    ],
+
+  },
+
+  {
+
+    id: 2,
+
+    text:
+
+      "Soru 2 \nYapay zekâ modelinde taraflılık riski\n\nBir kredi ön değerlendirme modeli, geçmiş verilerde daha az temsil edilen bir müşteri grubunu sürekli daha riskli sınıflandırıyor. Modelin genel doğruluk oranı yüksek görünüyor. En dengeli değerlendirme yaklaşımı hangisidir?",
+
+    options: [
+
+      "Genel doğruluk oranı yüksek olduğu için modeli canlıya almak",
+
+      "Modelin karar eşiklerini tüm gruplar için aynı tutup sonucu gözlemlemek",
+
+      "Veriyi alt gruplara ayırıp hata dağılımını, veri temsilini, karar eşiklerini ve iş kuralı etkilerini birlikte incelemek",
+
+      "Modelin kullandığı değişken sayısını azaltıp daha basit bir sınıflandırıcıya geçmek",
+
+      "Daha büyük bir model kullanarak varyansı azaltmaya çalışmak",
+
+    ],
+
+  },
+
+  {
+
+    id: 3,
+
+    text:
+
+      "Soru 3 \nŞüpheli oturum hareketleri\n\nBir SaaS sisteminde bazı kullanıcıların kendi hesaplarından işlem yapmadığını söylediği destek talepleri geliyor. Loglarda farklı ülkelerden aynı kullanıcıya ait kısa aralıklarla oturum açıldığı görülüyor. En uygun ilk müdahale hangisidir?",
+
+    options: [
+
+      "Kullanıcılardan parolalarını değiştirmelerini isteyip yeni talepleri beklemek",
+
+      "Şüpheli IP adreslerini engelleyip sistemi çalışır durumda bırakmak",
+
+      "Oturum süresini azaltıp yeni login kurallarını yayına almak",
+
+      "Şüpheli oturumları geçersiz kılmak, token ve anahtar riskini değerlendirmek, erişim kayıtlarını koruyarak olay incelemesi başlatmak",
+
+      "Kullanıcı arayüzüne güvenlik uyarısı eklemek",
+
+    ],
+
+  },
+
+  {
+
+    id: 4,
+
+    text:
+
+      "Soru 4 \nERP süreç uyumsuzluğu\n\nBir işletmede satış ekibi “sipariş onayı” sürecini hızlı isterken, finans ekibi aynı süreçte kredi limit kontrolü yapılmadan ilerlenmesini istemiyor. Yazılım tarafı ise net gereksinim olmadığı için geliştirmeye başlayamıyor. En sağlıklı analiz adımı hangisidir?",
+
+    options: [
+
+      "Satış ekibinin akışını temel alıp finans kontrolünü sonraki sürüme bırakmak",
+
+      "Finans ekibinin kuralını zorunlu yapıp satış ekranını buna göre tasarlamak",
+
+      "Mevcut süreci, istisna durumlarını, veri sahipliğini, onay noktalarını ve performans beklentilerini birlikte modellemek",
+
+      "Hazır ERP paketindeki standart sipariş akışını değiştirmeden kullanmak",
+
+      "Tüm ekiplerden ayrı ayrı gereksinim dokümanı alıp ortak alanları birleştirmek",
+
+    ],
+
+  },
+
+  {
+
+    id: 5,
+
+    text:
+
+      "Soru 5 \nKubernetes üzerinde kararsız servis\n\nBir mikroservis Kubernetes üzerinde çalışıyor. Servis bazen yeniden başlıyor, bazen de trafik almasına rağmen cevap veremiyor. CPU kullanımı bazı anlarda yükseliyor, fakat her yeniden başlatmada aynı metrik görünmüyor. En doğru inceleme yaklaşımı hangisidir?",
+
+    options: [
+
+      "Pod sayısını artırarak yükü yaymak",
+
+      "Container image’ını küçültüp deploy süresini azaltmak",
+
+      "Resource limitlerini, liveness/readiness probe davranışını, node baskısını ve servis bağımlılıklarını birlikte korele etmek",
+
+      "Servisi ayrı bir node grubuna taşıyıp davranışı gözlemlemek",
+
+      "Uygulama log seviyesini debug moduna alıp yeniden başlatmaları takip etmek",
+
+    ],
+
+  },
+
+  {
+
+    id: 6,
+
+    text:
+
+      "Soru 6 \nTeknik soru — ödeme API’sinde idempotency\n\nBir ödeme API’si, ağ zaman aşımı nedeniyle aynı ödeme isteğini iki kez alabiliyor. Müşteri tarafında tek işlem görünse bile sunucuya iki istek düşebiliyor. En doğru tasarım hangisidir?",
+
+    options: [
+
+      "İstek zaman aşımı değerini yükseltmek",
+
+      "Kullanıcıdan ödeme butonuna ikinci kez basmamasını istemek",
+
+      "Her ödeme isteğine idempotency key verip bu anahtarı işlem kaydıyla ilişkilendirmek ve tekrar gelen istekte aynı sonucu döndürmek",
+
+      "Ödeme sonucunu istemci tarafındaki local storage içinde saklamak",
+
+      "Aynı tutardaki ikinci ödemeyi gün sonunda manuel kontrol etmek",
+
+    ],
+
+  },
+
+  {
+
+    id: 7,
+
+    text:
+
+      "Soru 7 \nVeri hattında tutarsız rapor\n\nBir satış panosunda günlük gelir bir gün içinde iki kez artmış gibi görünüyor. Ham veride aynı siparişlerin bazıları iki kez işlenmiş. Veri mühendisliği açısından en doğru yaklaşım hangisidir?",
+
+    options: [
+
+      "Pano tarafında aynı sipariş numaralarını gizlemek",
+
+      "ETL sürecine veri tekilleştirme, işlem kimliği kontrolü, veri soyu takibi ve kalite testi eklemek",
+
+      "Günlük raporu haftalık rapora çevirerek dalgalanmayı azaltmak",
+
+      "Sipariş verilerini daha büyük bir depolama alanına taşımak",
+
+      "Görselleştirme aracındaki toplam alma fonksiyonunu değiştirmek",
+
+    ],
+
+  },
+
+  {
+
+    id: 8,
+
+    text:
+
+      "Soru 8 \nSSRF riski\n\nBir uygulama, kullanıcıdan aldığı URL’den dosya indiriyor. Güvenlik testi sırasında bu mekanizmanın iç ağdaki metadata servislerine erişmek için kullanılabileceği görülüyor. En dengeli savunma hangisidir?",
+
+    options: [
+
+      "URL alanına daha uzun karakter sınırı koymak",
+
+      "Dosya indirme işlemini arka plan kuyruğuna almak",
+
+      "Kullanıcıya yalnızca HTTPS adresleri kabul ettirmek",
+
+      "Dosya türünü kontrol edip izin verilen uzantıları sınırlamak",
+
+      "Hedef adres doğrulaması, allowlist, iç ağ/metadata erişim engeli, egress kontrolü ve izleme mekanizmasını birlikte uygulamak",
+
+    ],
+
+  },
+
+  {
+
+    id: 9,
+
+    text:
+
+      "Soru 9 \nCRM özelliğinin başarısı\n\nBir CRM sistemine “otomatik müşteri önceliklendirme” özelliği eklenecek. Yönetim bu özelliğin iş değerini görmek istiyor. En anlamlı başarı ölçümü hangisidir?",
+
+    options: [
+
+      "Özelliğin planlanan tarihte yayına alınması",
+
+      "Ekranın kullanıcılar tarafından açılma sayısı",
+
+      "Satış ekibinin özelliği kullanma oranı, müşteri takip süresindeki değişim, veri kalitesi ve dönüşüm oranının birlikte izlenmesi",
+
+      "Algoritmanın karmaşıklık seviyesinin artırılması",
+
+      "Özelliğin mobil ve web arayüzünde aynı görünmesi",
+
+    ],
+
+  },
+
+  {
+
+    id: 10,
+
+    text:
+
+      "Soru 10 \nCDN ve eski fiyat problemi\n\nBir ürün sayfası CDN üzerinden hızlı açılıyor ancak fiyat değişiklikleri bazı kullanıcılarda geç yansıyor. Bu durum müşteri şikâyetine yol açıyor. En iyi mimari yaklaşım hangisidir?",
+
+    options: [
+
+      "CDN kullanımını tamamen kaldırmak",
+
+      "Ürün sayfasındaki tüm verileri kısa süreli cachelemek",
+
+      "Fiyat bilgisini cache dışı veya kontrollü invalidation mekanizmalı ayrı bir veri kaynağından sunmak",
+
+      "Kullanıcı tarayıcısına sayfayı yenileme uyarısı koymak",
+
+      "Fiyat değişikliklerini gün sonunda toplu olarak yayına almak",
+
+    ],
+
+  },
+
+  {
+
+    id: 11,
+
+    text:
+
+      "Soru 11 \nMobil uygulamada cihaz bağımlı hata\n\nBir mobil uygulama yeni cihazlarda sorunsuz çalışırken eski cihazlarda bazen kapanıyor. Hata her kullanıcıda oluşmuyor. En uygun çözüm yolu hangisidir?",
+
+    options: [
+
+      "Minimum desteklenen işletim sistemi sürümünü yükseltmek",
+
+      "Eski cihaz kullanıcılarına hafif arayüz seçeneği sunmak",
+
+      "Cihaz modeli, OS sürümü, bellek durumu ve ekran akışını crash raporlarıyla eşleştirip kontrollü düzeltme yapmak",
+
+      "Uygulamanın tüm ekranlarını yeniden yazmak",
+
+      "Animasyonları azaltıp yeni sürüm yayınlamak",
+
+    ],
+
+  },
+
+  {
+
+    id: 12,
+
+    text:
+
+      "Soru 12 \nTeknik soru — veri sızıntısı / leakage\n\nBir makine öğrenmesi modeli, siparişin iptal edilip edilmeyeceğini sipariş anında tahmin edecek. Eğitim verisinde “teslimat tamamlanma süresi” değişkeni de kullanılmış ve model çok yüksek başarı göstermiştir. Bu durumda temel problem nedir?",
+
+    options: [
+
+      "Modelin fazla hızlı eğitilmesi",
+
+      "Tahmin anında bilinmeyen bir değişkenin eğitimde kullanılması",
+
+      "Sınıflandırma yerine regresyon yapılması",
+
+      "Veri setinin çok büyük olması",
+
+      "Modelin açıklanabilirlik seviyesinin yüksek olması",
+
+    ],
+
+  },
+
+  {
+
+    id: 13,
+
+    text:
+
+      "Soru 13 \nYanal hareket şüphesi\n\nBir kurum ağında tek bir istemciden başlayan olağan dışı bağlantıların farklı sunuculara yayıldığı görülüyor. Aynı istemcide yönetici hesabıyla oturum açılmış. En iyi ilk müdahale yaklaşımı hangisidir?",
+
+    options: [
+
+      "Tüm ağ parolalarını aynı anda değiştirmek",
+
+      "İstemciyi izole etmek, delilleri korumak, oturum ve kimlik bilgisi kullanımını incelemek, yayılım yolunu çıkarmak",
+
+      "Sadece antivirüs taraması başlatmak",
+
+      "Sunucuların tamamını yeniden başlatmak",
+
+      "Ağ trafiğini geçici olarak yavaşlatmak",
+
+    ],
+
+  },
+
+  {
+
+    id: 14,
+
+    text:
+
+      "Soru 14 \nBlockchain ile tedarik zinciri kaydı\n\nBir firma, tedarik zinciri olaylarını blockchain üzerinde tutmak istiyor. Ancak ticari sırların herkese açık kalmasını istemiyor ve kayıtların sonradan değiştirilememesini önemsiyor. En uygun yaklaşım hangisidir?",
+
+    options: [
+
+      "Tüm veriyi açık zincire ham olarak yazmak",
+
+      "Veriyi merkezi veritabanında tutup blockchain’i yalnızca pazarlama amacıyla kullanmak",
+
+      "Hassas veriyi zincir dışında tutup zincire hash/kanıt yazmak, izinli erişim ve anahtar yönetimi tasarlamak",
+
+      "Blockchain yerine sadece PDF imzalama süreci kullanmak",
+
+      "Her tedarikçiye ayrı zincir kurup entegrasyonu manuel yapmak",
+
+    ],
+
+  },
+
+  {
+
+    id: 15,
+
+    text:
+
+      "Soru 15 \nMimariyi tamamen değiştirme önerisi\n\nBir yazılım ekibi, mevcut sistemin bakımı zorlaştığı için tüm sistemi baştan mikroservis mimarisine geçirmek istiyor. Ancak ürün aktif kullanılıyor ve teslim tarihleri yakın. En sağlıklı karar yaklaşımı hangisidir?",
+
+    options: [
+
+      "Tüm sistemi durdurup yeniden geliştirme sürecine başlamak",
+
+      "Mikroservis kararını yönetim onayına bırakmak",
+
+      "Bakım maliyetini, darboğazları, ekip yetkinliğini ve riskleri analiz edip aşamalı ayrıştırma veya modüler iyileştirme planı çıkarmak",
+
+      "Yeni özellik geliştirmeyi tamamen durdurmak",
+
+      "Mevcut sistemi değiştirmeden sadece dokümantasyon eklemek",
+
+    ],
+
+  },
+
+  {
+
+    id: 16,
+
+    text:
+
+      "Soru 16 \nTeknik soru — parola saklama\n\nBir sistem kullanıcı parolalarını güvenli saklamak istiyor. En doğru teknik yaklaşım hangisidir?",
+
+    options: [
+
+      "Parolaları AES ile şifreleyip anahtarı uygulama içinde tutmak",
+
+      "Parolaları SHA-256 ile hashleyip veritabanına yazmak",
+
+      "Parolaları Argon2id, bcrypt veya scrypt gibi yavaş ve salt destekli algoritmalarla saklamak, ek olarak hız sınırlama ve MFA gibi kontroller kullanmak",
+
+      "Parolaları Base64 formatına çevirip okunabilirliği azaltmak",
+
+      "Parola alanını veritabanında gizli kolon olarak işaretlemek",
+
+    ],
+
+  },
+
+  {
+
+    id: 17,
+
+    text:
+
+      "Soru 17 \nAynı metrik, farklı sonuç\n\nPazarlama ve finans ekipleri “aylık aktif müşteri” metriğini farklı raporlarda farklı sayılarla görüyor. Her iki ekip de kendi raporunun doğru olduğunu savunuyor. En doğru çözüm yaklaşımı hangisidir?",
+
+    options: [
+
+      "Daha güncel görünen raporu doğru kabul etmek",
+
+      "Raporlama aracını değiştirip tek panele geçmek",
+
+      "Metrik tanımını, veri kaynağını, zaman penceresini, filtreleri ve sahipliği belirleyen ortak bir semantik katman oluşturmak",
+
+      "İki raporun ortalamasını alıp yönetim raporunda kullanmak",
+
+      "Müşteri verisini daha sık güncellemek",
+
+    ],
+
+  },
+
+  {
+
+    id: 18,
+
+    text:
+
+      "Soru 18 \nOrtam farkı nedeniyle üretim hatası\n\nBir uygulama test ortamında tüm testlerden geçiyor ancak üretimde konfigürasyon farkları nedeniyle hata veriyor. En güçlü iyileştirme hangisidir?",
+
+    options: [
+
+      "Test ekibine daha fazla manuel senaryo yazdırmak",
+
+      "Geliştiricilerin üretim sunucusuna doğrudan erişmesini sağlamak",
+
+      "Ortamları IaC ve konfigürasyon yönetimiyle standartlaştırmak, canary/rollback ve gözlemlenebilirlik mekanizması kurmak",
+
+      "Üretim hatası olduğunda hızlı hotfix süreci tanımlamak",
+
+      "Test ortamındaki verileri üretimden kopyalamak",
+
+    ],
+
+  },
+
+  {
+
+    id: 19,
+
+    text:
+
+      "Soru 19 \nOlay sonrası log eksikliği\n\nBir güvenlik olayından sonra logların bir kısmının döndüğü ve eski kayıtların silindiği fark ediliyor. İnceleme yapılamıyor. Gelecek için en doğru tasarım hangisidir?",
+
+    options: [
+
+      "Uygulama log seviyesini sürekli debug modunda tutmak",
+
+      "Logları her sunucuda yerel dosya olarak daha uzun süre saklamak",
+
+      "Merkezi, zaman senkronize, değiştirilmesi zor, erişim kontrollü loglama ve saklama politikası kurmak",
+
+      "Kullanıcı işlemlerini veritabanında ayrı tabloya yazmak",
+
+      "Olay olduğunda ekran görüntüsü alınmasını süreç haline getirmek",
+
+    ],
+
+  },
+
+  {
+
+    id: 20,
+
+    text:
+
+      "Soru 20 \nEdge cihazlarda kopan bağlantı\n\nBir üretim hattındaki edge cihazları sensör verilerini buluta gönderiyor. Ağ bağlantısı zaman zaman kesiliyor. Veri kaybı olmadan sistemin devam etmesi isteniyor. En uygun yaklaşım hangisidir?",
+
+    options: [
+
+      "Cihazların gönderim sıklığını azaltmak",
+
+      "Ağ kesildiğinde cihazı yeniden başlatmak",
+
+      "Yerel tamponlama, sıra numarası, idempotent gönderim ve bağlantı gelince senkronizasyon mekanizması kullanmak",
+
+      "Sensör verilerini sadece bağlantı varken üretmek",
+
+      "Buluttaki veritabanını daha büyük kapasiteye taşımak",
+
+    ],
+
+  },
+
+  {
+
+    id: 21,
+
+    text:
+
+      "Soru 21 \nYazılım mimarisi eğilimi\n\nBir ekipte yeni bir modül geliştirilecek. Gereksinimler tam net değil, ama modül ileride başka sistemlerle de konuşacak. Hangi davranış yazılım mimarisi ve soyutlama eğilimini daha güçlü gösterir?",
+
+    options: [
+
+      "Önce arayüzleri, veri sözleşmelerini, bağımlılık sınırlarını ve değişebilecek noktaları modellemek",
+
+      "Hızlıca çalışan bir ekran çıkarıp geri bildirim toplamak",
+
+      "En popüler framework ile projeyi başlatmak",
+
+      "Geliştirilecek tüm özellikleri aynı servis içinde toplamak",
+
+      "İş kurallarını veritabanı prosedürlerine yerleştirmek",
+
+    ],
+
+  },
+
+  {
+
+    id: 22,
+
+    text:
+
+      "Soru 22 \nTeknik soru — ITIL olay, problem, değişiklik ayrımı\n\nBir kurumda ödeme sistemi iki saat kesinti yaşıyor. Ekip önce hizmeti geri getiriyor, sonra kök nedeni araştırıyor ve kalıcı düzeltme için planlı yayın süreci açıyor. Bu akış IT yönetimi açısından nasıl sınıflandırılır?",
+
+    options: [
+
+      "İlk adım problem yönetimi, ikinci adım değişiklik yönetimi, üçüncü adım olay yönetimi",
+
+      "İlk adım olay yönetimi, kök neden analizi problem yönetimi, kalıcı düzeltmenin kontrollü yayını değişiklik yönetimi",
+
+      "Tüm adımlar proje yönetimi kapsamındadır",
+
+      "İlk adım değişiklik yönetimi, kalan adımlar olay yönetimidir",
+
+      "Bu süreç yalnızca yazılım test yönetimiyle ilgilidir",
+
+    ],
+
+  },
+
+  {
+
+    id: 23,
+
+    text:
+
+      "Soru 23 \nTavsiye sistemi başarısı\n\nBir öneri sistemi tıklanma oranını artırıyor, ancak kullanıcılar daha az kaliteli içerikle karşılaştığını söylüyor. Yönetim “metrik iyi, devam edelim” diyor. En doğru veri bilimi yaklaşımı hangisidir?",
+
+    options: [
+
+      "Tıklanma oranı yüksek olduğu için modeli korumak",
+
+      "Daha fazla veriyle aynı modeli yeniden eğitmek",
+
+      "Memnuniyet, içerik kalitesi, uzun dönem elde tutma ve olası yan etkileri de içeren çoklu hedef metriği kurmak",
+
+      "Önerileri tamamen rastgeleleştirerek tarafsızlık sağlamak",
+
+      "Modeli yalnızca en çok izlenen içeriklere göre eğitmek",
+
+    ],
+
+  },
+
+  {
+
+    id: 24,
+
+    text:
+
+      "Soru 24 \nAPI rate limit aşımı\n\nBir API’de rate limit var ancak saldırgan farklı token ve IP kombinasyonlarıyla sınırı aşabiliyor. En sağlam savunma yaklaşımı hangisidir?",
+
+    options: [
+
+      "Rate limit değerini herkes için düşürmek",
+
+      "Sadece IP bazlı limit uygulamak",
+
+      "Kullanıcı, token, IP, cihaz izi ve davranış sinyallerini birlikte değerlendiren dağıtık kota ve kötüye kullanım tespiti kurmak",
+
+      "API dokümantasyonundan limit bilgisini kaldırmak",
+
+      "Limit aşımında daha uzun hata mesajı döndürmek",
+
+    ],
+
+  },
+
+  {
+
+    id: 25,
+
+    text:
+
+      "Soru 25 \nÇok bölgeli sistemde tutarlılık\n\nBir sistem hem Avrupa hem Asya bölgelerinde çalışacak. Kullanıcı profili hızlı açılmalı, ödeme işlemlerinde ise veri tutarlılığı kritik. En doğru mimari karar yaklaşımı hangisidir?",
+
+    options: [
+
+      "Tüm veriler için eventual consistency kullanmak",
+
+      "Tüm işlemleri tek merkezden yürütüp diğer bölgeleri kapatmak",
+
+      "Her veri türü için tutarlılık ihtiyacını ayrı değerlendirip kritik işlemlerde güçlü tutarlılık, okunabilir verilerde bölgesel cache/eventual consistency kullanmak",
+
+      "Tüm veritabanlarını her bölgede bağımsız çalıştırmak",
+
+      "Kullanıcıyı her zaman en yakın bölgeye yönlendirmek",
+
+    ],
+
+  },
+
+  {
+
+    id: 26,
+
+    text:
+
+      "Soru 26 \nTeknik soru — Kubernetes rolling update ve migration\n\nBir Kubernetes uygulamasında yeni sürüm veritabanı şemasında değişiklik gerektiriyor. Rolling update sırasında eski ve yeni pod’lar kısa süre birlikte çalışacak. En güvenli yaklaşım hangisidir?",
+
+    options: [
+
+      "Önce tüm eski pod’ları kapatıp sonra veritabanını değiştirmek",
+
+      "Migration’ı uygulama başlarken her pod’un çalıştırmasına izin vermek",
+
+      "Geriye uyumlu şema değişikliği, ayrı migration adımı, readiness kontrolü ve rollback planı ile yayına çıkmak",
+
+      "Veritabanı değişikliğini deploy sonrasına bırakmak",
+
+      "Rolling update yerine her zaman blue-green kullanmak",
+
+    ],
+
+  },
+
+  {
+
+    id: 27,
+
+    text:
+
+      "Soru 27 \nKullanıcı hatasına açık yönetim paneli\n\nBir yönetim panelinde kullanıcılar yanlışlıkla kritik kayıtları kapatıyor. Sistem teknik olarak çalışıyor ama iş kaybı oluşuyor. En iyi çözüm yaklaşımı hangisidir?",
+
+    options: [
+
+      "Kullanıcılara daha uzun eğitim dokümanı hazırlamak",
+
+      "Kritik butonları ekranın altına taşımak",
+
+      "Kullanıcı akışını inceleyip hata önleyici arayüz, yetki kontrolü, geri alma mekanizması ve işlem doğrulama tasarlamak",
+
+      "Paneli sadece deneyimli personele açmak",
+
+      "Hatalı işlemleri gün sonunda raporlamak",
+
+    ],
+
+  },
+
+  {
+
+    id: 28,
+
+    text:
+
+      "Soru 28 \nSOC alarm yorgunluğu\n\nBir güvenlik operasyon merkezinde her gün yüzlerce alarm oluşuyor. Analistler kritik olayları kaçırmaktan endişe ediyor. En iyi iyileştirme hangisidir?",
+
+    options: [
+
+      "Tüm alarm eşiklerini yükseltmek",
+
+      "Daha fazla analist işe almak",
+
+      "Tehdit modeline göre alarm önceliklendirme, korelasyon, triage playbook’ları ve geri bildirimle kural iyileştirme süreci kurmak",
+
+      "Düşük seviyeli alarmları tamamen kapatmak",
+
+      "Her alarm için ayrı e-posta bildirimi göndermek",
+
+    ],
+
+  },
+
+  {
+
+    id: 29,
+
+    text:
+
+      "Soru 29 \nVeri ambarına kişisel veri eklenmesi\n\nBir veri ambarına yeni müşteri veri kaynağı eklenecek. Kaynakta kişisel veriler, işlem geçmişi ve destek kayıtları var. En doğru ilk tasarım yaklaşımı hangisidir?",
+
+    options: [
+
+      "Tüm veriyi ham haliyle veri ambarına almak",
+
+      "Sadece analistlerin görebileceği ayrı bir tablo oluşturmak",
+
+      "Veri sınıflandırma, minimizasyon, maskeleme, erişim kontrolü, veri soyu ve saklama politikasını birlikte belirlemek",
+
+      "Veriyi sadece CSV olarak saklamak",
+
+      "Verinin tamamını anonim kabul edip raporlamaya açmak",
+
+    ],
+
+  },
+
+  {
+
+    id: 30,
+
+    text:
+
+      "Soru 30 \nMonolit mi mikroservis mi?\n\nYeni kurulan bir ekip, henüz ürün-pazar uyumu netleşmemiş bir platform geliştirecek. Ekip küçük, gereksinimler sık değişiyor, ancak ileride yüksek trafik bekleniyor. En mantıklı mimari yaklaşım hangisidir?",
+
+    options: [
+
+      "İlk günden tüm sistemi mikroservis olarak kurmak",
+
+      "Tek dosyalı hızlı prototip geliştirip mimariyi sonraya bırakmak",
+
+      "Modüler sınırları net, gözlemlenebilir ve ayrıştırılmaya hazır bir monolit ile başlayıp gerçek ölçek ve ekip ihtiyacı oluşunca servisleştirmek",
+
+      "Tüm iş kurallarını veritabanına yerleştirerek uygulama kodunu azaltmak",
+
+      "Backend geliştirmeden önce tüm bulut altyapısını maksimum ölçeğe göre kurmak",
+
+    ],
+
+  },
+
+];
 
 const introSection = document.getElementById("intro-section");
 const quizSection = document.getElementById("quiz-section");
@@ -587,10 +816,10 @@ const resultTagEl = document.getElementById("result-tag");
 let currentQuestionIndex = 0;
 const answers = new Array(questions.length).fill(null);
 
-/** Toplam test süresi (ms). Sitedeki “~30 dk” metniyle uyumlu. */
-const TEST_DURATION_MS = 30 * 60 * 1000;
+/** Toplam test süresi (ms). Sitedeki “~60 dk” metniyle uyumlu. */
+const TEST_DURATION_MS = 60 * 60 * 1000;
 /** Kalan süre bu değerin altına inince uyarı gösterilir. */
-const WARNING_REMAINING_MS = 5 * 60 * 1000;
+const WARNING_REMAINING_MS = 10 * 60 * 1000;
 
 let quizEndTime = null;
 let fiveMinWarningShown = false;
@@ -968,35 +1197,18 @@ optionsEl.addEventListener("change", (e) => {
 
 // --- SKOR HESAPLAMA FONKSİYONU (Eksik olan kısım buraya eklendi) ---
 function skorlariHesapla(kullaniciCevaplari, matris, dogruCevaplar) {
-    const skorlar = { "SD": 0.0, "DM": 0.0, "IM": 0.0, "CS": 0.0, "PM": 0.0 };
-    
-    // Kullanıcının cevaplarını (answers dizisi) döngüye alıyoruz
+    const skorlar = { "SD": 0.0, "DS-AI": 0.0, "CS-NET": 0.0, "IS-MT": 0.0, "CL-DN": 0.0 };
+
     for (let i = 0; i < questions.length; i++) {
-        const soruNo = `Q${questions[i].id}`; // Örn: Q1, Q2, ..., Q30
-        const secilenCevap = kullaniciCevaplari[i]; // Örn: "A", "B", null
+        const soruNo = `Q${questions[i].id}`;
+        const secilenCevap = kullaniciCevaplari[i];
 
-        if (!secilenCevap) continue; // Cevaplanmamışsa atla
-        
-        let agirlikKey = soruNo;
-        let skorEkle = false;
+        if (!secilenCevap) continue;
 
-        // Q30 (Yönelim Sorusu)
-        if (soruNo === "Q30") {
-            agirlikKey = `Q30_${secilenCevap}`; // Örn: Q30_C
-            if (matris[agirlikKey]) {
-                skorEkle = true; 
-            }
-        } 
-        // Q1'den Q29'a kadar olan Yetenek Soruları
-        else if (dogruCevaplar[soruNo] === secilenCevap) {
-            skorEkle = true; // Sadece doğru cevap verildiğinde puan katar
-        }
-
-        // Skorları Toplama
-        if (skorEkle && matris[agirlikKey]) {
+        if (dogruCevaplar[soruNo] === secilenCevap && matris[soruNo]) {
+            const row = matris[soruNo];
             for (const kategoriKodu in skorlar) {
-                // Matristeki ağırlığı ilgili kategori skoruna ekle
-                skorlar[kategoriKodu] += matris[agirlikKey][kategoriKodu] || 0.0;
+                skorlar[kategoriKodu] += row[kategoriKodu] || 0.0;
             }
         }
     }
