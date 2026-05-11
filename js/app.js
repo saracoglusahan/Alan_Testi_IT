@@ -1,3 +1,5 @@
+import { UZMANLIK_YAPISI, getDomainQuestionIndices, getExpertiseQuestionSet } from "./quiz-data.js";
+
 // Firebase CDN (compat) üzerinden yüklenir — index.html'deki script tagları gerekli
 // Hata olursa uygulama yine de çalışır, sadece Firestore kaydı atlanır
 let db = null;
@@ -798,6 +800,7 @@ const questions = [
 const introSection = document.getElementById("intro-section");
 const quizSection = document.getElementById("quiz-section");
 const resultSection = document.getElementById("result-section");
+const resultFollowupEl = document.getElementById("result-followup");
 
 const questionTextEl = document.getElementById("question-text");
 const optionsEl = document.getElementById("options");
@@ -806,24 +809,47 @@ const percentTextEl = document.getElementById("percent-text");
 const progressBarInnerEl = document.getElementById("progress-bar-inner");
 const errorMessageEl = document.getElementById("error-message");
 
-const startBtn = document.getElementById("start-btn");
 const nextBtn = document.getElementById("next-btn");
+const afterQuizActions = document.getElementById("after-quiz-actions");
+const showResultBtn = document.getElementById("show-result-btn");
 
 const resultScoreEl = document.getElementById("result-score");
 const resultSummaryEl = document.getElementById("result-summary");
 const resultTagEl = document.getElementById("result-tag");
 
 let currentQuestionIndex = 0;
-const answers = new Array(questions.length).fill(null);
 
-/** Toplam test süresi (ms). Sitedeki “~60 dk” metniyle uyumlu. */
-const TEST_DURATION_MS = 60 * 60 * 1000;
-/** Kalan süre bu değerin altına inince uyarı gösterilir. */
-const WARNING_REMAINING_MS = 10 * 60 * 1000;
+/** @type {'general'|'domain'|'expertise'} */
+let quizKind = "general";
+let activeQuestions = questions;
+let activeAnswers = new Array(questions.length).fill(null);
+let activeDomainCode = null;
+/** Uzmanlık testi doğru cevap anahtarları (Q1,Q2,...) veya null */
+let activeExpertiseDogru = null;
+/** @type {{ domainCode: string, expertiseId: string, label: string } | null} */
+let activeExpertiseMeta = null;
+
+/** Kayıt formu sonrası hangi testin başlayacağı */
+let pendingQuizStart = null;
+
+function getDurationMsForKind(kind) {
+  if (kind === "general") return 60 * 60 * 1000;
+  if (kind === "domain") return 20 * 60 * 1000;
+  return 15 * 60 * 1000;
+}
+
+function getWarningRemainingMsForKind(kind) {
+  if (kind === "general") return 10 * 60 * 1000;
+  if (kind === "domain") return 5 * 60 * 1000;
+  return 3 * 60 * 1000;
+}
 
 let quizEndTime = null;
 let fiveMinWarningShown = false;
 let timerIntervalId = null;
+
+const UNIFIED_STORAGE_KEY = "it_quiz_unified_state_v1";
+const LEGACY_STORAGE_KEY = "it_yetenek_testi_state_v1";
 
 const quizTimerDisplayEl = document.getElementById("quiz-timer-display");
 const timerWarningBannerEl = document.getElementById("timer-warning-banner");
@@ -847,7 +873,8 @@ function updateTimerDisplay() {
   const m = Math.floor(totalSec / 60);
   const s = totalSec % 60;
   quizTimerDisplayEl.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-  if (remain <= WARNING_REMAINING_MS && remain > 0) {
+  const warnAt = getWarningRemainingMsForKind(quizKind);
+  if (remain <= warnAt && remain > 0) {
     quizTimerDisplayEl.classList.add("is-urgent");
   } else {
     quizTimerDisplayEl.classList.remove("is-urgent");
@@ -869,7 +896,7 @@ function startQuizTimer() {
       return;
     }
     updateTimerDisplay();
-    if (!fiveMinWarningShown && remain <= WARNING_REMAINING_MS) {
+    if (!fiveMinWarningShown && remain <= getWarningRemainingMsForKind(quizKind)) {
       fiveMinWarningShown = true;
       if (timerWarningBannerEl) timerWarningBannerEl.classList.remove("hidden");
       saveState();
@@ -879,28 +906,70 @@ function startQuizTimer() {
   timerIntervalId = setInterval(tick, 1000);
 }
 
-function startTest() {
+function startQuizSession() {
   stopQuizTimer();
-  quizEndTime = Date.now() + TEST_DURATION_MS;
+  quizEndTime = Date.now() + getDurationMsForKind(quizKind);
   fiveMinWarningShown = false;
   if (timerWarningBannerEl) timerWarningBannerEl.classList.add("hidden");
 
-  // Giriş ekranını kapat, testi göster
   introSection.classList.add("hidden");
-  resultSection.classList.add("hidden");
+  if (resultFollowupEl) {
+    resultFollowupEl.classList.add("hidden");
+    resultFollowupEl.innerHTML = "";
+  }
+  afterQuizActions.classList.add("hidden");
+  resultSection.classList.remove("is-visible");
+
   quizSection.classList.remove("hidden");
 
   currentQuestionIndex = 0;
-  for (let i = 0; i < answers.length; i++) answers[i] = null;
+  for (let i = 0; i < activeAnswers.length; i++) activeAnswers[i] = null;
   saveState();
   renderQuestion();
   updateProgress();
   startQuizTimer();
 }
 
+function startGeneralTest() {
+  quizKind = "general";
+  activeQuestions = questions;
+  activeAnswers = new Array(questions.length).fill(null);
+  activeDomainCode = null;
+  activeExpertiseDogru = null;
+  activeExpertiseMeta = null;
+  startQuizSession();
+}
+
+function startDomainTest(domainCode) {
+  const ids = getDomainQuestionIndices(domainCode, questions, AGIRLIKLANDIRMA_MATRISI);
+  activeQuestions = ids.map((id) => questions.find((q) => q.id === id)).filter(Boolean);
+  if (activeQuestions.length === 0) return;
+  quizKind = "domain";
+  activeDomainCode = domainCode;
+  activeAnswers = new Array(activeQuestions.length).fill(null);
+  activeExpertiseDogru = null;
+  activeExpertiseMeta = null;
+  startQuizSession();
+}
+
+function startExpertiseTest(domainCode, expertiseId, label) {
+  const pack = getExpertiseQuestionSet(domainCode, expertiseId, label);
+  if (!pack || !pack.questions.length) {
+    console.warn("Uzmanlık soru seti bulunamadı:", domainCode, expertiseId);
+    return;
+  }
+  quizKind = "expertise";
+  activeQuestions = pack.questions;
+  activeExpertiseDogru = pack.dogruCevaplar;
+  activeExpertiseMeta = { domainCode, expertiseId, label: pack.title };
+  activeAnswers = new Array(activeQuestions.length).fill(null);
+  activeDomainCode = null;
+  startQuizSession();
+}
+
 
 function renderQuestion() {
-    const q = questions[currentQuestionIndex];
+    const q = activeQuestions[currentQuestionIndex];
     questionTextEl.textContent = q.text;
 
     optionsEl.innerHTML = "";
@@ -911,7 +980,7 @@ function renderQuestion() {
         const soruName = `Q${q.id}`;
         const uniqueId = `${soruName}_${optionLetter}`;
 
-        const isChecked = answers[currentQuestionIndex] === optionLetter;
+        const isChecked = activeAnswers[currentQuestionIndex] === optionLetter;
 
         const optionHTML = `
             <label for="${uniqueId}" class="option-label">
@@ -937,10 +1006,10 @@ function renderQuestion() {
 
 function updateProgress() {
   const questionNumber = currentQuestionIndex + 1;
-  const totalQuestions = questions.length;
+  const totalQuestions = activeQuestions.length;
   progressTextEl.textContent = `Soru ${questionNumber} / ${totalQuestions}`;
 
-  const answeredCount = answers.filter((v) => v !== null).length;
+  const answeredCount = activeAnswers.filter((v) => v !== null).length;
   const percentage = Math.round((answeredCount / totalQuestions) * 100);
   percentTextEl.textContent = `${percentage}%`;
   progressBarInnerEl.style.width = `${percentage}%`;
@@ -951,35 +1020,111 @@ function showError(message) {
   errorMessageEl.classList.remove("hidden");
 }
 
-const STORAGE_KEY = "it_yetenek_testi_state_v1";
-
 function saveState() {
   try {
-    const payload = { answers, currentQuestionIndex };
+    const payload = {
+      kind: quizKind,
+      currentQuestionIndex,
+      answers: activeAnswers,
+    };
     if (quizEndTime != null) {
       payload.quizEndTime = quizEndTime;
       payload.fiveMinWarningShown = fiveMinWarningShown;
     }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    if (quizKind === "domain") {
+      payload.domainCode = activeDomainCode;
+      payload.domainSnapshotIds = activeQuestions.map((q) => q.id);
+    }
+    if (quizKind === "expertise" && activeExpertiseMeta) {
+      payload.domainCode = activeExpertiseMeta.domainCode;
+      payload.expertiseId = activeExpertiseMeta.expertiseId;
+      payload.expertiseLabel = activeExpertiseMeta.label;
+    }
+    localStorage.setItem(UNIFIED_STORAGE_KEY, JSON.stringify(payload));
   } catch (e) {}
+}
+
+function rehydrateFromPayload(parsed) {
+  if (!parsed || !Array.isArray(parsed.answers)) return false;
+  const kind = parsed.kind || "general";
+  if (kind === "general") {
+    if (parsed.answers.length !== questions.length) return false;
+    quizKind = "general";
+    activeQuestions = questions;
+    activeAnswers = parsed.answers;
+    activeDomainCode = null;
+    activeExpertiseDogru = null;
+    activeExpertiseMeta = null;
+    return true;
+  }
+  if (kind === "domain") {
+    const ids = parsed.domainSnapshotIds;
+    if (!Array.isArray(ids)) return false;
+    activeQuestions = ids.map((id) => questions.find((q) => q.id === id)).filter(Boolean);
+    if (activeQuestions.length !== ids.length) return false;
+    if (parsed.answers.length !== activeQuestions.length) return false;
+    quizKind = "domain";
+    activeAnswers = parsed.answers;
+    activeDomainCode = parsed.domainCode || null;
+    activeExpertiseDogru = null;
+    activeExpertiseMeta = null;
+    return true;
+  }
+  if (kind === "expertise") {
+    const pack = getExpertiseQuestionSet(parsed.domainCode, parsed.expertiseId, parsed.expertiseLabel);
+    if (!pack) return false;
+    activeQuestions = pack.questions;
+    activeExpertiseDogru = pack.dogruCevaplar;
+    activeExpertiseMeta = {
+      domainCode: parsed.domainCode,
+      expertiseId: parsed.expertiseId,
+      label: parsed.expertiseLabel || pack.title,
+    };
+    if (parsed.answers.length !== activeQuestions.length) return false;
+    quizKind = "expertise";
+    activeAnswers = parsed.answers;
+    activeDomainCode = null;
+    return true;
+  }
+  return false;
 }
 
 /** @returns {"active"|"expired"|null} */
 function loadState() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-
-    const parsed = JSON.parse(raw);
-
-    if (Array.isArray(parsed.answers) && parsed.answers.length === answers.length) {
-      for (let i = 0; i < answers.length; i++) answers[i] = parsed.answers[i];
+    const rawUnified = localStorage.getItem(UNIFIED_STORAGE_KEY);
+    if (rawUnified) {
+      const parsed = JSON.parse(rawUnified);
+      if (!rehydrateFromPayload(parsed)) return null;
+      currentQuestionIndex = Math.max(0, Math.min(parsed.currentQuestionIndex | 0, activeQuestions.length - 1));
+      if (typeof parsed.quizEndTime === "number") {
+        if (parsed.quizEndTime <= Date.now()) {
+          quizEndTime = null;
+          fiveMinWarningShown = false;
+          return "expired";
+        }
+        quizEndTime = parsed.quizEndTime;
+        fiveMinWarningShown = !!parsed.fiveMinWarningShown;
+        return "active";
+      }
+      return null;
     }
+  } catch (e) {}
 
+  try {
+    const raw = localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed.answers) || parsed.answers.length !== questions.length) return null;
+    quizKind = "general";
+    activeQuestions = questions;
+    activeAnswers = parsed.answers;
+    activeDomainCode = null;
+    activeExpertiseDogru = null;
+    activeExpertiseMeta = null;
     if (Number.isInteger(parsed.currentQuestionIndex)) {
       currentQuestionIndex = Math.max(0, Math.min(parsed.currentQuestionIndex, questions.length - 1));
     }
-
     if (typeof parsed.quizEndTime === "number") {
       if (parsed.quizEndTime <= Date.now()) {
         quizEndTime = null;
@@ -996,7 +1141,8 @@ function loadState() {
 
 function clearState() {
   try {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(UNIFIED_STORAGE_KEY);
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
   } catch (e) {}
 }
 
@@ -1015,27 +1161,118 @@ function syncSelectedUI() {
 
 
 function handleNext() {
-    const currentQName = `Q${questions[currentQuestionIndex].id}`;
+    const q = activeQuestions[currentQuestionIndex];
+    const currentQName = `Q${q.id}`;
     const selected = document.querySelector(`input[name="${currentQName}"]:checked`);
     
     if (!selected) {
-      // DOM'da name'i dinamik olarak (Q1, Q2) atadık.
-        showError("Devam etmek için bir seçenek işaretlemen gerekiyor.");
-        return;
+      showError("Devam etmek için bir seçenek işaretlemen gerekiyor.");
+      return;
     }
-    // Seçilen değeri HARF (String) olarak yakala 
     const selectedValue = selected.value; 
-    answers[currentQuestionIndex] = selectedValue;
+    activeAnswers[currentQuestionIndex] = selectedValue;
 
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < activeQuestions.length - 1) {
         currentQuestionIndex += 1;
         saveState();
         renderQuestion();
         updateProgress();
     } else {
-        // Test bitti
         showResults();
     }
+}
+
+function goToTestHub() {
+  clearState();
+  quizKind = "general";
+  activeQuestions = questions;
+  activeAnswers = new Array(questions.length).fill(null);
+  activeDomainCode = null;
+  activeExpertiseDogru = null;
+  activeExpertiseMeta = null;
+  currentQuestionIndex = 0;
+  introSection.classList.remove("hidden");
+  quizSection.classList.add("hidden");
+  afterQuizActions.classList.add("hidden");
+  resultSection.classList.remove("is-visible");
+  if (resultFollowupEl) {
+    resultFollowupEl.classList.add("hidden");
+    resultFollowupEl.innerHTML = "";
+  }
+}
+
+function renderResultFollowupGeneral(strongDomainCode) {
+  if (!resultFollowupEl) return;
+  const dom = KATEGORILER[strongDomainCode];
+  resultFollowupEl.innerHTML = `
+    <div class="result-followup-hubtitle">Sonraki adımlar</div>
+    <p class="result-note" style="margin-top:0">
+      Öne çıkan alanın <strong>${dom}</strong> uzmanlık testlerinden birini şimdi çözebilir veya ana menüden başka bir temel alan seçebilirsin.
+    </p>
+    <button type="button" class="btn btn-secondary btn-sm" data-follow="domain-expertise" data-domain="${strongDomainCode}">
+      ${dom} uzmanlık testleri
+    </button>
+    <button type="button" class="btn btn-ghost btn-sm" data-follow="hub">Test seçim ekranına dön</button>
+  `;
+  resultFollowupEl.classList.remove("hidden");
+  resultFollowupEl.querySelector('[data-follow="hub"]').addEventListener("click", goToTestHub);
+  resultFollowupEl.querySelector('[data-follow="domain-expertise"]').addEventListener("click", () => {
+    scrollExpertiseIntoView(strongDomainCode);
+    goToTestHub();
+  });
+}
+
+function scrollExpertiseIntoView(domainCode) {
+  requestAnimationFrame(() => {
+    const el = document.querySelector(`[data-hub-domain="${domainCode}"]`);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+}
+
+function renderResultFollowupDomain(domainCode) {
+  if (!resultFollowupEl) return;
+  const domain = UZMANLIK_YAPISI.find((d) => d.code === domainCode);
+  const lines = (domain?.specialties || [])
+    .map(
+      (s) =>
+        `<li><button type="button" class="btn btn-ghost btn-sm" data-exp-start="${domainCode}" data-exp-id="${s.id}">${s.label.replace(/</g, "&lt;")}</button></li>`,
+    )
+    .join("");
+  resultFollowupEl.innerHTML = `
+    <div class="result-followup-hubtitle">Uzmanlık testleri</div>
+    <p class="result-note" style="margin-top:0">Aynı temel alan altındaki bir uzmanlığı seçerek devam edebilirsin (alanını biliyorsan baştan da bu ekrandan başlaman yeterliydi).</p>
+    <ul class="hub-specialties" style="list-style:none;padding:0;margin:0">${lines}</ul>
+    <button type="button" class="btn btn-secondary btn-sm" data-follow="hub">Test seçim ekranına dön</button>
+  `;
+  resultFollowupEl.classList.remove("hidden");
+  resultFollowupEl.querySelector('[data-follow="hub"]').addEventListener("click", goToTestHub);
+  resultFollowupEl.querySelectorAll("[data-exp-start]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const dc = btn.getAttribute("data-exp-start");
+      const eid = btn.getAttribute("data-exp-id");
+      const lab = btn.textContent.trim();
+      pendingQuizStart = { kind: "expertise", domainCode: dc, expertiseId: eid, label: lab };
+      openRegModal();
+    });
+  });
+}
+
+function renderResultFollowupExpertise(domainCode) {
+  if (!resultFollowupEl) return;
+  const dom = KATEGORILER[domainCode];
+  resultFollowupEl.innerHTML = `
+    <div class="result-followup-hubtitle">Devam</div>
+    <p class="result-note" style="margin-top:0">Aynı alanda başka bir uzmanlık testi seçebilir veya <strong>${dom}</strong> temel alan testini çözebilirsin.</p>
+    <button type="button" class="btn btn-secondary btn-sm" data-follow="domain-base" data-domain="${domainCode}">${dom} — temel alan testi</button>
+    <button type="button" class="btn btn-ghost btn-sm" data-follow="hub">Test seçim ekranına dön</button>
+  `;
+  resultFollowupEl.classList.remove("hidden");
+  resultFollowupEl.querySelector('[data-follow="hub"]').addEventListener("click", goToTestHub);
+  resultFollowupEl.querySelector('[data-follow="domain-base"]').addEventListener("click", () => {
+    const dc = domainCode;
+    pendingQuizStart = { kind: "domain", domainCode: dc };
+    openRegModal();
+  });
 }
 
 function showResults() {
@@ -1045,48 +1282,89 @@ function showResults() {
   if (timerWarningBannerEl) timerWarningBannerEl.classList.add("hidden");
   saveState();
 
-  // ➜ Test bittikten sonra "Analiz Sonucunu Gör" butonunu aç
   afterQuizActions.classList.remove("hidden");
+  quizSection.classList.add("hidden");
+  resultSection.classList.remove("is-visible");
+  if (resultFollowupEl) {
+    resultFollowupEl.classList.add("hidden");
+    resultFollowupEl.innerHTML = "";
+  }
 
-    quizSection.classList.add("hidden");
-    resultSection.classList.remove("hidden");
-
-    // **DÜZELTME 3: Ağırlıklandırma matrisi ile gerçek skorları hesapla**
-    const kategoriSkorlari = skorlariHesapla(answers, AGIRLIKLANDIRMA_MATRISI, DOGRU_CEVAPLAR);
-
-    // En yüksek skoru ve kategoriyi bul
+  if (quizKind === "general") {
+    const kategoriSkorlari = skorlariHesapla(
+      activeAnswers,
+      AGIRLIKLANDIRMA_MATRISI,
+      DOGRU_CEVAPLAR,
+      questions,
+    );
     let enYuksekSkor = -1;
     let enGucluKategoriKodu = null;
-
     for (const kategoriKodu in kategoriSkorlari) {
-        if (kategoriSkorlari[kategoriKodu] > enYuksekSkor) {
-            enYuksekSkor = kategoriSkorlari[kategoriKodu];
-            enGucluKategoriKodu = kategoriKodu;
-        }
+      if (kategoriSkorlari[kategoriKodu] > enYuksekSkor) {
+        enYuksekSkor = kategoriSkorlari[kategoriKodu];
+        enGucluKategoriKodu = kategoriKodu;
+      }
     }
-    
     const enGucluKategoriAdi = KATEGORILER[enGucluKategoriKodu] || "Belirlenemedi";
-
-    // Sonuçların gösterilmesi (Grafik için ayrı bir fonksiyon önerilir)
-    resultScoreEl.textContent = `En Yüksek Yetkinlik Alanınız: ${enGucluKategoriAdi}`;
-    
-    let summary = `Problem çözme yaklaşımınız ve eğiliminiz en çok <strong>${enGucluKategoriAdi}</strong> alanındaki görevlerle örtüşmektedir. Toplam Skorlar:`;
-    
-    // Her kategorinin puanını özette listele
+    resultScoreEl.textContent = `En yüksek eğilim: ${enGucluKategoriAdi}`;
+    let summary = `Problem çözme yaklaşımın ve eğilimin en çok <strong>${enGucluKategoriAdi}</strong> alanıyla örtüşüyor. Ağırlıklı puan özeti:`;
     for (const kategoriKodu in kategoriSkorlari) {
-        const ad = KATEGORILER[kategoriKodu];
-        const skor = kategoriSkorlari[kategoriKodu].toFixed(2);
-        summary += `<br/>- ${ad}: ${skor} Puan`;
+      const ad = KATEGORILER[kategoriKodu];
+      const skor = kategoriSkorlari[kategoriKodu].toFixed(2);
+      summary += `<br/>— ${ad}: ${skor} puan`;
     }
-    
     resultSummaryEl.innerHTML = summary;
     resultTagEl.textContent = enGucluKategoriAdi;
+    renderResultFollowupGeneral(enGucluKategoriKodu);
+    saveResultWithProfile(kategoriSkorlari, enGucluKategoriAdi, { testKind: "general" });
+  } else if (quizKind === "domain") {
+    let dogru = 0;
+    for (let i = 0; i < activeQuestions.length; i++) {
+      const key = `Q${activeQuestions[i].id}`;
+      if (DOGRU_CEVAPLAR[key] === activeAnswers[i]) dogru += 1;
+    }
+    const pct = Math.round((dogru / activeQuestions.length) * 1000) / 10;
+    const alanAd = KATEGORILER[activeDomainCode] || activeDomainCode;
+    resultScoreEl.textContent = `${alanAd} — temel alan testi`;
+    resultSummaryEl.innerHTML = `
+      <p><strong>${dogru}</strong> / ${activeQuestions.length} doğru · <strong>%${pct}</strong></p>
+      <p>Bu alan için ana testte ağırlığı en yüksek 10 soru ile ölçüm yapıldı. İstersen doğrudan aşağıdan bir uzmanlık testine geçebilirsin.</p>
+    `;
+    resultTagEl.textContent = alanAd;
+    renderResultFollowupDomain(activeDomainCode);
+    saveResultWithProfile(null, alanAd, {
+      testKind: "domain",
+      domainCode: activeDomainCode,
+      dogruSayisi: dogru,
+      soruSayisi: activeQuestions.length,
+      yuzde: pct,
+    });
+  } else {
+    let dogru = 0;
+    for (let i = 0; i < activeQuestions.length; i++) {
+      const key = `Q${activeQuestions[i].id}`;
+      if (activeExpertiseDogru && activeExpertiseDogru[key] === activeAnswers[i]) dogru += 1;
+    }
+    const pct = Math.round((dogru / activeQuestions.length) * 1000) / 10;
+    const baslik = activeExpertiseMeta?.label || "Uzmanlık testi";
+    resultScoreEl.textContent = `${baslik}`;
+    resultSummaryEl.innerHTML = `
+      <p><strong>${dogru}</strong> / ${activeQuestions.length} doğru · <strong>%${pct}</strong></p>
+      <p>Bu sonuç seçtiğin uzmanlık başlığına özgü kısa senaryo setine dayanır. Yazılım geliştirme altında her uzmanlık için ayrı soru bankası kullanılır; diğer temel alanlarda şimdilik alan genelinde ortak bir uzmanlık soru seti vardır (sonuçta seçtiğin alt başlık korunur).</p>
+    `;
+    resultTagEl.textContent = baslik;
+    if (activeExpertiseMeta) renderResultFollowupExpertise(activeExpertiseMeta.domainCode);
+    saveResultWithProfile(null, baslik, {
+      testKind: "expertise",
+      domainCode: activeExpertiseMeta.domainCode,
+      expertiseId: activeExpertiseMeta.expertiseId,
+      dogruSayisi: dogru,
+      soruSayisi: activeQuestions.length,
+      yuzde: pct,
+    });
+  }
 
-    // --- Profil + skor verisini birleştirip kaydet ---
-    saveResultWithProfile(kategoriSkorlari, enGucluKategoriAdi);
-
-    // --- Sonuç ekranında profil çiplerini göster ---
-    renderResultProfileRow();
+  renderResultProfileRow();
 }
 
 /**
@@ -1094,8 +1372,7 @@ function showResults() {
  * RESULTS_KEY'deki diziye ekler. Her çalıştırmada aynı profil kaydını
  * günceller (startedAt ile eşleşme).
  */
-function saveResultWithProfile(kategoriSkorlari, enGucluKategori) {
-  // Profili localStorage'dan yükle (sayfa yenilenmiş olabilir)
+function saveResultWithProfile(kategoriSkorlari, enGucluKategori, extra = {}) {
   if (!currentProfile) {
     try {
       const raw = localStorage.getItem(PROFILE_KEY);
@@ -1103,44 +1380,55 @@ function saveResultWithProfile(kategoriSkorlari, enGucluKategori) {
     } catch {}
   }
 
-  const maxPuanHesap = () => {
-    let toplam = 0;
-    for (const k of Object.keys(AGIRLIKLANDIRMA_MATRISI)) {
-      const row = AGIRLIKLANDIRMA_MATRISI[k];
-      const max = Math.max(...Object.values(row));
-      toplam += max;
-    }
-    return toplam || 1;
+  const testKind = extra.testKind || "general";
+  const baseEntry = {
+    nickname: currentProfile?.nickname || "anonim",
+    egitim: currentProfile?.egitim || "",
+    bolum: currentProfile?.bolum || "",
+    startedAt: currentProfile?.startedAt || null,
+    completedAt: new Date().toISOString(),
+    enGucluKategori: enGucluKategori,
+    kategoriler: KATEGORILER,
+    testKind,
   };
 
-  const maxPuan = maxPuanHesap();
-  const skorYuzde = {};
-  for (const [kod, skor] of Object.entries(kategoriSkorlari)) {
-    skorYuzde[kod] = parseFloat(((skor / maxPuan) * 100).toFixed(1));
+  let entry = { ...baseEntry };
+
+  if (testKind === "general" && kategoriSkorlari) {
+    const maxPuanHesap = () => {
+      let toplam = 0;
+      for (const k of Object.keys(AGIRLIKLANDIRMA_MATRISI)) {
+        const row = AGIRLIKLANDIRMA_MATRISI[k];
+        const max = Math.max(...Object.values(row));
+        toplam += max;
+      }
+      return toplam || 1;
+    };
+    const maxPuan = maxPuanHesap();
+    const skorYuzde = {};
+    for (const [kod, skor] of Object.entries(kategoriSkorlari)) {
+      skorYuzde[kod] = parseFloat(((skor / maxPuan) * 100).toFixed(1));
+    }
+    entry.skorlar = kategoriSkorlari;
+    entry.skorlarYuzde = skorYuzde;
+  } else {
+    entry.domainCode = extra.domainCode;
+    entry.dogruSayisi = extra.dogruSayisi;
+    entry.soruSayisi = extra.soruSayisi;
+    entry.yuzde = extra.yuzde;
+    if (testKind === "expertise") entry.expertiseId = extra.expertiseId;
   }
 
-  const entry = {
-    nickname        : currentProfile?.nickname  || "anonim",
-    egitim          : currentProfile?.egitim    || "",
-    bolum           : currentProfile?.bolum     || "",
-    startedAt       : currentProfile?.startedAt || null,
-    completedAt     : new Date().toISOString(),
-    enGucluKategori : enGucluKategori,
-    kategoriler     : KATEGORILER,
-    skorlar         : kategoriSkorlari,
-    skorlarYuzde    : skorYuzde,
-  };
-
   const all = getAllResults();
-  // Aynı startedAt varsa üzerine yaz, yoksa ekle
-  const idx = all.findIndex(r => r.startedAt && r.startedAt === entry.startedAt);
-  if (idx >= 0) all[idx] = entry; else all.push(entry);
+  const idx = all.findIndex((r) => r.startedAt && r.startedAt === entry.startedAt);
+  if (idx >= 0) all[idx] = entry;
+  else all.push(entry);
   saveAllResults(all);
 
-  // Aktif profil kaydını temizle
-  try { localStorage.removeItem(PROFILE_KEY); } catch {}
+  try {
+    localStorage.removeItem(PROFILE_KEY);
+  } catch {}
 
-  // Firestore'a da gönder (db null ise sessizce atla)
   submitToFirestore(entry);
 }
 
@@ -1178,7 +1466,6 @@ function chip(icon, label, value) {
   return `<span class="profile-chip"><span class="profile-chip-label">${label}:</span> ${icon} ${value}</span>`;
 }
 
-startBtn.addEventListener("click", openRegModal);
 nextBtn.addEventListener("click", handleNext);
 
 
@@ -1188,7 +1475,7 @@ optionsEl.addEventListener("change", (e) => {
   if (t.type !== "radio") return;
 
   // Anında kaydet
-  answers[currentQuestionIndex] = t.value;
+  activeAnswers[currentQuestionIndex] = t.value;
   syncSelectedUI();
   updateProgress();
   saveState();
@@ -1196,11 +1483,12 @@ optionsEl.addEventListener("change", (e) => {
 
 
 // --- SKOR HESAPLAMA FONKSİYONU (Eksik olan kısım buraya eklendi) ---
-function skorlariHesapla(kullaniciCevaplari, matris, dogruCevaplar) {
+function skorlariHesapla(kullaniciCevaplari, matris, dogruCevaplar, questionList) {
+    const list = questionList || questions;
     const skorlar = { "SD": 0.0, "DS-AI": 0.0, "CS-NET": 0.0, "IS-MT": 0.0, "CL-DN": 0.0 };
 
-    for (let i = 0; i < questions.length; i++) {
-        const soruNo = `Q${questions[i].id}`;
+    for (let i = 0; i < list.length; i++) {
+        const soruNo = `Q${list[i].id}`;
         const secilenCevap = kullaniciCevaplari[i];
 
         if (!secilenCevap) continue;
@@ -1218,9 +1506,76 @@ function skorlariHesapla(kullaniciCevaplari, matris, dogruCevaplar) {
 
 
 
-const afterQuizActions = document.getElementById("after-quiz-actions");
-const showResultBtn = document.getElementById("show-result-btn");
-// testi bitirince sonucu gösterme butonuna basılacak
+function initTestHub() {
+  const root = document.getElementById("test-hub-root");
+  if (!root) return;
+
+  const generalBtn = document.createElement("button");
+  generalBtn.type = "button";
+  generalBtn.className = "btn btn-primary hub-btn-general";
+  generalBtn.innerHTML = `<span>Genel IT testi — 30 soru, 5 alan</span>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  generalBtn.addEventListener("click", () => {
+    pendingQuizStart = { kind: "general" };
+    openRegModal();
+  });
+  root.appendChild(generalBtn);
+
+  const grid = document.createElement("div");
+  grid.className = "test-hub-columns";
+  for (const domain of UZMANLIK_YAPISI) {
+    const block = document.createElement("div");
+    block.className = "hub-domain-block";
+    block.dataset.hubDomain = domain.code;
+
+    const h = document.createElement("h3");
+    h.className = "hub-domain-title";
+    h.textContent = domain.label;
+    block.appendChild(h);
+
+    const actions = document.createElement("div");
+    actions.className = "hub-domain-actions";
+    const baseBtn = document.createElement("button");
+    baseBtn.type = "button";
+    baseBtn.className = "btn btn-secondary btn-sm";
+    baseBtn.textContent = "Temel alan testi";
+    baseBtn.addEventListener("click", () => {
+      pendingQuizStart = { kind: "domain", domainCode: domain.code };
+      openRegModal();
+    });
+    actions.appendChild(baseBtn);
+    block.appendChild(actions);
+
+    const lab = document.createElement("div");
+    lab.className = "hub-specialties-label";
+    lab.textContent = "Uzmanlık testi (atlayarak)";
+
+    const specWrap = document.createElement("div");
+    specWrap.className = "hub-specialties";
+    for (const sp of domain.specialties) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn btn-ghost btn-sm";
+      b.textContent = sp.label;
+      b.addEventListener("click", () => {
+        pendingQuizStart = {
+          kind: "expertise",
+          domainCode: domain.code,
+          expertiseId: sp.id,
+          label: sp.label,
+        };
+        openRegModal();
+      });
+      specWrap.appendChild(b);
+    }
+    block.appendChild(lab);
+    block.appendChild(specWrap);
+    grid.appendChild(block);
+  }
+  root.appendChild(grid);
+}
 
 function tryResumeQuiz() {
   const status = loadState();
@@ -1243,7 +1598,7 @@ function tryResumeQuiz() {
   if (status === "active") {
     introSection.classList.add("hidden");
     quizSection.classList.remove("hidden");
-    resultSection.classList.add("hidden");
+    resultSection.classList.remove("is-visible");
     afterQuizActions.classList.add("hidden");
     if (fiveMinWarningShown && timerWarningBannerEl) {
       timerWarningBannerEl.classList.remove("hidden");
@@ -1268,6 +1623,7 @@ showResultBtn.addEventListener("click", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   initRegModule();
+  initTestHub();
   tryResumeQuiz();
 });
 
@@ -1549,7 +1905,11 @@ function bindFormSubmit() {
     // Smooth geçiş: modal kapanma animasyonu bitmeden test başlamasın
     setTimeout(() => {
       document.body.style.overflow = "";
-      startTest();
+      const p = pendingQuizStart;
+      pendingQuizStart = null;
+      if (!p || p.kind === "general") startGeneralTest();
+      else if (p.kind === "domain") startDomainTest(p.domainCode);
+      else if (p.kind === "expertise") startExpertiseTest(p.domainCode, p.expertiseId, p.label);
     }, 240);
   });
 }

@@ -47,7 +47,7 @@
       </h1>
 
       <p class="hero-sub">
-        Bu test, ezberlediğin teknik bilgiyi değil; <strong>problem çözme tarzını</strong>,
+        Bu test, sadece teknik bilgiyi değil; <strong>problem çözme tarzını</strong>,
         mantık yürütme biçimini ve teknolojiye doğal eğilimini ölçer.
         Sorulara içgüdülerinle cevap ver — sana en uygun alanı birlikte keşfedelim.
       </p>
@@ -369,7 +369,7 @@
 
     <section id="sayfa" class="sayfa">
 
-      <!-- Giriş bölümü -->
+      <!-- Giriş: test seçim merkezi (JS ile doldurulur) -->
       <div id="intro-section">
         <div class="intro-icon">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
@@ -377,12 +377,10 @@
             <path d="M14 8v6l4 2" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
-        <h2>Teste Başlamadan Önce</h2>
-        <p>
-          Her sorunun diğerlerine göre daha doğruya yakın bir cevabı vardır; seçenekleri dikkatlice oku
-          ve sana en mantıklı geleni işaretle. Teste başladığında <strong>60 dakikalık</strong> süre işler;
-          son 10 dakikada uyarı alırsın, süre bitince test otomatik tamamlanır. Test, temel teknik bilginin yanında
-          <strong>problem çözme ve mantık yürütme becerini</strong> de ölçmeyi hedefler.
+        <h2>Test seçimi</h2>
+        <p class="intro-lead">
+          <strong>Genel IT testi</strong> tüm alanları birlikte ölçer. <strong>Temel alan testleri</strong> yalnızca seçtiğin ana alana odaklanır;
+          sonrasında o alanın <strong>uzmanlık testlerine</strong> geçebilirsin. Alanını zaten biliyorsan temel testi atlayıp doğrudan uzmanlık testine de başlayabilirsin.
         </p>
         <div class="intro-methodology">
           <div class="method-tag">ACM/IEEE CC2020</div>
@@ -390,12 +388,7 @@
           <div class="method-tag">Bloom (yenilenmiş)</div>
           <div class="method-tag">Saaty AHP</div>
         </div>
-        <button class="btn btn-primary" id="start-btn">
-          <span>Testi Başlat</span>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
+        <div id="test-hub-root" class="test-hub-root" aria-label="Test türü seçimi"></div>
       </div>
 
       <!-- Test bölümü -->
@@ -474,6 +467,7 @@
             Bu sonuç, testte verdiğin yanıtlara göre oluşturulmuş bir analizdir.
             Profilleme yaklaşımı ACM/IEEE CC2020 bilgi alanı çerçevesi ve IEEE Computer Society SWEBOK yazılım mühendisliği rehberiyle uyumludur; alan ağırlıkları AHP mantığına dayanır.
           </p>
+          <div id="result-followup" class="result-followup hidden" aria-label="Sonraki adımlar"></div>
         </div>
       </div>
 
