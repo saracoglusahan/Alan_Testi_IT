@@ -20,8 +20,7 @@ export const UZMANLIK_YAPISI = [
     code: "DS-AI",
     label: "Veri Bilimi ve Yapay Zeka",
     specialties: [
-      { id: "ml", label: "Makine Öğrenmesi (ML)" },
-      { id: "dl", label: "Derin Öğrenme (DL)" },
+      { id: "ml", label: "Makine Öğrenmesi (ML + Derin Öğrenme)" },
       { id: "nlp", label: "Doğal Dil İşleme (NLP)" },
       { id: "de", label: "Veri Mühendisliği" },
       { id: "bi", label: "İş Zekâsı (BI)" },
@@ -58,8 +57,7 @@ export const UZMANLIK_YAPISI = [
     specialties: [
       { id: "cloud", label: "AWS / Azure / Bulut Mimari" },
       { id: "k8s", label: "Kubernetes" },
-      { id: "blockchain", label: "Blockchain" },
-      { id: "web3", label: "Web3" },
+      { id: "blockchain", label: "Blockchain / Web3" },
       { id: "edge", label: "Edge Bilişim" },
       { id: "cdn", label: "CDN ve İçerik Dağıtımı" },
     ],
