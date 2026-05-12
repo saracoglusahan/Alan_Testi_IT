@@ -810,6 +810,7 @@ const progressBarInnerEl = document.getElementById("progress-bar-inner");
 const errorMessageEl = document.getElementById("error-message");
 
 const nextBtn = document.getElementById("next-btn");
+const finishBtn = document.getElementById("finish-btn");
 const afterQuizActions = document.getElementById("after-quiz-actions");
 const showResultBtn = document.getElementById("show-result-btn");
 
@@ -1182,6 +1183,19 @@ function handleNext() {
     }
 }
 
+function handleFinishQuiz() {
+  const unansweredCount = activeAnswers.filter((answer) => answer === null).length;
+  if (unansweredCount > 0) {
+    const confirmMessage =
+      unansweredCount === 1
+        ? "Çözülmemiş 1 soru var. Testi bitirmek istediğinizden emin misiniz?"
+        : `Çözülmemiş ${unansweredCount} soru var. Testi bitirmek istediğinizden emin misiniz?`;
+    const userConfirmed = window.confirm(confirmMessage);
+    if (!userConfirmed) return;
+  }
+  showResults();
+}
+
 function goToTestHub() {
   clearState();
   quizKind = "general";
@@ -1467,6 +1481,7 @@ function chip(icon, label, value) {
 }
 
 nextBtn.addEventListener("click", handleNext);
+finishBtn.addEventListener("click", handleFinishQuiz);
 
 
 optionsEl.addEventListener("change", (e) => {
