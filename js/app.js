@@ -1792,7 +1792,10 @@ function initRegModule() {
   bindBolumDropdown();
   bindNicknameValidation();
   bindFormSubmit();
-
+  
+    // Close button event
+  document.getElementById("reg-close-btn").addEventListener("click", closeRegModal);
+  
   // Overlay dışına tıklama ile kapatma iptal (istersen açarsın)
   // regOverlay.addEventListener("click", (e) => { if (e.target === regOverlay) closeRegModal(); });
 }
