@@ -1649,6 +1649,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /** localStorage anahtarları */
 const RESULTS_KEY   = "it_test_results_v1";      // tüm sonuçlar dizisi
 const PROFILE_KEY   = "it_test_current_profile_v1"; // aktif kullanıcı profili
+const USERS_KEY     = "it_test_users_v1"; // nickname + parola hash kayıtları
 
 /** Bölüm listesi */
 const BOLUMLER = [
@@ -1667,8 +1668,9 @@ const BOLUMLER = [
   "Diğer",
 ];
 
-let currentProfile = null;  // { nickname, egitim, bolum }
+let currentProfile = null;  // { nickname, egitim, bolum, startedAt }
 let nicknameDebounceTimer = null;
+let passwordDebounceTimer = null;
 
 // ---------- Yardımcı: tüm sonuçları oku / yaz ----------
 
@@ -1683,17 +1685,85 @@ function saveAllResults(arr) {
   try { localStorage.setItem(RESULTS_KEY, JSON.stringify(arr)); } catch {}
 }
 
-// ---------- Nickname benzersizlik kontrolü ----------
+// ---------- Kullanıcı hesabı yardımcıları ----------
 
-function isNicknameTaken(nick) {
-  const all = getAllResults();
-  const lower = nick.trim().toLowerCase();
-  return all.some(r => r.nickname && r.nickname.toLowerCase() === lower);
+function getAllUsers() {
+  try {
+    const raw = localStorage.getItem(USERS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveAllUsers(arr) {
+  try { localStorage.setItem(USERS_KEY, JSON.stringify(arr)); } catch {}
+}
+
+async function hashPassword(rawPassword) {
+  const subtle = globalThis.crypto?.subtle;
+  if (!subtle) throw new Error("Tarayıcı SHA-256 desteği bulunamadı.");
+
+  const input = String(rawPassword || "");
+  const bytes = new TextEncoder().encode(input);
+  const digest = await subtle.digest("SHA-256", bytes);
+  const hashArray = Array.from(new Uint8Array(digest));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+function generateSalt(byteLength = 16) {
+  const cryptoApi = globalThis.crypto;
+  if (!cryptoApi?.getRandomValues) {
+    throw new Error("Tarayıcı random salt üretimini desteklemiyor.");
+  }
+  const bytes = new Uint8Array(byteLength);
+  cryptoApi.getRandomValues(bytes);
+  return Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function hashPasswordWithSalt(rawPassword, salt) {
+  return hashPassword(`${salt}:${String(rawPassword || "")}`);
+}
+
+/**
+ * @returns {{ok:true,nickname:string}|{ok:false,error:string}}
+ */
+async function authenticateOrRegisterNickname(nickRaw, passwordRaw) {
+  const nickname = nickRaw.trim();
+  const nicknameLower = nickname.toLowerCase();
+  const users = getAllUsers();
+  const existing = users.find((u) => u.nicknameLower === nicknameLower);
+
+  if (!existing) {
+    const salt = generateSalt();
+    const passwordHash = await hashPasswordWithSalt(passwordRaw, salt);
+    users.push({
+      nickname,
+      nicknameLower,
+      salt,
+      passwordHash,
+      createdAt: new Date().toISOString(),
+    });
+    saveAllUsers(users);
+    return { ok: true, nickname };
+  }
+
+  const existingSalt = typeof existing.salt === "string" ? existing.salt : "";
+  const expectedHash = existingSalt
+    ? await hashPasswordWithSalt(passwordRaw, existingSalt)
+    : await hashPassword(passwordRaw); // eski tuzsuz kayıtlarla geriye uyumluluk
+
+  if (existing.passwordHash !== expectedHash) {
+    return { ok: false, error: "Bu nickname kayıtlı. Şifre yanlış." };
+  }
+
+  return { ok: true, nickname: existing.nickname };
 }
 
 // ---------- Modal DOM referansları ----------
 
-let regOverlay, regForm, inputNickname, nicknameStatus, nicknameMsg,
+let regOverlay, regForm, inputNickname, inputPassword, nicknameStatus, nicknameMsg, passwordStatus, passwordMsg,
     inputEgitim, egitimMsg, inputBolum, bolumMsg,
     bolumTrigger, bolumDisplay, bolumDropdown, bolumSearchInput, bolumList,
     regSubmitBtn;
@@ -1702,8 +1772,11 @@ function initRegModule() {
   regOverlay        = document.getElementById("reg-overlay");
   regForm           = document.getElementById("reg-form");
   inputNickname     = document.getElementById("input-nickname");
+  inputPassword     = document.getElementById("input-password");
   nicknameStatus    = document.getElementById("nickname-status");
   nicknameMsg       = document.getElementById("nickname-msg");
+  passwordStatus    = document.getElementById("password-status");
+  passwordMsg       = document.getElementById("password-msg");
   inputEgitim       = document.getElementById("input-egitim");
   egitimMsg         = document.getElementById("egitim-msg");
   inputBolum        = document.getElementById("input-bolum");
@@ -1777,11 +1850,42 @@ function validateNickname(value) {
     setNicknameState("error", "Yalnızca harf, rakam ve _ - . karakterleri.");
     return false;
   }
-  if (isNicknameTaken(nick)) {
-    setNicknameState("error", "Bu takma ad zaten kullanılmış. Başka bir tane dene.");
+  setNicknameState("ok", "Takma ad geçerli.");
+  return true;
+}
+
+function setPasswordState(state, msg) {
+  // state: "ok" | "error" | "checking" | ""
+  inputPassword.classList.remove("is-valid", "is-error");
+  passwordMsg.className = "reg-field-msg";
+  passwordStatus.textContent = "";
+  passwordMsg.textContent = msg || "";
+
+  if (state === "ok") {
+    inputPassword.classList.add("is-valid");
+    passwordMsg.classList.add("is-ok");
+    passwordStatus.textContent = "✓";
+  } else if (state === "error") {
+    inputPassword.classList.add("is-error");
+    passwordMsg.classList.add("is-error");
+    passwordStatus.textContent = "✕";
+  } else if (state === "checking") {
+    passwordMsg.classList.add("is-checking");
+    passwordStatus.textContent = "…";
+  }
+}
+
+function validatePassword(value) {
+  const pwd = value.trim();
+  if (!pwd) {
+    setPasswordState("error", "Şifre boş bırakılamaz.");
     return false;
   }
-  setNicknameState("ok", "Kullanılabilir.");
+  if (pwd.length < 4) {
+    setPasswordState("error", "Şifre en az 4 karakter olmalı.");
+    return false;
+  }
+  setPasswordState("ok", "Şifre geçerli.");
   return true;
 }
 
@@ -1797,6 +1901,19 @@ function bindNicknameValidation() {
   inputNickname.addEventListener("blur", () => {
     clearTimeout(nicknameDebounceTimer);
     if (inputNickname.value.trim()) validateNickname(inputNickname.value);
+  });
+
+  inputPassword.addEventListener("input", () => {
+    clearTimeout(passwordDebounceTimer);
+    const val = inputPassword.value;
+    if (!val.trim()) { setPasswordState("", ""); return; }
+    setPasswordState("checking", "Kontrol ediliyor…");
+    passwordDebounceTimer = setTimeout(() => validatePassword(val), 420);
+  });
+
+  inputPassword.addEventListener("blur", () => {
+    clearTimeout(passwordDebounceTimer);
+    if (inputPassword.value.trim()) validatePassword(inputPassword.value);
   });
 }
 
@@ -1875,12 +1992,14 @@ function bindBolumDropdown() {
 // ---------- Form submit ----------
 
 function bindFormSubmit() {
-  regForm.addEventListener("submit", (e) => {
+  regForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     let ok = true;
 
     const nickOk = validateNickname(inputNickname.value);
     if (!nickOk) ok = false;
+    const passOk = validatePassword(inputPassword.value);
+    if (!passOk) ok = false;
 
     if (!inputEgitim.value) {
       inputEgitim.classList.add("is-error");
@@ -1906,9 +2025,22 @@ function bindFormSubmit() {
 
     if (!ok) return;
 
+    let authResult;
+    try {
+      authResult = await authenticateOrRegisterNickname(inputNickname.value, inputPassword.value);
+    } catch (err) {
+      setPasswordState("error", "Şifre doğrulama sırasında bir hata oluştu.");
+      console.warn("SHA-256 doğrulama hatası:", err);
+      return;
+    }
+    if (!authResult.ok) {
+      setPasswordState("error", authResult.error);
+      return;
+    }
+
     // Profili kaydet
     currentProfile = {
-      nickname : inputNickname.value.trim(),
+      nickname : authResult.nickname,
       egitim   : inputEgitim.value,
       bolum    : inputBolum.value,
       startedAt: new Date().toISOString(),

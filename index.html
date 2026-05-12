@@ -515,6 +515,26 @@
           <p class="reg-field-msg" id="nickname-msg"></p>
         </div>
 
+        <!-- Şifre -->
+        <div class="reg-field" id="field-password">
+          <label class="reg-label" for="input-password">
+            Şifre
+            <span class="reg-label-hint">Nickname ile birlikte kullanılır</span>
+          </label>
+          <div class="reg-input-wrap">
+            <input
+              type="password"
+              id="input-password"
+              class="reg-input"
+              placeholder="En az 4 karakter"
+              maxlength="64"
+              autocomplete="off"
+            />
+            <span class="reg-input-status" id="password-status" aria-live="polite"></span>
+          </div>
+          <p class="reg-field-msg" id="password-msg"></p>
+        </div>
+
         <!-- Eğitim Durumu -->
         <div class="reg-field" id="field-egitim">
           <label class="reg-label" for="input-egitim">Eğitim Durumu</label>
