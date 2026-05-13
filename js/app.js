@@ -842,7 +842,7 @@ function getWarningRemainingMsForKind(kind) {
 }
 
 let quizEndTime = null;
-let fiveMinWarningShown = false;
+let warningShown = false;
 let timerIntervalId = null;
 
 const UNIFIED_STORAGE_KEY = "it_quiz_unified_state_v1";
@@ -887,14 +887,14 @@ function startQuizTimer() {
       stopQuizTimer();
       if (timerWarningBannerEl) timerWarningBannerEl.classList.add("hidden");
       quizEndTime = null;
-      fiveMinWarningShown = false;
+      warningShown = false;
       saveState();
       showResults();
       return;
     }
     updateTimerDisplay();
-    if (!fiveMinWarningShown && remain <= getWarningRemainingMsForKind(quizKind)) {
-      fiveMinWarningShown = true;
+    if (!warningShown && remain <= getWarningRemainingMsForKind(quizKind)) {
+      warningShown = true;
       if (timerWarningBannerEl) timerWarningBannerEl.classList.remove("hidden");
       saveState();
     }
@@ -906,7 +906,7 @@ function startQuizTimer() {
 function startQuizSession() {
   stopQuizTimer();
   quizEndTime = Date.now() + getDurationMsForKind(quizKind);
-  fiveMinWarningShown = false;
+  warningShown = false;
   if (timerWarningBannerEl) timerWarningBannerEl.classList.add("hidden");
 
   introSection.classList.add("hidden");
@@ -1014,7 +1014,7 @@ function saveState() {
     };
     if (quizEndTime != null) {
       payload.quizEndTime = quizEndTime;
-      payload.fiveMinWarningShown = fiveMinWarningShown;
+      payload.warningShown = warningShown;
     }
     if (quizKind === "domain") {
       payload.domainCode = activeDomainCode;
@@ -1085,11 +1085,11 @@ function loadState() {
       if (typeof parsed.quizEndTime === "number") {
         if (parsed.quizEndTime <= Date.now()) {
           quizEndTime = null;
-          fiveMinWarningShown = false;
+          warningShown = false;
           return "expired";
         }
         quizEndTime = parsed.quizEndTime;
-        fiveMinWarningShown = !!parsed.fiveMinWarningShown;
+        warningShown = !!parsed.warningShown;
         return "active";
       }
       return null;
@@ -1113,11 +1113,11 @@ function loadState() {
     if (typeof parsed.quizEndTime === "number") {
       if (parsed.quizEndTime <= Date.now()) {
         quizEndTime = null;
-        fiveMinWarningShown = false;
+        warningShown = false;
         return "expired";
       }
       quizEndTime = parsed.quizEndTime;
-      fiveMinWarningShown = !!parsed.fiveMinWarningShown;
+      warningShown = !!parsed.warningShown;
       return "active";
     }
   } catch (e) {}
@@ -1314,7 +1314,7 @@ function showResults() {
         }
     }
     
-    let baslik = activeExpertiseMeta?.label || "Alan Kariyer Testi";
+    let baslik = activeExpertiseMeta?.label || "Uzmanlık Alanı Kariyer Testi";
     
     let enGucluUzmanlikAd = "Belirlenemedi";
     if (domainDef) {
@@ -1539,7 +1539,7 @@ function initTestHub() {
     const baseBtn = document.createElement("button");
     baseBtn.type = "button";
     baseBtn.className = "btn btn-secondary btn-sm";
-    baseBtn.textContent = "Alan Kariyer Testi (30 soru)";
+    baseBtn.textContent = "Uzmanlık Alanı Testi — 30 soru";
     baseBtn.addEventListener("click", () => {
       pendingQuizStart = { kind: "domain", domainCode: domain.code };
       openRegModal();
