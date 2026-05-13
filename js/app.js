@@ -1,4 +1,4 @@
-import { UZMANLIK_YAPISI, getDomainQuestionIndices, getExpertiseQuestionSet } from "./quiz-data.js";
+import { UZMANLIK_YAPISI, getDomainQuestionIndices, getExpertiseQuestionSet, getDomainCareerSet } from "./quiz-data.js";
 
 // Firebase CDN (compat) üzerinden yüklenir — index.html'deki script tagları gerekli
 // Hata olursa uygulama yine de çalışır, sadece Firestore kaydı atlanır
@@ -834,15 +834,11 @@ let activeExpertiseMeta = null;
 let pendingQuizStart = null;
 
 function getDurationMsForKind(kind) {
-  if (kind === "general") return 60 * 60 * 1000;
-  if (kind === "domain") return 20 * 60 * 1000;
-  return 15 * 60 * 1000;
+  return 60 * 60 * 1000;
 }
 
 function getWarningRemainingMsForKind(kind) {
-  if (kind === "general") return 10 * 60 * 1000;
-  if (kind === "domain") return 5 * 60 * 1000;
-  return 3 * 60 * 1000;
+  return 10 * 60 * 1000;
 }
 
 let quizEndTime = null;
@@ -942,29 +938,17 @@ function startGeneralTest() {
 }
 
 function startDomainTest(domainCode) {
-  const ids = getDomainQuestionIndices(domainCode, questions, AGIRLIKLANDIRMA_MATRISI);
-  activeQuestions = ids.map((id) => questions.find((q) => q.id === id)).filter(Boolean);
-  if (activeQuestions.length === 0) return;
-  quizKind = "domain";
-  activeDomainCode = domainCode;
-  activeAnswers = new Array(activeQuestions.length).fill(null);
-  activeExpertiseDogru = null;
-  activeExpertiseMeta = null;
-  startQuizSession();
-}
-
-function startExpertiseTest(domainCode, expertiseId, label) {
-  const pack = getExpertiseQuestionSet(domainCode, expertiseId, label);
+  const pack = getDomainCareerSet(domainCode);
   if (!pack || !pack.questions.length) {
-    console.warn("Uzmanlık soru seti bulunamadı:", domainCode, expertiseId);
+    console.warn("Alan kariyer testi bulunamadı:", domainCode);
     return;
   }
-  quizKind = "expertise";
+  quizKind = "domain";
+  activeDomainCode = domainCode;
   activeQuestions = pack.questions;
   activeExpertiseDogru = pack.dogruCevaplar;
-  activeExpertiseMeta = { domainCode, expertiseId, label: pack.title };
+  activeExpertiseMeta = { domainCode, label: pack.title, matrix: pack.matrix };
   activeAnswers = new Array(activeQuestions.length).fill(null);
-  activeDomainCode = null;
   startQuizSession();
 }
 
@@ -1221,18 +1205,18 @@ function renderResultFollowupGeneral(strongDomainCode) {
   resultFollowupEl.innerHTML = `
     <div class="result-followup-hubtitle">Sonraki adımlar</div>
     <p class="result-note" style="margin-top:0">
-      Öne çıkan alanın <strong>${dom}</strong> uzmanlık testlerinden birini şimdi çözebilir veya ana menüden başka bir temel alan seçebilirsin.
+      Öne çıkan alanın <strong>${dom}</strong> kariyer testini şimdi çözerek alt uzmanlık eğilimini (hangi spesifik rolde daha iyi olacağını) öğrenebilirsin.
     </p>
-    <button type="button" class="btn btn-secondary btn-sm" data-follow="domain-expertise" data-domain="${strongDomainCode}">
-      ${dom} uzmanlık testleri
+    <button type="button" class="btn btn-secondary btn-sm" data-follow="domain-career" data-domain="${strongDomainCode}">
+      ${dom} Kariyer Testi
     </button>
     <button type="button" class="btn btn-ghost btn-sm" data-follow="hub">Test seçim ekranına dön</button>
   `;
   resultFollowupEl.classList.remove("hidden");
   resultFollowupEl.querySelector('[data-follow="hub"]').addEventListener("click", goToTestHub);
-  resultFollowupEl.querySelector('[data-follow="domain-expertise"]').addEventListener("click", () => {
-    scrollExpertiseIntoView(strongDomainCode);
-    goToTestHub();
+  resultFollowupEl.querySelector('[data-follow="domain-career"]').addEventListener("click", () => {
+    pendingQuizStart = { kind: "domain", domainCode: strongDomainCode };
+    openRegModal();
   });
 }
 
@@ -1245,49 +1229,15 @@ function scrollExpertiseIntoView(domainCode) {
 
 function renderResultFollowupDomain(domainCode) {
   if (!resultFollowupEl) return;
-  const domain = UZMANLIK_YAPISI.find((d) => d.code === domainCode);
-  const lines = (domain?.specialties || [])
-    .map(
-      (s) =>
-        `<li><button type="button" class="btn btn-ghost btn-sm" data-exp-start="${domainCode}" data-exp-id="${s.id}">${s.label.replace(/</g, "&lt;")}</button></li>`,
-    )
-    .join("");
   resultFollowupEl.innerHTML = `
-    <div class="result-followup-hubtitle">Uzmanlık testleri</div>
-    <p class="result-note" style="margin-top:0">Aynı temel alan altındaki bir uzmanlığı seçerek devam edebilirsin (alanını biliyorsan baştan da bu ekrandan başlaman yeterliydi).</p>
-    <ul class="hub-specialties" style="list-style:none;padding:0;margin:0">${lines}</ul>
+    <div class="result-followup-hubtitle">Devam</div>
+    <p class="result-note" style="margin-top:0">Başka bir alanın kariyer testini çözebilir veya genel testi tekrar edebilirsin.</p>
     <button type="button" class="btn btn-secondary btn-sm" data-follow="hub">Test seçim ekranına dön</button>
   `;
   resultFollowupEl.classList.remove("hidden");
   resultFollowupEl.querySelector('[data-follow="hub"]').addEventListener("click", goToTestHub);
-  resultFollowupEl.querySelectorAll("[data-exp-start]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const dc = btn.getAttribute("data-exp-start");
-      const eid = btn.getAttribute("data-exp-id");
-      const lab = btn.textContent.trim();
-      pendingQuizStart = { kind: "expertise", domainCode: dc, expertiseId: eid, label: lab };
-      openRegModal();
-    });
-  });
 }
 
-function renderResultFollowupExpertise(domainCode) {
-  if (!resultFollowupEl) return;
-  const dom = KATEGORILER[domainCode];
-  resultFollowupEl.innerHTML = `
-    <div class="result-followup-hubtitle">Devam</div>
-    <p class="result-note" style="margin-top:0">Aynı alanda başka bir uzmanlık testi seçebilir veya <strong>${dom}</strong> temel alan testini çözebilirsin.</p>
-    <button type="button" class="btn btn-secondary btn-sm" data-follow="domain-base" data-domain="${domainCode}">${dom} — temel alan testi</button>
-    <button type="button" class="btn btn-ghost btn-sm" data-follow="hub">Test seçim ekranına dön</button>
-  `;
-  resultFollowupEl.classList.remove("hidden");
-  resultFollowupEl.querySelector('[data-follow="hub"]').addEventListener("click", goToTestHub);
-  resultFollowupEl.querySelector('[data-follow="domain-base"]').addEventListener("click", () => {
-    const dc = domainCode;
-    pendingQuizStart = { kind: "domain", domainCode: dc };
-    openRegModal();
-  });
-}
 
 function showResults() {
   stopQuizTimer();
@@ -1335,43 +1285,66 @@ function showResults() {
     let dogru = 0;
     for (let i = 0; i < activeQuestions.length; i++) {
       const key = `Q${activeQuestions[i].id}`;
-      if (DOGRU_CEVAPLAR[key] === activeAnswers[i]) dogru += 1;
-    }
-    const pct = Math.round((dogru / activeQuestions.length) * 1000) / 10;
-    const alanAd = KATEGORILER[activeDomainCode] || activeDomainCode;
-    resultScoreEl.textContent = `${alanAd} — temel alan testi`;
-    resultSummaryEl.innerHTML = `
-      <p><strong>${dogru}</strong> / ${activeQuestions.length} doğru · <strong>%${pct}</strong></p>
-      <p>Bu alan için ana testte ağırlığı en yüksek 10 soru ile ölçüm yapıldı. İstersen doğrudan aşağıdan bir uzmanlık testine geçebilirsin.</p>
-    `;
-    resultTagEl.textContent = alanAd;
-    renderResultFollowupDomain(activeDomainCode);
-    saveResultWithProfile(null, alanAd, {
-      testKind: "domain",
-      domainCode: activeDomainCode,
-      dogruSayisi: dogru,
-      soruSayisi: activeQuestions.length,
-      yuzde: pct,
-    });
-  } else {
-    let dogru = 0;
-    for (let i = 0; i < activeQuestions.length; i++) {
-      const key = `Q${activeQuestions[i].id}`;
       if (activeExpertiseDogru && activeExpertiseDogru[key] === activeAnswers[i]) dogru += 1;
     }
     const pct = Math.round((dogru / activeQuestions.length) * 1000) / 10;
-    const baslik = activeExpertiseMeta?.label || "Uzmanlık testi";
-    resultScoreEl.textContent = `${baslik}`;
-    resultSummaryEl.innerHTML = `
-      <p><strong>${dogru}</strong> / ${activeQuestions.length} doğru · <strong>%${pct}</strong></p>
-      <p>Bu sonuç seçtiğin uzmanlık başlığına özgü kısa senaryo setine dayanır. Yazılım geliştirme altında her uzmanlık için ayrı soru bankası kullanılır; diğer temel alanlarda şimdilik alan genelinde ortak bir uzmanlık soru seti vardır (sonuçta seçtiğin alt başlık korunur).</p>
+    
+    // Calculate expertise scores using the specific matrix
+    const kategoriSkorlari = skorlariHesapla(
+      activeAnswers,
+      activeExpertiseMeta.matrix,
+      activeExpertiseDogru,
+      activeQuestions
+    );
+    
+    let enYuksekSkor = -1;
+    let enGucluKategoriKodu = null;
+    
+    // Filter the matrix to only the specialties for this domain
+    const domainDef = UZMANLIK_YAPISI.find(d => d.code === activeDomainCode);
+    const validSpecialties = domainDef ? domainDef.specialties.map(s => s.id) : [];
+    
+    for (const kategoriKodu in kategoriSkorlari) {
+        if (kategoriKodu === activeDomainCode) continue; // Skip the main domain itself for the winner
+        if (!validSpecialties.includes(kategoriKodu) && validSpecialties.length > 0) continue;
+        
+        if (kategoriSkorlari[kategoriKodu] > enYuksekSkor) {
+            enYuksekSkor = kategoriSkorlari[kategoriKodu];
+            enGucluKategoriKodu = kategoriKodu;
+        }
+    }
+    
+    let baslik = activeExpertiseMeta?.label || "Alan Kariyer Testi";
+    
+    let enGucluUzmanlikAd = "Belirlenemedi";
+    if (domainDef) {
+        const spec = domainDef.specialties.find(s => s.id === enGucluKategoriKodu);
+        if (spec) enGucluUzmanlikAd = spec.label;
+    }
+    
+    resultScoreEl.textContent = `${baslik} Sonucu`;
+    
+    let summary = `
+      <p><strong>${dogru}</strong> / ${activeQuestions.length} genel doğru oranı · <strong>%${pct}</strong></p>
+      <p>Cevaplarına göre bu alandaki alt uzmanlık eğilimin <strong>${enGucluUzmanlikAd}</strong> tarafında daha ağır basıyor.</p>
+      <p>Ağırlıklı uzmanlık özeti:</p>
     `;
-    resultTagEl.textContent = baslik;
-    if (activeExpertiseMeta) renderResultFollowupExpertise(activeExpertiseMeta.domainCode);
-    saveResultWithProfile(null, baslik, {
-      testKind: "expertise",
-      domainCode: activeExpertiseMeta.domainCode,
-      expertiseId: activeExpertiseMeta.expertiseId,
+    
+    for (const specId of validSpecialties) {
+      if (kategoriSkorlari[specId] !== undefined) {
+         const specAd = domainDef.specialties.find(s => s.id === specId)?.label || specId;
+         summary += `<br/>— ${specAd}: ${kategoriSkorlari[specId].toFixed(2)} puan`;
+      }
+    }
+    
+    resultSummaryEl.innerHTML = summary;
+    resultTagEl.textContent = enGucluUzmanlikAd;
+    
+    renderResultFollowupDomain(activeDomainCode);
+    
+    saveResultWithProfile(kategoriSkorlari, enGucluUzmanlikAd, {
+      testKind: "domain-career",
+      domainCode: activeDomainCode,
       dogruSayisi: dogru,
       soruSayisi: activeQuestions.length,
       yuzde: pct,
@@ -1500,7 +1473,18 @@ optionsEl.addEventListener("change", (e) => {
 // --- SKOR HESAPLAMA FONKSİYONU (Eksik olan kısım buraya eklendi) ---
 function skorlariHesapla(kullaniciCevaplari, matris, dogruCevaplar, questionList) {
     const list = questionList || questions;
-    const skorlar = { "SD": 0.0, "DS-AI": 0.0, "CS-NET": 0.0, "IS-MT": 0.0, "CL-DN": 0.0 };
+    const skorlar = {};
+
+    // Dinamik olarak matristeki tüm olası anahtarları (kategorileri) topla
+    for (const key in matris) {
+        for (const cat in matris[key]) {
+            skorlar[cat] = 0.0;
+        }
+    }
+
+    // Default fallback in case matrix is empty but we still want the 5 main domains (for general test)
+    const defaults = ["SD", "DS-AI", "CS-NET", "IS-MT", "CL-DN"];
+    defaults.forEach(d => { if (skorlar[d] === undefined) skorlar[d] = 0.0; });
 
     for (let i = 0; i < list.length; i++) {
         const soruNo = `Q${list[i].id}`;
@@ -1555,7 +1539,7 @@ function initTestHub() {
     const baseBtn = document.createElement("button");
     baseBtn.type = "button";
     baseBtn.className = "btn btn-secondary btn-sm";
-    baseBtn.textContent = "Temel alan testi";
+    baseBtn.textContent = "Alan Kariyer Testi (30 soru)";
     baseBtn.addEventListener("click", () => {
       pendingQuizStart = { kind: "domain", domainCode: domain.code };
       openRegModal();
@@ -1563,30 +1547,6 @@ function initTestHub() {
     actions.appendChild(baseBtn);
     block.appendChild(actions);
 
-    const lab = document.createElement("div");
-    lab.className = "hub-specialties-label";
-    lab.textContent = "Uzmanlık testi (atlayarak)";
-
-    const specWrap = document.createElement("div");
-    specWrap.className = "hub-specialties";
-    for (const sp of domain.specialties) {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "btn btn-ghost btn-sm";
-      b.textContent = sp.label;
-      b.addEventListener("click", () => {
-        pendingQuizStart = {
-          kind: "expertise",
-          domainCode: domain.code,
-          expertiseId: sp.id,
-          label: sp.label,
-        };
-        openRegModal();
-      });
-      specWrap.appendChild(b);
-    }
-    block.appendChild(lab);
-    block.appendChild(specWrap);
     grid.appendChild(block);
   }
   root.appendChild(grid);
