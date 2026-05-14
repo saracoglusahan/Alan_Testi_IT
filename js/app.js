@@ -1,4 +1,119 @@
 import { UZMANLIK_YAPISI, getDomainQuestionIndices, getExpertiseQuestionSet, getDomainCareerSet } from "./quiz-data.js";
+import { UI_TRANSLATIONS } from "./i18n.js";
+
+let currentLang = 'tr';
+let quizDataEn = null;
+
+export function t(text) {
+  if (currentLang === 'en' && UI_TRANSLATIONS[text]) return UI_TRANSLATIONS[text];
+  return text;
+}
+
+function updateStaticUI() {
+  const elements = [
+    ...document.querySelectorAll('.menu-item'),
+    document.querySelector('.hero-badge'),
+    document.querySelector('.hero-title'),
+    document.querySelector('.hero-sub'),
+    ...document.querySelectorAll('.stat-label'),
+    document.querySelector('.hero-cta-btn span'),
+    document.querySelector('.section-label'),
+    ...document.querySelectorAll('.section-title'),
+    ...document.querySelectorAll('.section-sub'),
+    ...document.querySelectorAll('.about-text p'),
+    ...document.querySelectorAll('.about-card-title'),
+    ...document.querySelectorAll('.about-card-desc'),
+    ...document.querySelectorAll('.cat-title'),
+    ...document.querySelectorAll('.cat-desc'),
+    ...document.querySelectorAll('.ref-title'),
+    ...document.querySelectorAll('.ref-desc'),
+    document.querySelector('.intro-lead'),
+    document.querySelector('.quiz-timer-label'),
+    document.querySelector('#timer-warning-banner span:nth-child(2)'),
+    document.querySelector('#finish-btn span'),
+    document.querySelector('#next-btn span'),
+    document.querySelector('.after-quiz-card h3'),
+    document.querySelector('.after-quiz-card p'),
+    document.querySelector('#show-result-btn span'),
+    document.querySelector('.result-eyebrow'),
+    document.querySelector('.result-header h1'),
+    document.querySelector('.result-note'),
+    document.querySelector('.reg-badge'),
+    document.querySelector('.reg-title'),
+    document.querySelector('.reg-subtitle'),
+    document.querySelector('.reg-notice p'),
+    document.querySelector('#reg-submit-btn span'),
+    document.querySelector('.reg-searchable-display'),
+    ...document.querySelectorAll('.reg-label'),
+    document.querySelector('.intro-icon + h2'),
+    ...document.querySelectorAll('.method-tag')
+  ];
+
+  elements.forEach(el => {
+     if (!el) return;
+     if (!el.hasAttribute('data-tr')) {
+        let originalText = el.innerText || el.textContent;
+        // avoid storing text containing HTML children like <br> if possible, but here we replace mostly leaf nodes
+        if (el.children.length > 0 && el.tagName !== 'H1' && el.tagName !== 'LABEL') return; 
+        
+        if (el.tagName === 'H1' && el.classList.contains('hero-title')) {
+           el.setAttribute('data-tr-1', 'Bilgisayar Teknolojileri');
+           el.setAttribute('data-tr-2', 'Yolunu Keşfet');
+        } else if (el.tagName === 'LABEL') {
+           el.setAttribute('data-tr', el.childNodes[0].nodeValue.trim());
+        } else {
+           originalText = originalText.replace(/\s+/g, ' ').trim();
+           el.setAttribute('data-tr', originalText);
+        }
+     }
+     
+     if (el.tagName === 'H1' && el.classList.contains('hero-title')) {
+        const t1 = el.getAttribute('data-tr-1');
+        const t2 = el.getAttribute('data-tr-2');
+        const new1 = currentLang === 'en' && UI_TRANSLATIONS[t1] ? UI_TRANSLATIONS[t1] : t1;
+        const new2 = currentLang === 'en' && UI_TRANSLATIONS[t2] ? UI_TRANSLATIONS[t2] : t2;
+        el.innerHTML = `${new1}<br><span class="title-gradient">${new2}</span>`;
+     } else if (el.tagName === 'LABEL') {
+        const trText = el.getAttribute('data-tr');
+        const newText = currentLang === 'en' && UI_TRANSLATIONS[trText] ? UI_TRANSLATIONS[trText] : trText;
+        if (newText) el.childNodes[0].nodeValue = newText + ' ';
+     } else {
+        const trText = el.getAttribute('data-tr');
+        const newText = currentLang === 'en' && UI_TRANSLATIONS[trText] ? UI_TRANSLATIONS[trText] : trText;
+        if (newText) el.textContent = newText;
+     }
+  });
+
+  // Render dynamic ui parts if needed
+  initTestHub();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btnTr = document.getElementById('lang-tr');
+  const btnEn = document.getElementById('lang-en');
+  if (btnTr && btnEn) {
+     btnTr.addEventListener('click', async () => {
+        currentLang = 'tr';
+        btnTr.classList.add('active');
+        btnEn.classList.remove('active');
+        updateStaticUI();
+     });
+     btnEn.addEventListener('click', async () => {
+        if (!quizDataEn) {
+           try {
+             const res = await fetch('./js/quiz-data-en.json');
+             quizDataEn = await res.json();
+           } catch(e) {
+             console.error("Failed to load English quiz data", e);
+           }
+        }
+        currentLang = 'en';
+        btnEn.classList.add('active');
+        btnTr.classList.remove('active');
+        updateStaticUI();
+     });
+  }
+});
 
 // Firebase CDN (compat) üzerinden yüklenir — index.html'deki script tagları gerekli
 // Hata olursa uygulama yine de çalışır, sadece Firestore kaydı atlanır
@@ -955,12 +1070,79 @@ function startDomainTest(domainCode) {
 
 function renderQuestion() {
     const q = activeQuestions[currentQuestionIndex];
-    questionTextEl.textContent = q.text;
+    let qText = q.text;
+    let qOptions = q.options;
+
+    if (currentLang === 'en' && quizDataEn) {
+        if (quizKind === 'general' && quizDataEn.appQuestions) {
+            const enQ = quizDataEn.appQuestions.find(x => x.id === q.id);
+            if (enQ) {
+               qText = enQ.text;
+               qOptions = enQ.options;
+            }
+        } else if (quizKind === 'domain' || quizKind === 'expertise') {
+            const enQ = quizDataEn.SD_QUESTIONS ? quizDataEn.SD_QUESTIONS.find(x => x.id === q.id) : null;
+            if (enQ) {
+               qText = enQ.text;
+               qOptions = enQ.options;
+            } else {
+               // Might be from SD_BANK or SHARED
+               // Finding deeply is slow, so we can just use simple string replacement lookup if we flattened it
+               // or we rely on the translations JSON structure
+               let found = false;
+               for (const key in quizDataEn.SD_BANK) {
+                   const foundEnQ = quizDataEn.SD_BANK[key].find((b, idx) => b.text && q.text && b.text === q.text); // Wait, this doesn't work if q.text is TR and we look up EN.
+               }
+            }
+        }
+    }
+
+    // Wait, the easiest way to translate questions from external datasets is to lookup by the original TR string!
+    // Since we ran translation on the arrays, maybe we can just create a global map?
+    // Let's create a getTranslatedText(trText) that looks inside quizDataEn.
+    
+    // Simpler logic using global dictionary approach:
+    // We can just use t(text) if we added all questions to UI_TRANSLATIONS, but we didn't.
+    // Let's implement a dynamic lookup in quizDataEn.
+    
+    if (currentLang === 'en' && quizDataEn) {
+       // Lookup general questions
+       const enAppQ = quizDataEn.appQuestions?.find(x => x.id === q.id && quizKind === 'general');
+       const enSdQ = quizDataEn.SD_QUESTIONS?.find(x => x.id === q.id && (quizKind === 'domain' || quizKind === 'expertise'));
+       
+       if (enAppQ) {
+          qText = enAppQ.text;
+          qOptions = enAppQ.options;
+       } else if (enSdQ) {
+          qText = enSdQ.text;
+          qOptions = enSdQ.options;
+       } else {
+          // Check SD_BANK and SHARED based on index if we can, or just fallback.
+          // Since expertise questions are recreated in getExpertiseQuestionSet, their `text` is the TR text.
+          // We can find the English equivalent by matching the index!
+          // But `q` has `id` which is `i + 1`. So we can use activeExpertiseMeta to find the bank!
+          if (activeExpertiseMeta) {
+              const domCode = activeExpertiseMeta.domainCode;
+              const expId = activeExpertiseMeta.expertiseId;
+              let enBlock = null;
+              if (domCode === 'SD' && quizDataEn.SD_BANK && quizDataEn.SD_BANK[expId]) {
+                 enBlock = quizDataEn.SD_BANK[expId][q.id - 1];
+              } else if (quizDataEn.SHARED && quizDataEn.SHARED[domCode]) {
+                 enBlock = quizDataEn.SHARED[domCode][q.id - 1];
+              }
+              if (enBlock) {
+                 qText = enBlock.text;
+                 qOptions = enBlock.options;
+              }
+          }
+       }
+    }
+
+    questionTextEl.textContent = qText;
 
     optionsEl.innerHTML = "";
 
-    // Düzeltilmiş renderQuestion fonksiyonu: A/B/C/D yapısını ve value değerini doğru atar
-    q.options.forEach((optionText, index) => {
+    qOptions.forEach((optionText, index) => {
         const optionLetter = optionLabels[index];
         const soruName = `Q${q.id}`;
         const uniqueId = `${soruName}_${optionLetter}`;
@@ -992,7 +1174,7 @@ function renderQuestion() {
 function updateProgress() {
   const questionNumber = currentQuestionIndex + 1;
   const totalQuestions = activeQuestions.length;
-  progressTextEl.textContent = `Soru ${questionNumber} / ${totalQuestions}`;
+  progressTextEl.textContent = `${t("Soru")} ${questionNumber} / ${totalQuestions}`;
 
   const answeredCount = activeAnswers.filter((v) => v !== null).length;
   const percentage = Math.round((answeredCount / totalQuestions) * 100);
@@ -1151,7 +1333,7 @@ function handleNext() {
     const selected = document.querySelector(`input[name="${currentQName}"]:checked`);
     
     if (!selected) {
-      showError("Devam etmek için bir seçenek işaretlemen gerekiyor.");
+      showError(t("Devam etmek için bir seçenek işaretlemen gerekiyor."));
       return;
     }
     const selectedValue = selected.value; 
@@ -1172,8 +1354,8 @@ function handleFinishQuiz() {
   if (unansweredCount > 0) {
     const confirmMessage =
       unansweredCount === 1
-        ? "Çözülmemiş 1 soru var. Testi bitirmek istediğinizden emin misiniz?"
-        : `Çözülmemiş ${unansweredCount} soru var. Testi bitirmek istediğinizden emin misiniz?`;
+        ? t("Çözülmemiş 1 soru var. Testi bitirmek istediğinizden emin misiniz?")
+        : t("Çözülmemiş ") + unansweredCount + t(" soru var. Testi bitirmek istediğinizden emin misiniz?");
     const userConfirmed = window.confirm(confirmMessage);
     if (!userConfirmed) return;
   }
@@ -1203,14 +1385,14 @@ function renderResultFollowupGeneral(strongDomainCode) {
   if (!resultFollowupEl) return;
   const dom = KATEGORILER[strongDomainCode];
   resultFollowupEl.innerHTML = `
-    <div class="result-followup-hubtitle">Sonraki adımlar</div>
+    <div class="result-followup-hubtitle">${t("Sonraki adımlar")}</div>
     <p class="result-note" style="margin-top:0">
-      Öne çıkan alanın <strong>${dom}</strong> kariyer testini şimdi çözerek alt uzmanlık eğilimini (hangi spesifik rolde daha iyi olacağını) öğrenebilirsin.
+      ${t("Öne çıkan alanın ")}<strong>${dom}</strong>${t(" kariyer testini şimdi çözerek alt uzmanlık eğilimini (hangi spesifik rolde daha iyi olacağını) öğrenebilirsin.")}
     </p>
     <button type="button" class="btn btn-secondary btn-sm" data-follow="domain-career" data-domain="${strongDomainCode}">
-      ${dom} Kariyer Testi
+      ${dom}${t(" Kariyer Testi")}
     </button>
-    <button type="button" class="btn btn-ghost btn-sm" data-follow="hub">Test seçim ekranına dön</button>
+    <button type="button" class="btn btn-ghost btn-sm" data-follow="hub">${t("Test seçim ekranına dön")}</button>
   `;
   resultFollowupEl.classList.remove("hidden");
   resultFollowupEl.querySelector('[data-follow="hub"]').addEventListener("click", goToTestHub);
@@ -1230,9 +1412,9 @@ function scrollExpertiseIntoView(domainCode) {
 function renderResultFollowupDomain(domainCode) {
   if (!resultFollowupEl) return;
   resultFollowupEl.innerHTML = `
-    <div class="result-followup-hubtitle">Devam</div>
-    <p class="result-note" style="margin-top:0">Başka bir alanın kariyer testini çözebilir veya genel testi tekrar edebilirsin.</p>
-    <button type="button" class="btn btn-secondary btn-sm" data-follow="hub">Test seçim ekranına dön</button>
+    <div class="result-followup-hubtitle">${t("Devam")}</div>
+    <p class="result-note" style="margin-top:0">${t("Başka bir alanın kariyer testini çözebilir veya genel testi tekrar edebilirsin.")}</p>
+    <button type="button" class="btn btn-secondary btn-sm" data-follow="hub">${t("Test seçim ekranına dön")}</button>
   `;
   resultFollowupEl.classList.remove("hidden");
   resultFollowupEl.querySelector('[data-follow="hub"]').addEventListener("click", goToTestHub);
@@ -1270,12 +1452,12 @@ function showResults() {
       }
     }
     const enGucluKategoriAdi = KATEGORILER[enGucluKategoriKodu] || "Belirlenemedi";
-    resultScoreEl.textContent = `En yüksek eğilim: ${enGucluKategoriAdi}`;
-    let summary = `Problem çözme yaklaşımın ve eğilimin en çok <strong>${enGucluKategoriAdi}</strong> alanıyla örtüşüyor. Ağırlıklı puan özeti:`;
+    resultScoreEl.textContent = `${t("En yüksek eğilim: ")}${enGucluKategoriAdi}`;
+    let summary = `${t("Problem çözme yaklaşımın ve eğilimin en çok ")}<strong>${enGucluKategoriAdi}</strong>${t(" alanıyla örtüşüyor. Ağırlıklı puan özeti:")}`;
     for (const kategoriKodu in kategoriSkorlari) {
       const ad = KATEGORILER[kategoriKodu];
       const skor = kategoriSkorlari[kategoriKodu].toFixed(2);
-      summary += `<br/>— ${ad}: ${skor} puan`;
+      summary += `<br/>— ${ad}: ${skor}${t(" puan")}`;
     }
     resultSummaryEl.innerHTML = summary;
     resultTagEl.textContent = enGucluKategoriAdi;
@@ -1314,26 +1496,26 @@ function showResults() {
         }
     }
     
-    let baslik = activeExpertiseMeta?.label || "Uzmanlık Alanı Kariyer Testi";
+    let baslik = activeExpertiseMeta?.label || t("Uzmanlık Alanı Kariyer Testi");
     
-    let enGucluUzmanlikAd = "Belirlenemedi";
+    let enGucluUzmanlikAd = t("Belirlenemedi");
     if (domainDef) {
         const spec = domainDef.specialties.find(s => s.id === enGucluKategoriKodu);
         if (spec) enGucluUzmanlikAd = spec.label;
     }
     
-    resultScoreEl.textContent = `${baslik} Sonucu`;
+    resultScoreEl.textContent = `${baslik}${t(" Sonucu")}`;
     
     let summary = `
-      <p><strong>${dogru}</strong> / ${activeQuestions.length} genel doğru oranı · <strong>%${pct}</strong></p>
-      <p>Cevaplarına göre bu alandaki alt uzmanlık eğilimin <strong>${enGucluUzmanlikAd}</strong> tarafında daha ağır basıyor.</p>
-      <p>Ağırlıklı uzmanlık özeti:</p>
+      <p><strong>${dogru}</strong> / ${activeQuestions.length}${t(" genel doğru oranı · ")}<strong>%${pct}</strong></p>
+      <p>${t("Cevaplarına göre bu alandaki alt uzmanlık eğilimin ")}<strong>${enGucluUzmanlikAd}</strong>${t(" tarafında daha ağır basıyor.")}</p>
+      <p>${t("Ağırlıklı uzmanlık özeti:")}</p>
     `;
     
     for (const specId of validSpecialties) {
       if (kategoriSkorlari[specId] !== undefined) {
          const specAd = domainDef.specialties.find(s => s.id === specId)?.label || specId;
-         summary += `<br/>— ${specAd}: ${kategoriSkorlari[specId].toFixed(2)} puan`;
+         summary += `<br/>— ${specAd}: ${kategoriSkorlari[specId].toFixed(2)}${t(" puan")}`;
       }
     }
     
@@ -1508,11 +1690,12 @@ function skorlariHesapla(kullaniciCevaplari, matris, dogruCevaplar, questionList
 function initTestHub() {
   const root = document.getElementById("test-hub-root");
   if (!root) return;
+  root.innerHTML = '';
 
   const generalBtn = document.createElement("button");
   generalBtn.type = "button";
   generalBtn.className = "btn btn-primary hub-btn-general";
-  generalBtn.innerHTML = `<span>Genel IT testi — 30 soru, 5 alan</span>
+  generalBtn.innerHTML = `<span>${t('Genel IT testi')} — 30 ${t('Soru')}, 5 ${t('Alan')}</span>
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
       <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`;
@@ -1531,7 +1714,15 @@ function initTestHub() {
 
     const h = document.createElement("h3");
     h.className = "hub-domain-title";
-    h.textContent = domain.label;
+    // UZMANLIK_YAPISI might be dynamically translated if we load quizDataEn, or we just look it up
+    let dLabel = domain.label;
+    if (currentLang === 'en' && quizDataEn && quizDataEn.UZMANLIK_YAPISI) {
+       const enDom = quizDataEn.UZMANLIK_YAPISI.find(x => x.code === domain.code);
+       if (enDom) dLabel = enDom.label;
+    } else {
+       dLabel = t(domain.label);
+    }
+    h.textContent = dLabel;
     block.appendChild(h);
 
     const actions = document.createElement("div");
@@ -1539,7 +1730,10 @@ function initTestHub() {
     const baseBtn = document.createElement("button");
     baseBtn.type = "button";
     baseBtn.className = "btn btn-secondary btn-sm";
-    baseBtn.textContent = "Uzmanlık Alanı Testi — 30 soru";
+    baseBtn.textContent = `${t("Tüm Alanlar")} Kariyer Testi — 30 ${t("Soru")}`; // The fallback text was Uzmanlık Alanı Testi
+    if (t("Tüm Alanlar") === "Tüm Alanlar") baseBtn.textContent = `Uzmanlık Alanı Testi — 30 Soru`;
+    else baseBtn.textContent = `Expertise Domain Test — 30 Questions`;
+
     baseBtn.addEventListener("click", () => {
       pendingQuizStart = { kind: "domain", domainCode: domain.code };
       openRegModal();

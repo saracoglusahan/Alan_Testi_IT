@@ -1,0 +1,1341 @@
+{
+  "UZMANLIK_YAPISI": [
+    {
+      "code": "SD",
+      "label": "Software Development",
+      "specialties": [
+        {
+          "id": "fullstack",
+          "label": "Fullstack Developer"
+        },
+        {
+          "id": "game",
+          "label": "Game Development"
+        },
+        {
+          "id": "mobile",
+          "label": "Mobile Development"
+        },
+        {
+          "id": "qa",
+          "label": "Testing / Quality Assurance (QA / Test Engineering)"
+        },
+        {
+          "id": "architect",
+          "label": "Software Architect"
+        }
+      ]
+    },
+    {
+      "code": "DS-AI",
+      "label": "Data Science and Artificial Intelligence",
+      "specialties": [
+        {
+          "id": "ml",
+          "label": "Machine Learning (ML + Deep Learning)"
+        },
+        {
+          "id": "nlp",
+          "label": "Natural Language Processing (NLP)"
+        },
+        {
+          "id": "de",
+          "label": "Data Engineering"
+        },
+        {
+          "id": "bi",
+          "label": "Business Intelligence (BI)"
+        },
+        {
+          "id": "stats",
+          "label": "Statistics"
+        },
+        {
+          "id": "mlops",
+          "label": "MLOps"
+        }
+      ]
+    },
+    {
+      "code": "CS-NET",
+      "label": "Cyber ​​Security and Network",
+      "specialties": [
+        {
+          "id": "pentest",
+          "label": "Penetration Test (Pentest)"
+        },
+        {
+          "id": "soc",
+          "label": "SOC"
+        },
+        {
+          "id": "crypto",
+          "label": "cryptography"
+        },
+        {
+          "id": "net",
+          "label": "Network Security and Infrastructure"
+        },
+        {
+          "id": "forensics",
+          "label": "Forensics"
+        },
+        {
+          "id": "appsec",
+          "label": "Application Security (AppSec)"
+        }
+      ]
+    },
+    {
+      "code": "IS-MT",
+      "label": "Information Systems and IT Management",
+      "specialties": [
+        {
+          "id": "erp",
+          "label": "ERP"
+        },
+        {
+          "id": "itil",
+          "label": "ITIL / Service Management"
+        },
+        {
+          "id": "pm",
+          "label": "Project Management"
+        },
+        {
+          "id": "ea",
+          "label": "Enterprise Architecture"
+        },
+        {
+          "id": "crm",
+          "label": "CRM"
+        }
+      ]
+    },
+    {
+      "code": "CL-DN",
+      "label": "Cloud, Infrastructure and DevOps",
+      "specialties": [
+        {
+          "id": "cloud",
+          "label": "AWS / Azure / Cloud Architecture"
+        },
+        {
+          "id": "k8s",
+          "label": "kubernetes"
+        },
+        {
+          "id": "blockchain",
+          "label": "Blockchain/Web3"
+        },
+        {
+          "id": "edge",
+          "label": "Edge Computing"
+        },
+        {
+          "id": "cdn",
+          "label": "CDN and Content Distribution"
+        }
+      ]
+    }
+  ],
+  "SD_BANK": {
+    "fullstack": [
+      {
+        "text": "Fullstack · A REST endpoint will be used by both the web client and the mobile client. What is the most sustainable approach when sharing session management server-side?",
+        "options": [
+          "Separate database schema for each client type",
+          "JWT or similar portable session token + common authorization layer",
+          "Cookie-based session only; emulating the same behavior on mobile",
+          "Storing session state only in client localStorage",
+          "Single user lock per server"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Fullstack · You want to improve the first paint time on a page coded with SSR; Data fetching is parallel but there is a risk of abuse for critical content. What do you do?",
+        "options": [
+          "Loading all data on the client side with useEffect",
+          "Decoding critical data on the server and sending it via stream/preview, deferring secondary data",
+          "Sharing the CDN cache for all user sessions",
+          "Turn off Hydration and return to pure CSR",
+          "Avoiding inlining critical CSS"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Fullstack · N+1 query problem appeared in GraphQL schema. Which is the best permanent solution?",
+        "options": [
+          "Keeping all resolvers synchronized",
+          "DataLoader-like bulk load/cache or join-based single query strategy",
+          "Hiding the problem with infinite scroll on the client side",
+          "Keeping the schema depth at a constant level of 1",
+          "Disabling HTTP caching"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Type safety (TS) and package versions shared in Fullstack · Monorepo conflict. The most balanced first step?",
+        "options": [
+          "Dividing each application into a separate repo",
+          "Securing common packages with workspace protocol, single version policy and border modules (packlets)",
+          "Turn off type checking",
+          "Pushing all dependencies to the latest major version",
+          "Resolving sharing with copy-paste"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Fullstack · Webhooks reliability should be ensured in the payment workflow. The transaction is carried out without verifying the signature. What to add?",
+        "options": [
+          "Hiding webhook URLs in robots.txt",
+          "Provider signature + idempotency + retry protection",
+          "IP only allowlist",
+          "Replacing webhook with synchronous HTTP call",
+          "Client side callback"
+        ],
+        "correctLetter": "B"
+      }
+    ],
+    "game": [
+      {
+        "text": "Gameplay · You choose simulation synchronization for deterministic multiplayer. What is preferred in short delay?",
+        "options": [
+          "Full server authority and lockstep on every frame — at appropriate bandwidth",
+          "All physics are free in the client; Last in a conflict wins",
+          "Just moving the visual effects to the server",
+          "Disabling UDP completely and only getting status via email",
+          "Testing network code in single-player mode only"
+        ],
+        "correctLetter": "A"
+      },
+      {
+        "text": "Game · There are micro stutters in frame pacing and VSync interaction. GPU is waiting in the profile. First step?",
+        "options": [
+          "Lowering resolution and adjusting GPU load with asset streaming / LOD",
+          "Turn off VSync and risk tearing",
+          "Randomizing physics step per frame",
+          "Making all shadows 4K",
+          "Locking update and render in a single thread"
+        ],
+        "correctLetter": "A"
+      },
+      {
+        "text": "Game · Entity instantiation and frustum culling should be used together in a large open world. Trees are hanging. The problem is probably?",
+        "options": [
+          "Separate draw call and material variant explosion for each tree",
+          "Too few polygons",
+          "Overuse of Instancing",
+          "No fixed time step",
+          "Sound engine setting only"
+        ],
+        "correctLetter": "A"
+      },
+      {
+        "text": "Game · How to safely and atomically load DLC content from the main package?",
+        "options": [
+          "Addressable entities / bundle manifest + signature verification + hot reload strategy",
+          "Embedding all DLC in build with Resources.Load",
+          "Requesting manual copying from the user",
+          "Only download ZIP without password",
+          "Using CDN without version number"
+        ],
+        "correctLetter": "A"
+      },
+      {
+        "text": "Game · For detecting fraudulent accelerated progress in the game economy?",
+        "options": [
+          "Relying only on client timestamp",
+          "Server-side odds limits, anomaly model and critical rewards server verification",
+          "All rewards are client randomly generate",
+          "Running anti-cheat only in single player mode",
+          "not keeping logs"
+        ],
+        "correctLetter": "B"
+      }
+    ],
+    "mobile": [
+      {
+        "text": "Mobile · Background location permission should be requested “only when in use.” The most compatible pattern for iOS/Android?",
+        "options": [
+          "Requesting all permissions repeatedly on first startup",
+          "Contextual explanation + progressive request; avoiding unnecessary background monitoring",
+          "Bypassing permission and constantly monitoring the device with UUID",
+          "Just writing in the manifest, not showing it to the user",
+          "Completely block app without location"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Mobile · GC is triggered on list scroll under memory pressure. What is improved?",
+        "options": [
+          "Recycler/List virtualization and image cache + object pool",
+          "Allocate new large bitmap at each item in the list",
+          "Pushing the entire list to the DOM at once",
+          "Combining strings in each frame instead of freezing animations",
+          "Turn off offline mode"
+        ],
+        "correctLetter": "A"
+      },
+      {
+        "text": "Mobile · Deep link and secure redirection; Suspicious URL schemes should be filtered. Base defense?",
+        "options": [
+          "Automatically accept all external schemas",
+          "Allowlist, verification and secure migration (app links / universal links)",
+          "Using http only",
+          "Disabling SSL pinning",
+          "Not logging intent"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Mobile · To measure battery consumption and capture regression?",
+        "options": [
+          "CPU profile only",
+          "OS battery reports + limit background jobs + sleep alerts and network/GPS usage logs",
+          "Asking the user to estimate the battery level",
+          "Not getting a profile in release mode",
+          "Keeping wake lock on all the time"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Mobile · Offline cache sync; for conflicting regulations?",
+        "options": [
+          "The last one to write always wins; no warning",
+          "Version vector / last write time + user resolution or automatic merge rules",
+          "Deleting the SQLite database and downloading it from scratch",
+          "Trusting only the server",
+          "Discard conflict silently"
+        ],
+        "correctLetter": "B"
+      }
+    ],
+    "qa": [
+      {
+        "text": "QA · Best balance in testing pyramid for critical user flow?",
+        "options": [
+          "Manual E2E only",
+          "Majority volume + contract/API + select E2E smoke",
+          "Load test only",
+          "Random click across entire environment",
+          "Running automation with production data"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "QA · Flaky testing: network timeout. Permanent solution?",
+        "options": [
+          "Set the timeout to 1 second and skip it",
+          "Deterministic stub, controlled standby and isolation + resource limit in parallel operation",
+          "@Ignore the test",
+          "Running with prod data",
+          "Full reboot every time"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "QA · For prioritization in the pre-release risk matrix?",
+        "options": [
+          "The last added feature is always the most critical",
+          "Focused scenario sets with impact × likelihood, frequency of use, and reversibility",
+          "Developer's favorite module",
+          "UI regression only",
+          "Maximizing the number of tests"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "QA · Testing strategy with feature flags?",
+        "options": [
+          "Opening flag combinations in uncontrolled production",
+          "Automatic + cascading canary for a small subset of the flag matrix",
+          "Always turn on all flags at the same time",
+          "Ignoring flag in test environment",
+          "close the logs"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "QA · Accessibility (a11y) audit in CI?",
+        "options": [
+          "Screenshot comparison only",
+          "Rules-based browser controls + focus order and screen reader spotlight controls",
+          "Estimating color contrast",
+          "Not testing with keyboard at all",
+          "Implementing WCAG only on the marketing page"
+        ],
+        "correctLetter": "B"
+      }
+    ],
+    "architect": [
+      {
+        "text": "Architecture · First decisions for an e-commerce that will scale for a decade. Which one is the most accurate?",
+        "options": [
+          "40 microservices from day one",
+          "Modular monolith + clear boundary + event-driven integration blueprint",
+          "All business rules in a single stored procedure",
+          "Continuous breaking change of the data model",
+          "Leaving Observability for last"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Architecture · Two teams overlap frequently on the same aggregate. In terms of DDD?",
+        "options": [
+          "Dividing the Aggregate root and clarifying the bounded context and integration model",
+          "Locking a single database schema",
+          "ignore the conflict",
+          "Copy table for each team",
+          "Deleting all history without event sourcing obligation"
+        ],
+        "correctLetter": "A"
+      },
+      {
+        "text": "Architecture · SLA and error budget: multi-tenant SaaS. Priority?",
+        "options": [
+          "Same noisy neighbor risk to all tenants",
+          "Quotas per tenant, bloat protection and individual scale units",
+          "Single server only",
+          "Autoscale without measurement",
+          "Single table to avoid sharing the database"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Architecture · To manage technical debt portfolio?",
+        "options": [
+          "keep invisible",
+          "Measurable scenarios, service level impact and staggered payback (strangler)",
+          "rewrite all",
+          "Just watch the lint count",
+          "Not allocating time for the refactor"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Architecture · Data locality and GDPR focused design?",
+        "options": [
+          "Storing all data in one region and ignoring the law",
+          "Regional storage, minimization, deletion/anonymization flows, and access control",
+          "Backing up without encryption",
+          "Releasing personal data in logs",
+          "Limiting deletion requests to manual email"
+        ],
+        "correctLetter": "B"
+      }
+    ]
+  },
+  "SHARED": {
+    "DS-AI": [
+      {
+        "text": "Which measure is most important for education-production deviation as a whole?",
+        "options": [
+          "Training accuracy only",
+          "Time window, distribution shift monitoring and retraining triggers",
+          "bigger screen",
+          "More hyperparameters",
+          "Increasing data without duplicating"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "To reduce selection bias in A/B testing?",
+        "options": [
+          "Looking early with no stopping rule",
+          "Preliminary power analysis, fixed horizon and multiple test correction",
+          "Conversion rate only",
+          "single variant",
+          "Not doing random sampling"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "What does maintaining data quality for the feature store rely on most?",
+        "options": [
+          "Batch ETL only",
+          "Schema agreement, validation, observability, and retrievable pipelines",
+          "CSV manual merge",
+          "Making the deduplication in the report",
+          "Not deleting raw data"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Critical to model registration and reproducibility in MLOps?",
+        "options": [
+          "Send the code by email",
+          "Experiment trace, artifact hash, dependency lock and evaluation metrics",
+          "sharing notebook",
+          "GPU brand",
+          "Manual deploy"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "There is a metric definition conflict in the BI dashboard. First step?",
+        "options": [
+          "Separate board for each team",
+          "Single metric dictionary and data product ownership",
+          "hiding SQL",
+          "multiply data",
+          "shut down ETL"
+        ],
+        "correctLetter": "B"
+      }
+    ],
+    "CS-NET": [
+      {
+        "text": "First step for suspected internal network discovery after corporate VPN?",
+        "options": [
+          "Instantly reset all passwords",
+          "Isolating the scope of impact, preserving evidence, and initiating incident response",
+          "Antivirus update only",
+          "delete logs",
+          "turn off IDS"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "For risk of authentication weakness with TLS?",
+        "options": [
+          "TLS only",
+          "MFA, device status and session availability checks",
+          "Password complexity is enough",
+          "JWT indefinitely",
+          "public S3"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "What is the risk of nonce repetition when using AES-GCM?",
+        "options": [
+          "performance loss",
+          "Violation of password integrity and confidentiality; nonce uniqueness required",
+          "Nothing",
+          "Just longer key",
+          "padding oracle"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Continuous process for dependency security in AppSec?",
+        "options": [
+          "One scan per year",
+          "SBOM, automatic scanning and upgrade policy",
+          "npm trust",
+          "Not reviewing the code",
+          "Keeping debug open in Prod"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Which is closest to the essence of the zero trust approach?",
+        "options": [
+          "Trust in corporate network",
+          "Identity and context verification on every access; Network location alone is not enough",
+          "firewall only",
+          "Passwordless SSH",
+          "One factor everywhere"
+        ],
+        "correctLetter": "B"
+      }
+    ],
+    "IS-MT": [
+      {
+        "text": "Which output adds the most value to stakeholder conflicts in the ERP process?",
+        "options": [
+          "Directly coding a team's request",
+          "Common process model, RACI and approval points",
+          "No unnecessary development",
+          "Indefinite pilot",
+          "no test"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "For prioritization in ITIL incident management?",
+        "options": [
+          "first come",
+          "Impact and urgency matrix",
+          "User voice only",
+          "random",
+          "closed call"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "When there is a change request in the project triangle (scope-time-cost)?",
+        "options": [
+          "secretly add",
+          "Formal change control and impact analysis",
+          "Assuming the scope is fixed",
+          "skip the test",
+          "cut off communication"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Balance of technology standardization and innovation in enterprise architecture?",
+        "options": [
+          "Full freedom or full locking",
+          "Platform taxonomy and experiment areas",
+          "PowerPoint only",
+          "Each project has a different database",
+          "No documentation"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "CRM data quality is poor; Sales reports are conflicting. Permanent solution?",
+        "options": [
+          "Correct the report manually",
+          "Master data, validation rules and ownership",
+          "Make all fields mandatory",
+          "Not merging duplicate records",
+          "Close the integration"
+        ],
+        "correctLetter": "B"
+      }
+    ],
+    "CL-DN": [
+      {
+        "text": "Common basis for network isolation in multi-tenant cloud?",
+        "options": [
+          "Single flat VPC",
+          "Account/VPC separation, security groups, and private endpoints",
+          "Public subnet everything",
+          "SSH is on",
+          "Passwordless API"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "Risk in production without Pod resource limit in Kubernetes?",
+        "options": [
+          "None",
+          "Noisy neighbor, OOM and planning uncertainty",
+          "Log size only",
+          "Deploy faster",
+          "Better balancing"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "The main issue in choosing a blockchain in terms of the difference between permissioned chain and public chain?",
+        "options": [
+          "Colour",
+          "Trust model and consensus cost/latency",
+          "Language",
+          "DNS",
+          "CDN"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "User protection for Web3 wallet signing request?",
+        "options": [
+          "Unlimited approve",
+          "Permission scope, simulation and readable transaction summary",
+          "Pasting the seed into the application",
+          "Complete trust in every connection",
+          "Ignore phishing"
+        ],
+        "correctLetter": "B"
+      },
+      {
+        "text": "For consistent configuration and updating across Edge deployment?",
+        "options": [
+          "manually via USB",
+          "OAS/IaC, signed artifact and rollback",
+          "random ports",
+          "single server",
+          "no logs"
+        ],
+        "correctLetter": "B"
+      }
+    ]
+  },
+  "SD_QUESTIONS": [
+    {
+      "id": 2,
+      "text": "When the client connection is lost in a payment service, the user can resend the same payment request. The system sometimes collects twice from the same card, and sometimes the collection is made by the bank even though it appears as \"payment failed\". What should be the most critical design to solve this problem permanently?",
+      "options": [
+        "Disabling the payment button for 10 seconds on the frontend",
+        "Managing the payment request with idempotency key, transaction status and external provider reconciliation",
+        "Telling the user not to refresh the page after payment",
+        "Assume automatic cancellation of all payments returning unsuccessfully"
+      ],
+      "correctLetter": "B",
+      "measured": "Idempotency, distributed transaction, payment reconciliation."
+    },
+    {
+      "id": 3,
+      "text": "A team cancels an order in the REST API with the GET /orders/cancel?id=123 endpoint. Some orders were canceled when a search engine bot or link previewer visited these URLs. What is the most fundamental mistake in this design?",
+      "options": [
+        "Short naming of Endpoint",
+        "Using the GET method for transaction with side effects and not providing secure verification of transaction intent",
+        "Sending the order ID with query string",
+        "API returns HTML response instead of JSON"
+      ],
+      "correctLetter": "B",
+      "measured": "HTTP semantics, secure API design, side-effect transaction control."
+    },
+    {
+      "id": 4,
+      "text": "In a microservice architecture, the order creation process calls payment, stock, shipping and invoice services sequentially. When the stock service gives an error after the payment is successful, the system sometimes produces unfinished orders. Using a single global transaction is technically difficult and costly. Which is the more appropriate approach in this case?",
+      "options": [
+        "Connecting all services to the same database",
+        "Designing saga-like compensatory transaction flow and consistent state management",
+        "Showing success message to the user when the stock service fails",
+        "Moving inter-service communication completely to the frontend"
+      ],
+      "correctLetter": "B",
+      "measured": "Saga pattern, eventual consistency, compensatory process."
+    },
+    {
+      "id": 5,
+      "text": "A software team applies the same business rule separately in the frontend, backend and different microservices. Over time, the rules have been updated in some services and remain outdated in others. Users get different results for the same action. What is the most accurate architectural assessment here?",
+      "options": [
+        "Since the business rule is used a lot, it should be copied wherever possible",
+        "Critical domain rules must be managed consistently, duplicate logic must be limited, and ownership must be clarified.",
+        "If it works correctly on the frontend, it doesn't matter if it behaves differently on the backend.",
+        "Consistency is never targeted in microservice architecture"
+      ],
+      "correctLetter": "B",
+      "measured": "Domain logic ownership, consistency, maintainability."
+    },
+    {
+      "id": 6,
+      "text": "While an API endpoint returns the user profile, it also sends internal fields that the frontend does not use. These fields include account risk, customer segment, internal memo, and some personal information. Frontend does not display these fields on the screen. Why is this still problematic?",
+      "options": [
+        "Data not visible on the screen is not considered to have been sent to the user at all.",
+        "Sending too much data causes both performance and data minimization and the risk of unauthorized information leakage.",
+        "As the number of JSON fields increases, security automatically increases",
+        "If the frontend does not use this data, there is no risk for the backend."
+      ],
+      "correctLetter": "B",
+      "measured": "Data minimization, API response design, privacy by design."
+    },
+    {
+      "id": 7,
+      "text": "A team runs manual SQL directly on the production database to resolve errors. Even if the problems are solved in the short term, it is not possible to track which changes were made when, by whom and for what reason. What is the most important deficiency in this process?",
+      "options": [
+        "SQL should not be used",
+        "Production changes must be made through an approved, recorded, reversible and auditable change process",
+        "Database changes are only safe if done at night",
+        "Manual changes are quick, so no corporate processes are required"
+      ],
+      "correctLetter": "B",
+      "measured": "Change control, auditability, production security."
+    },
+    {
+      "id": 8,
+      "text": "When cache was added to an application, performance improved significantly. However, when the price information is updated, the old price is shown to some users and a legal problem occurs. What is the real design problem in this case?",
+      "options": [
+        "Using cache is always wrong",
+        "Cache invalidation, TTL and consistency requirement are not designed into business rule",
+        "It is unnecessary if there is a database cache.",
+        "The problem is always solved if users refresh the page"
+      ],
+      "correctLetter": "B",
+      "measured": "Cache consistency, TTL, business rule impact."
+    },
+    {
+      "id": 9,
+      "text": "In a system email must be unique. Backend first asks “does this email exist?” It queries and then adds a record. At the time of intensive registration, two accounts were created with the same email. Which approach solves this problem best?",
+      "options": [
+        "Adding frontend control before backend control",
+        "Defining unique constraint in the database and managing the duplicate situation correctly at the application level",
+        "Telling the user to use a different email",
+        "Open registration only during business hours"
+      ],
+      "correctLetter": "B",
+      "measured": "Constraint, concurrency, defensive data design."
+    },
+    {
+      "id": 10,
+      "text": "In a QA process, tests only cover expected successful user flows. In Production, most of the problems occur in cases of double click, back button, disconnection, missing data, expired session and unauthorized access. What is the real weakness of this testing strategy?",
+      "options": [
+        "Tests do not cover uncertainties in user behavior, error conditions and boundary conditions",
+        "Successful scenarios should not be tested",
+        "Manual testing becomes unnecessary if QA only writes automation",
+        "Less testing always results in faster delivery"
+      ],
+      "correctLetter": "A",
+      "measured": "Negative testing, edge cases, risk-based testing."
+    },
+    {
+      "id": 11,
+      "text": "When a user changes his password in an application, old access tokens remain valid. Additionally, the refresh token duration is very long and there is no device-based session management. What is the most important security risk in this situation?",
+      "options": [
+        "User logs in less often",
+        "Unauthorized access via compromised token or device may continue for a long time",
+        "Using tokens is always unsafe",
+        "Password change only concerns the frontend"
+      ],
+      "correctLetter": "B",
+      "measured": "Token lifecycle, session invalidation, account security."
+    },
+    {
+      "id": 12,
+      "text": "A backend service sends a request to the external cargo API. When the shipping API slows down, service threads fill up and the entire ordering system slows down. The developer simply proposes to increase the number of retries. What is the risk of this recommendation?",
+      "options": [
+        "Increasing the number of retries always relaxes the system",
+        "Uncontrolled retry can increase the load; timeout, backoff, circuit breaker and queuing should be considered together",
+        "External services never affect system performance",
+        "Using timeout hides all errors"
+      ],
+      "correctLetter": "B",
+      "measured": "Resilience, circuit breaker, external dependency management."
+    },
+    {
+      "id": 13,
+      "text": "In an application, uploading large files is done with a single request. If the user disconnects, the whole process starts over. Additionally, if the same file is uploaded twice, two different records are created. Which design is more professional?",
+      "options": [
+        "Leaving it up to the user to reduce file size",
+        "Ensuring security again with partial loading, resume support, checksum and transaction ID",
+        "Keeping files permanently in frontend memory",
+        "If the upload fails, just show the error to the user"
+      ],
+      "correctLetter": "B",
+      "measured": "Resumable upload, checksum, idempotent file processing."
+    },
+    {
+      "id": 14,
+      "text": "A mobile application has a large number of users using old API versions. The backend team wants to remove old endpoints. What is the biggest technical risk of this decision?",
+      "options": [
+        "Backward compatibility may be compromised due to mobile applications not being updated at the same time for every user.",
+        "Reducing the number of API endpoints always improves system quality",
+        "Users using older versions can technically be ignored",
+        "API versioning is a matter of documentation only"
+      ],
+      "correctLetter": "A",
+      "measured": "API versioning, backward compatibility, release planning."
+    },
+    {
+      "id": 15,
+      "text": "In a game development project, character movement is faster on some devices. The developer calculated the movement by increasing fixed pixels in each frame. What is the most accurate explanation of this problem?",
+      "options": [
+        "Movement depends on frame rate; delta time or constant time step approach is required",
+        "The screen size of the devices must be the same",
+        "Physics calculations are not made in games",
+        "Speed ​​is synchronized if character animation is turned off"
+      ],
+      "correctLetter": "A",
+      "measured": "Game loop, frame independent movement, simulation timing."
+    },
+    {
+      "id": 16,
+      "text": "In an application, error messages are returned to the user in a very technical way. For example, the SQL table name, stack trace and server path appear. The developer says it “makes debugging easier.” What is the real risk of this approach?",
+      "options": [
+        "User learns more technical information",
+        "Can leak information to the attacker for system architecture and vulnerability research",
+        "Error messages are not security related",
+        "Stack trace only affects frontend performance"
+      ],
+      "correctLetter": "B",
+      "measured": "Information disclosure, secure error handling."
+    },
+    {
+      "id": 17,
+      "text": "An application appends the filename from the user directly to the server file path. The attacker tries to access different directories with expressions like ../../. Which security problem comes to the fore in this case?",
+      "options": [
+        "Path traversal",
+        "DNS poisoning",
+        "Cache miss",
+        "memory fragmentation"
+      ],
+      "correctLetter": "A",
+      "measured": "Input validation, file system security."
+    },
+    {
+      "id": 18,
+      "text": "A software team connected the test environment and production environment to the same database. Some real user data changed during testing. What does this error indicate is missing?",
+      "options": [
+        "Environment isolation and secure test data management are missing",
+        "Test environment is unnecessary",
+        "Production data is the most accurate data for testing",
+        "Using database breaks tests"
+      ],
+      "correctLetter": "A",
+      "measured": "Environment isolation, test data management."
+    },
+    {
+      "id": 19,
+      "text": "In a team, everyone works on their own computer with different Node/Python/Java versions and different environment settings. Code that works for one developer does not work for another. What should be the permanent solution?",
+      "options": [
+        "Replacing the computer of the developer who received the error",
+        "Documenting the development environment, using container or version manager and ensuring environment standardization",
+        "Encouraging each developer to use different dependency versions",
+        "Removing the test environment"
+      ],
+      "correctLetter": "B",
+      "measured": "Environment reproducibility, dependency management."
+    },
+    {
+      "id": 20,
+      "text": "In a monolith application, every small change requires redeploying the entire system. However, the team recommends switching to microservices only because it is “more modern.” Which is the most correct architectural approach?",
+      "options": [
+        "Microservice is superior to monolith in every case",
+        "First, the current problem needs to be analyzed in terms of modularity, team structure, deployment independence and operation cost.",
+        "Monolith applications never scale",
+        "When switching to microservice, data consistency and operation problems are automatically resolved"
+      ],
+      "correctLetter": "B",
+      "measured": "Architecture trade-off, monolith vs microservices."
+    },
+    {
+      "id": 21,
+      "text": "SQL queries are slow in an application. The developer wants to increase the server capacity immediately. However, most slow queries run without indexes in filter fields. What should be the first professional approach?",
+      "options": [
+        "The query plan, index usage and data access pattern should be analyzed first.",
+        "Every performance issue is solved simply by upgrading the server",
+        "Database optimization is the sole responsibility of the DBA",
+        "Slow queries should not be shown to the user"
+      ],
+      "correctLetter": "A",
+      "measured": "Query optimization, indexing, performance diagnosis."
+    },
+    {
+      "id": 22,
+      "text": "An application displays user input in HTML without escaping it. When the attacker adds a script to the comment field, it runs in other users' browsers. Why might backend validation alone not be enough in this case?",
+      "options": [
+        "Encoding and sanitization appropriate to the output context is also required",
+        "XSS is just a database error",
+        "Frontend security never matters",
+        "Script execution is normal user behavior"
+      ],
+      "correctLetter": "A",
+      "measured": "XSS prevention, output encoding, input/output security."
+    },
+    {
+      "id": 23,
+      "text": "A team cannot find which commit caused which error after release. Commit messages are meaningless, there are no issue links, no release notes are kept. What is the fundamental engineering deficiency here?",
+      "options": [
+        "Traceable development, meaningful commit, issue relationship and release management discipline are missing",
+        "If the number of commits is low, the quality is high",
+        "Release notes are for marketing purposes only",
+        "It is unnecessary to look back when a mistake occurs"
+      ],
+      "correctLetter": "A",
+      "measured": "Traceability, release management, engineering process."
+    },
+    {
+      "id": 24,
+      "text": "Authorization control in a web application is done with middleware. However, some new endpoints remain outside this middleware chain. What should be specifically looked at in code review?",
+      "options": [
+        "Whether endpoint names are short or not",
+        "Whether security controls are implemented by default and exceptions are explicitly managed",
+        "Alphabetical order of controller files",
+        "Whether the menus are hidden in the frontend"
+      ],
+      "correctLetter": "B",
+      "measured": "Secure defaults, authorization coverage, code review."
+    },
+    {
+      "id": 25,
+      "text": "An application synchronizes long operations such as sending e-mail, generating reports and visual processing in the background within the HTTP request. Users receive timeouts. What is the more appropriate solution?",
+      "options": [
+        "Taking long jobs to the queue/worker structure and showing the process status to the user",
+        "Increasing HTTP timeout to infinity",
+        "Telling the user to wait",
+        "Performing all operations in the frontend"
+      ],
+      "correctLetter": "A",
+      "measured": "Async processing, job queue, user experience."
+    },
+    {
+      "id": 26,
+      "text": "A team opens the new feature directly to all users without using a feature flag. When an error occurs, one has to revert the entire application to the old version to get it back. What is the main benefit of the feature flag here?",
+      "options": [
+        "Eliminates coding",
+        "Its features provide controlled opening, rapid closing and gradual start-up.",
+        "Removes database need",
+        "Completely eliminates the need for testing"
+      ],
+      "correctLetter": "B",
+      "measured": "Release strategy, feature toggles, controlled rollout."
+    },
+    {
+      "id": 27,
+      "text": "In an application, the user session is managed with a long-lived token stored in localStorage. Tokens can be seized when an XSS vulnerability occurs. Which issue should be considered together in this design?",
+      "options": [
+        "Token storage method, XSS prevention, token duration and refresh mechanism",
+        "Token name should be longer",
+        "XSS is ineffective if localStorage is used",
+        "If the user logs out, all risk ends permanently."
+      ],
+      "correctLetter": "A",
+      "measured": "Session security, token storage, XSS impact."
+    },
+    {
+      "id": 28,
+      "text": "A backend service depends on multiple third-party APIs. When one of these providers slows down, the application keeps the user waiting without any explanation. Which is the better design?",
+      "options": [
+        "Monitor dependency status, determine timeout, appropriate fallback and show meaningful status to the user",
+        "More calling all providers at once",
+        "Making the user wait indefinitely",
+        "Not logging third party errors"
+      ],
+      "correctLetter": "A",
+      "measured": "Dependency resilience, fallback design, UX reliability."
+    },
+    {
+      "id": 29,
+      "text": "In a system, the audit log only keeps \"transaction performed\" information. However, it is not kept track of who converted which old value to which new value and from which IP. Why is this inadequate?",
+      "options": [
+        "Event context remains incomplete for auditing, error analysis, and security review",
+        "Keeping details in audit logs is always prohibited",
+        "Only processing time is enough",
+        "Audit log is for performance measurement only"
+      ],
+      "correctLetter": "A",
+      "measured": "Audit logging, accountability, forensic readiness."
+    },
+    {
+      "id": 30,
+      "text": "When a critical bug is fixed in a system, the developer commits directly to the main branch and deploys it to production. Testing and review are skipped. Even if the error is urgent, what should be the more balanced process?",
+      "options": [
+        "A fast but traceable hotfix flow, minimum test, review and rollback plan should be implemented for emergencies.",
+        "No process required for immediate errors",
+        "Review is only done on large projects",
+        "Tests are always unnecessary with hotfixes"
+      ],
+      "correctLetter": "A",
+      "measured": "Hotfix process, release safety, operational discipline. 2. Data Science and Artificial Intelligence — 30 Questions"
+    }
+  ],
+  "appQuestions": [
+    {
+      "id": 1,
+      "text": "Question 1 \nSudden performance drop\n\nAfter the campaign starts in an e-commerce application, users begin to experience delays in the cart screen. No critical errors appear in the error logs. Database, API and cache systems run as separate services. What would be your first technical approach?",
+      "options": [
+        "Increasing the server capacity and observing whether the latency decreases or not",
+        "Monitoring the request path end-to-end and distinguishing with metrics whether the latency is concentrated in the API, database, network, cache or external services",
+        "Simplifying the interface of the cart screen and reducing the processing load on the user side",
+        "Temporarily shutting down some reporting services during the campaign",
+        "Recreating database indexes and waiting for query plans to change"
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Question 2 \nRisk of bias in the artificial intelligence model\n\nA credit pre-assessment model classifies a group of customers who are less represented in historical data as increasingly riskier. The overall accuracy rate of the model seems high. What is the most balanced evaluation approach?",
+      "options": [
+        "Taking the model live because its general accuracy rate is high",
+        "Keeping the model's decision thresholds the same for all groups and observing the result",
+        "Dividing the data into subgroups and examining error distribution, data representation, decision thresholds and business rule effects together",
+        "Reducing the number of variables used by the model and switching to a simpler classifier",
+        "Trying to reduce variance by using a larger model"
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Question 3 \nSuspicious session activity\n\nIn a SaaS system, support requests are received from some users who say that they are not making transactions from their own accounts. In the logs, it is seen that the same user from different countries logs in at short intervals. What is the most appropriate first intervention?",
+      "options": [
+        "Asking users to change their passwords and waiting for new requests",
+        "Blocking suspicious IP addresses and leaving the system running",
+        "Reducing the session duration and introducing new login rules",
+        "Invalidating suspicious sessions, assessing token and key risk, initiating incident investigations by preserving access records",
+        "Adding a security warning to the user interface"
+      ]
+    },
+    {
+      "id": 4,
+      "text": "Question 4 \nERP process incompatibility\n\nWhile the sales team in a business wants the order approval process to be fast, the finance team does not want the same process to proceed without a credit limit check. The software side cannot start development because there is no clear requirement. Which is the healthiest analysis step?",
+      "options": [
+        "Building on the flow of the sales team and leaving financial control to the next version",
+        "Making the finance team's rule mandatory and designing the sales screen accordingly",
+        "Modeling the current process, exceptions, data ownership, approval points, and performance expectations together",
+        "Using the standard order flow in the ready-made ERP package without changing it",
+        "Receiving separate requirements documents from all teams and combining common areas"
+      ]
+    },
+    {
+      "id": 5,
+      "text": "Question 5 \nUnstable service on Kubernetes\n\nA microservice is running on Kubernetes. Sometimes the service restarts, and sometimes it fails to respond even though it receives traffic. CPU usage goes up at times, but the same metric doesn't appear on every reboot. Which is the most accurate review approach?",
+      "options": [
+        "Spread the load by increasing the number of pods",
+        "Reducing the deployment time by shrinking the container image",
+        "Correlating resource limits, liveness/readiness probe behavior, node pressure, and service dependencies",
+        "Move the service to a separate node group and observe the behavior",
+        "Putting the application log level in debug mode and monitoring reboots"
+      ]
+    },
+    {
+      "id": 6,
+      "text": "Question 6 \nTechnical question – idempotency in payment API\n\nA payment API may receive the same payment request twice due to network timeout. Even if only one transaction is seen on the client side, two requests can be made to the server. Which is the most correct design?",
+      "options": [
+        "Increase the request timeout value",
+        "Asking the user not to press the payment button a second time",
+        "Giving an idempotency key to each payment request, associating this key with the transaction record and returning the same result in the next request.",
+        "Storing the payment result in local storage on the client side",
+        "Manually checking the second payment of the same amount at the end of the day"
+      ]
+    },
+    {
+      "id": 7,
+      "text": "Question 7 \nInconsistent report in data pipeline\n\nOn a sales dashboard it looks like daily revenue increased twice in one day. In the raw data, some of the same orders were processed twice. Which is the best approach in terms of data engineering?",
+      "options": [
+        "Hiding identical order numbers on the dashboard side",
+        "Adding data deduplication, transaction ID checking, data lineage tracking, and quality testing to the ETL process",
+        "Reducing volatility by converting the daily report into a weekly report",
+        "Moving order data to a larger storage area",
+        "Changing the summation function in the visualization tool"
+      ]
+    },
+    {
+      "id": 8,
+      "text": "Question 8 \nSSRF risk\n\nAn application downloads a file from the URL it receives from the user. During security testing, it appears that this mechanism can be used to access metadata services on the internal network. Which is the most balanced defense?",
+      "options": [
+        "Putting a longer character limit in the URL field",
+        "Queuing file downloads in the background",
+        "Making the user accept only HTTPS addresses",
+        "Checking the file type and limiting the allowed extensions",
+        "Implementing target address verification, allowlist, internal network/metadata access blocking, egress control and monitoring mechanism together"
+      ]
+    },
+    {
+      "id": 9,
+      "text": "Question 9 \nSuccess of CRM feature\n\nThe “automatic customer prioritization” feature will be added to a CRM system. Management wants to see the business value of this feature. What is the most meaningful measure of success?",
+      "options": [
+        "The feature will be released on the planned date",
+        "Number of times the screen is opened by users",
+        "Monitoring the sales team's feature usage rate, change in customer follow-up time, data quality and conversion rate together.",
+        "Increasing the complexity level of the algorithm",
+        "The feature looks the same on mobile and web interface"
+      ]
+    },
+    {
+      "id": 10,
+      "text": "Question 10 \nCDN and old price problem\n\nA product page opens quickly via CDN, but price changes are reflected late for some users. This situation leads to customer complaints. What is the best architectural approach?",
+      "options": [
+        "Completely removing the use of CDN",
+        "Short-term caching of all data on the product page",
+        "Presenting price information from a separate data source out of cache or with a controlled invalidation mechanism",
+        "Putting a page refresh warning on the user's browser",
+        "To publish price changes in bulk at the end of the day"
+      ]
+    },
+    {
+      "id": 11,
+      "text": "Question 11 \nDevice dependent error in mobile application\n\nWhile a mobile application works smoothly on new devices, it sometimes closes on old devices. The error does not occur for every user. What is the most appropriate solution?",
+      "options": [
+        "Upgrading the minimum supported operating system version",
+        "Offering a lightweight interface option to older device users",
+        "Matching device model, OS version, memory status and screen flow with crash reports and making controlled corrections",
+        "Rewriting all screens of the application",
+        "Reducing animations and releasing a new version"
+      ]
+    },
+    {
+      "id": 12,
+      "text": "Question 12 \nTechnical question – data leakage\n\nA machine learning model will predict at the time of ordering whether the order will be canceled or not. The \"delivery completion time\" variable was also used in the training data and the model showed very high success. What is the main problem in this case?",
+      "options": [
+        "Training the model too quickly",
+        "Using an unknown variable at the time of prediction in training",
+        "Regression instead of classification",
+        "The data set is too large",
+        "The model has a high level of explainability"
+      ]
+    },
+    {
+      "id": 13,
+      "text": "Question 13 \nSuspicion of lateral movement\n\nIt is seen that unusual connections starting from a single client in an enterprise network spread to different servers. The same client is logged in with an administrator account. What is the best first response approach?",
+      "options": [
+        "Changing all network passwords at once",
+        "Isolating the client, preserving evidence, examining session and credential usage, removing the propagation path",
+        "Just start an antivirus scan",
+        "Restarting all servers",
+        "Temporarily slowing down network traffic"
+      ]
+    },
+    {
+      "id": 14,
+      "text": "Question 14 \nSupply chain record with blockchain\n\nA company wants to keep supply chain events on blockchain. However, he does not want trade secrets to remain open to everyone and cares that records cannot be changed later. What is the most appropriate approach?",
+      "options": [
+        "Writing all data raw to the open chain",
+        "Keeping data in a central database and using blockchain only for marketing purposes",
+        "Keeping sensitive data out of the chain and writing hash/proof to the chain, designing permissioned access and key management",
+        "Using just a PDF signing process instead of blockchain",
+        "Establishing a separate chain for each supplier and performing the integration manually"
+      ]
+    },
+    {
+      "id": 15,
+      "text": "Question 15 \nProposal to completely change the architecture\n\nA software team wants to switch the entire system to microservice architecture because the current system makes maintenance difficult. However, the product is actively used and delivery dates are close. Which is the healthiest decision approach?",
+      "options": [
+        "Stopping the entire system and starting the redevelopment process",
+        "Leaving the microservice decision to management approval",
+        "Analyze maintenance cost, bottlenecks, team competence and risks and come up with a phased decomposition or modular improvement plan",
+        "Stopping new feature development altogether",
+        "Just adding documentation without changing the existing system"
+      ]
+    },
+    {
+      "id": 16,
+      "text": "Question 16 \nTechnical question â€” password storage\n\nA system user wants to store their passwords securely. Which is the most correct technical approach?",
+      "options": [
+        "Encrypt passwords with AES and keep the key within the application",
+        "Hashing passwords with SHA-256 and writing them to the database",
+        "Storing passwords with slow, salt-backed algorithms such as Argon2id, bcrypt or scrypt, additionally using controls such as rate limiting and MFA",
+        "Converting passwords to Base64 format to reduce readability",
+        "Marking the password field as a hidden column in the database"
+      ]
+    },
+    {
+      "id": 17,
+      "text": "Question 17 \nSame metric, different result\n\nMarketing and finance teams see the “monthly active customers” metric with different numbers in different reports. Both teams maintain that their report is accurate. Which is the most correct solution approach?",
+      "options": [
+        "Accepting the report that appears to be more up-to-date as correct",
+        "Changing the reporting tool and switching to a single panel",
+        "Creating a common semantic layer that determines the metric definition, data source, time window, filters and ownership",
+        "Taking the average of two reports and using it in the management report",
+        "Updating customer data more frequently"
+      ]
+    },
+    {
+      "id": 18,
+      "text": "Question 18 \nProduction error due to environment difference\n\nAn application passes all tests in the test environment, but gives an error in production due to configuration differences. Which is the strongest healing?",
+      "options": [
+        "Getting the testing team to write more manual scripts",
+        "Giving developers direct access to the production server",
+        "Standardizing environments with IaC and configuration management, establishing canary/rollback and observability mechanisms",
+        "Defining a quick hotfix process when there is a manufacturing error",
+        "Copying data in the test environment from production"
+      ]
+    },
+    {
+      "id": 19,
+      "text": "Question 19 \nLack of logs after the event\n\nIt is noticed that after a security incident, some of the logs are returned and old records are deleted. Unable to review. Which is the best design for the future?",
+      "options": [
+        "Keeping the application log level in debug mode at all times",
+        "Storing logs as local files on each server for a longer period of time",
+        "Establish a centralized, time-synchronized, hard-to-change, access-controlled logging and retention policy",
+        "Writing user transactions to a separate table in the database",
+        "Making it a process to take screenshots when an event occurs"
+      ]
+    },
+    {
+      "id": 20,
+      "text": "Question 20 \nLost connection on edge devices\n\nEdge devices on a production line send sensor data to the cloud. The network connection is interrupted from time to time. The system is required to continue without data loss. What is the most appropriate approach?",
+      "options": [
+        "Reducing the frequency of shipping of devices",
+        "Restarting the device when the network is interrupted",
+        "Local buffering, sequence number, idempotent dispatch and use synchronization mechanism when it comes to connectivity",
+        "Generating sensor data only when connected",
+        "Moving the database in the cloud to a larger capacity"
+      ]
+    },
+    {
+      "id": 21,
+      "text": "Question 21 \nSoftware architecture trend\n\nA new module will be developed in a team. The requirements are not completely clear, but the module will talk to other systems in the future. Which behavior shows the tendency towards software architecture and abstraction more strongly?",
+      "options": [
+        "First model interfaces, data contracts, dependency boundaries and points that may change",
+        "Quickly pull out a running screen and collect feedback",
+        "Start the project with the most popular framework",
+        "Gathering all the features to be developed in the same service",
+        "Embedding business rules into database procedures"
+      ]
+    },
+    {
+      "id": 22,
+      "text": "Question 22 \nTechnical question – ITIL incident, problem, change distinction\n\nThe payment system in an institution experiences an outage for two hours. The team first restores the service, then investigates the root cause and opens a planned release process for a permanent fix. How is this flow classified in terms of IT management?",
+      "options": [
+        "First step is problem management, second step is change management, third step is incident management.",
+        "First step incident management, root cause analysis problem management, controlled release of permanent fix change management",
+        "All steps are within the scope of project management",
+        "The first step is change management, the remaining steps are event management",
+        "This process is only related to software testing management"
+      ]
+    },
+    {
+      "id": 23,
+      "text": "Question 23 \nRecommendation system success\n\nA recommendation system increases click-through rate, but users say they encounter less quality content. Management says \"metrics are good, let's continue\". Which is the most accurate data science approach?",
+      "options": [
+        "Maintaining the model because the click-through rate is high",
+        "Retraining the same model with more data",
+        "Establish multiple goal metrics including satisfaction, content quality, long-term retention, and potential side effects",
+        "– ensuring impartiality by completely randomizing the suggestions",
+        "Training the model on only the most viewed content"
+      ]
+    },
+    {
+      "id": 24,
+      "text": "Question 24 \nAPI rate limit exceeded\n\nThere is a rate limit in an API, but the attacker can exceed the limit with different token and IP combinations. Which is the strongest defensive approach?",
+      "options": [
+        "Lowering the rate limit value for everyone",
+        "Only apply IP based limit",
+        "Establish distributed quota and abuse detection that evaluates user, token, IP, device trace and behavioral signals together",
+        "Remove limit information from API documentation",
+        "Returning a longer error message when limit is exceeded"
+      ]
+    },
+    {
+      "id": 25,
+      "text": "Question 25 \nConsistency in a multi-region system\n\nOne system will operate in both European and Asian regions. The user profile must be opened quickly, and data consistency is critical in payment transactions. Which is the most correct architectural decision approach?",
+      "options": [
+        "Using eventual consistency for all data",
+        "Carrying out all operations from a single center and closing other regions",
+        "Evaluating the consistency need for each data type separately and using strong consistency in critical operations and regional cache/eventual consistency in readable data",
+        "Running all databases independently in each region",
+        "Always redirect the user to the nearest location"
+      ]
+    },
+    {
+      "id": 26,
+      "text": "Question 26 \nTechnical question – Kubernetes rolling update and migration\n\nIn a Kubernetes application, the new version requires a change to the database schema. During the rolling update, old and new pods will work together for a short time. Which is the safest approach?",
+      "options": [
+        "First close all old pods and then change the database",
+        "Allowing each pod to run Migration as the application starts",
+        "Going live with backwards compatible schema change, separate migration step, readiness control and rollback plan",
+        "Leaving the database change until after deployment",
+        "Always use blue-green instead of rolling update"
+      ]
+    },
+    {
+      "id": 27,
+      "text": "Question 27 \nAdmin panel prone to user error\n\nIn an administration panel, users accidentally close critical records. The system technically works, but there is a loss of business. What is the best solution approach?",
+      "options": [
+        "Preparing longer training documents for users",
+        "Moving critical buttons to the bottom of the screen",
+        "Analyzing user flow and designing error-preventing interface, authorization control, rollback mechanism and transaction verification",
+        "Opening the panel to experienced personnel only",
+        "Reporting erroneous transactions at the end of the day"
+      ]
+    },
+    {
+      "id": 28,
+      "text": "Question 28 \nSOC alarm fatigue\n\nHundreds of alarms occur every day in a security operations center. Analysts worry about missing critical events. What is the best improvement?",
+      "options": [
+        "Raising all alarm thresholds",
+        "Hiring more analysts",
+        "Establishing a rule improvement process with alarm prioritization, correlation, triage playbooks and feedback according to the threat model",
+        "Turning off low-level alarms completely",
+        "Send separate e-mail notification for each alarm"
+      ]
+    },
+    {
+      "id": 29,
+      "text": "Question 29 \nAdding personal data to the data warehouse\n\nA new customer data source will be added to a data warehouse. The resource contains personal data, transaction history and support records. Which is the most correct initial design approach?",
+      "options": [
+        "Getting all data in its raw form into the data warehouse",
+        "Creating a separate table that only analysts can see",
+        "Determining data classification, minimization, masking, access control, data lineage and retention policy together",
+        "Storing data only as CSV",
+        "Accepting all data as anonymous and making it available for reporting"
+      ]
+    },
+    {
+      "id": 30,
+      "text": "Question 30 \nMonolith or microservice?\n\nA newly established team will develop a platform whose product-market fit is not yet clear. The team is small, requirements change frequently, but high traffic is expected ahead. Which is the most logical architectural approach?",
+      "options": [
+        "Setting up the entire system as a microservice from day one",
+        "Developing a single-file rapid prototype and leaving the architecture for later",
+        "Starting with a monolith whose modular boundaries are clear, observable and ready to be decomposed and then serviced when real scale and team needs arise.",
+        "Reducing application code by placing all business rules in the database",
+        "Setting up the entire cloud infrastructure to maximum scale before backend development"
+      ]
+    }
+  ]
+}
