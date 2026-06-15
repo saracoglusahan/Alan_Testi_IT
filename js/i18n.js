@@ -102,5 +102,6 @@ export const UI_TRANSLATIONS = {
   "Test seçim ekranına dön": "Return to test selection screen",
   "Devam": "Continue",
   "Başka bir alanın kariyer testini çözebilir veya genel testi tekrar edebilirsin.": "You can take the career test for another domain or repeat the general test.",
-  "Uzmanlık Alanı Kariyer Testi": "Expertise Domain Career Test"
+  "Uzmanlık Alanı Kariyer Testi": "Expertise Domain Career Test",
+  "Uzmanlık testini tamamladın.": "You have completed the expertise test."
 };

@@ -902,7 +902,8 @@ body {
   margin-bottom: 12px;
 }
 
-.result-header h1 {
+.result-header h1,
+.result-header h2 {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   font-weight: 800;

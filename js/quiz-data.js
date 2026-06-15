@@ -532,6 +532,18 @@ export function getExpertiseQuestionSet(domainCode, expertiseId, specialtyLabel)
 
 export const SD_QUESTIONS = [
   {
+    id: 1,
+    text: "Bir yazılım projesinde gereksinimler sürekli değişmektedir. Ekip planladığı özellikleri zamanında teslim edemiyor ve müşteri memnuniyeti düşüktür. Ekip büyük bir sonraki sürümü beklemek yerine ne yapmalıdır?",
+    options: [
+      "Tüm gereksinimleri dondurup değişiklik taleplerini reddetmek",
+      "Kısa iterasyonlarla değer teslim etmek, geri bildirim döngüsünü kısaltmak ve değişime uyum sağlamak",
+      "Müşteri ile iletişimi keserek bağımsız çalışmak",
+      "Geliştirme sürecini tamamen belgelemeye odaklanmak"
+    ],
+    correctLetter: "B",
+    measured: "Agile mindset, iterative delivery, adaptability."
+  },
+  {
     id: 2,
     text: "Bir ödeme servisinde istemci bağlantısı koptuğunda kullanıcı aynı ödeme isteğini tekrar gönderebiliyor. Sistem aynı karttan bazen iki kez tahsilat yapıyor, bazen de “ödeme başarısız” görünmesine rağmen banka tarafında tahsilat gerçekleşiyor. Bu sorunu kalıcı çözmek için en kritik tasarım ne olmalıdır?",
     options: [
@@ -882,6 +894,18 @@ export const SD_QUESTIONS = [
 ];
 
 export const DS_AI_QUESTIONS = [
+  {
+    id: 1,
+    text: "Bir veri bilimi ekibi yeni bir makine öğrenmesi modeli geliştirmektedir. Model eğitim verisinde çok iyi sonuç vermesine rağmen daha önce görmediği gerçek dünya verisinde başarısız olmaktadır. Bu durumun temel nedeni nedir?",
+    options: [
+      "Model yeterince büyük değildir",
+      "Model eğitim verisine aşırı uyum sağlamış ve genelleme yapamamaktadır",
+      "Eğitim verisi çok fazladır",
+      "Doğruluk metriği yanlış seçilmiştir"
+    ],
+    correctLetter: "B",
+    measured: "Overfitting, generalization, model evaluation."
+  },
   {
     id: 2,
     text: "Bir müşteri kaybı modeli çok yüksek başarı göstermektedir. İncelemede eğitimde kullanılan bazı özelliklerin, müşterinin ayrılmasından sonra oluşan destek kayıtları ve kapanış nedenleri olduğu fark edilir. Model canlıda başarısız olacaktır. Neden?",
@@ -1234,6 +1258,18 @@ export const DS_AI_QUESTIONS = [
 
 export const CS_NET_QUESTIONS = [
   {
+    id: 1,
+    text: "Bir şirketin web uygulaması dışından gelen saldırılarla hesap ele geçirme girişimleri yaşanmaktadır. Kullanıcıların yalnızca parola ile giriş yapıyor olması temel risk faktörüdür. En öncelikli güvenlik iyileştirmesi hangisidir?",
+    options: [
+      "Parola minimum uzunluğunu 8 karaktere çıkarmak",
+      "Çok faktörlü kimlik doğrulama (MFA) ve anormal giriş davranışı tespiti uygulamak",
+      "Kullanıcılardan parolalarını sık sık değiştirmelerini istemek",
+      "Giriş sayfasına CAPTCHA eklemek"
+    ],
+    correctLetter: "B",
+    measured: "MFA, account security, authentication hardening."
+  },
+  {
     id: 2,
     text: "Bir müşteri portalında kullanıcı kendi faturalarını görmelidir. Ancak URL’deki fatura ID’sini değiştirerek başka müşterinin faturasına erişebilmektedir. Geliştirici “ID’leri UUID yaparsak sorun çözülür” diyor. Bu neden eksik bir çözümdür?",
     options: [
@@ -1585,6 +1621,18 @@ export const CS_NET_QUESTIONS = [
 
 export const IS_MT_QUESTIONS = [
   {
+    id: 1,
+    text: "Bir BT proje yöneticisi, proje kapsamının sürekli genişlediğini ve teslim tarihlerinin sürekli kaydığını fark etmektedir. Bu durumun temel nedeni nedir ve nasıl yönetilmelidir?",
+    options: [
+      "Daha fazla geliştirici ile proje hızlandırılmalıdır",
+      "Kapsam sürünmesi resmi değişiklik yönetimi ve paydash hizalamasıyla kontrol edilmelidir",
+      "Teslim tarihleri müşteriye bildirilmeden uzatılmalıdır",
+      "Proje kapsamı hiçbir zaman değiştirilemez"
+    ],
+    correctLetter: "B",
+    measured: "Scope management, change control, project governance."
+  },
+  {
     id: 2,
     text: "Bir şirkette satış siparişi girildiğinde stok düşmekte ancak muhasebe kaydı manuel yapılmaktadır. Ay sonunda stok, satış ve finans raporları tutmamaktadır. En kritik sistem ihtiyacı nedir?",
     options: [
@@ -1935,6 +1983,18 @@ export const IS_MT_QUESTIONS = [
 ];
 
 export const CL_DN_QUESTIONS = [
+  {
+    id: 1,
+    text: "Bir uygulama tek bir sunucuda çalışmaktadır. Yüksek trafik dönemlerinde sunucu çökmekte ve tüm hizmet durabilmektedir. Bulut mimarisi açısından en önce hangi iyileştirme yapılmalıdır?",
+    options: [
+      "Sunucunun RAM kapasitesini artırmak",
+      "Yük dengeleme ve otomatik ölçekleme ile yüksek erişilebilirlik mimarisi tasarlamak",
+      "Veritabanı bağlantı sayısını azaltmak",
+      "Uygulamanın özelliklerini azaltarak yük düşürmek"
+    ],
+    correctLetter: "B",
+    measured: "High availability, auto-scaling, cloud architecture."
+  },
   {
     id: 2,
     text: "Deployment işlemleri elle yapılmaktadır. Bazen yanlış branch, bazen eksik environment variable, bazen de eski build production’a çıkmaktadır. DevOps açısından kalıcı çözüm nedir?",

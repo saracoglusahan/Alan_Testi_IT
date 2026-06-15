@@ -50,38 +50,38 @@ function updateStaticUI() {
   ];
 
   elements.forEach(el => {
-     if (!el) return;
-     if (!el.hasAttribute('data-tr')) {
-        let originalText = el.innerText || el.textContent;
-        // avoid storing text containing HTML children like <br> if possible, but here we replace mostly leaf nodes
-        if (el.children.length > 0 && el.tagName !== 'H1' && el.tagName !== 'LABEL') return; 
-        
-        if (el.tagName === 'H1' && el.classList.contains('hero-title')) {
-           el.setAttribute('data-tr-1', 'Bilgisayar Teknolojileri');
-           el.setAttribute('data-tr-2', 'Yolunu Keşfet');
-        } else if (el.tagName === 'LABEL') {
-           el.setAttribute('data-tr', el.childNodes[0].nodeValue.trim());
-        } else {
-           originalText = originalText.replace(/\s+/g, ' ').trim();
-           el.setAttribute('data-tr', originalText);
-        }
-     }
-     
-     if (el.tagName === 'H1' && el.classList.contains('hero-title')) {
-        const t1 = el.getAttribute('data-tr-1');
-        const t2 = el.getAttribute('data-tr-2');
-        const new1 = currentLang === 'en' && UI_TRANSLATIONS[t1] ? UI_TRANSLATIONS[t1] : t1;
-        const new2 = currentLang === 'en' && UI_TRANSLATIONS[t2] ? UI_TRANSLATIONS[t2] : t2;
-        el.innerHTML = `${new1}<br><span class="title-gradient">${new2}</span>`;
-     } else if (el.tagName === 'LABEL') {
-        const trText = el.getAttribute('data-tr');
-        const newText = currentLang === 'en' && UI_TRANSLATIONS[trText] ? UI_TRANSLATIONS[trText] : trText;
-        if (newText) el.childNodes[0].nodeValue = newText + ' ';
-     } else {
-        const trText = el.getAttribute('data-tr');
-        const newText = currentLang === 'en' && UI_TRANSLATIONS[trText] ? UI_TRANSLATIONS[trText] : trText;
-        if (newText) el.textContent = newText;
-     }
+    if (!el) return;
+    if (!el.hasAttribute('data-tr')) {
+      let originalText = el.innerText || el.textContent;
+      // avoid storing text containing HTML children like <br> if possible, but here we replace mostly leaf nodes
+      if (el.children.length > 0 && el.tagName !== 'H1' && el.tagName !== 'LABEL') return;
+
+      if (el.tagName === 'H1' && el.classList.contains('hero-title')) {
+        el.setAttribute('data-tr-1', 'Bilgisayar Teknolojileri');
+        el.setAttribute('data-tr-2', 'Yolunu Keşfet');
+      } else if (el.tagName === 'LABEL') {
+        el.setAttribute('data-tr', el.childNodes[0].nodeValue.trim());
+      } else {
+        originalText = originalText.replace(/\s+/g, ' ').trim();
+        el.setAttribute('data-tr', originalText);
+      }
+    }
+
+    if (el.tagName === 'H1' && el.classList.contains('hero-title')) {
+      const t1 = el.getAttribute('data-tr-1');
+      const t2 = el.getAttribute('data-tr-2');
+      const new1 = currentLang === 'en' && UI_TRANSLATIONS[t1] ? UI_TRANSLATIONS[t1] : t1;
+      const new2 = currentLang === 'en' && UI_TRANSLATIONS[t2] ? UI_TRANSLATIONS[t2] : t2;
+      el.innerHTML = `${new1}<br><span class="title-gradient">${new2}</span>`;
+    } else if (el.tagName === 'LABEL') {
+      const trText = el.getAttribute('data-tr');
+      const newText = currentLang === 'en' && UI_TRANSLATIONS[trText] ? UI_TRANSLATIONS[trText] : trText;
+      if (newText) el.childNodes[0].nodeValue = newText + ' ';
+    } else {
+      const trText = el.getAttribute('data-tr');
+      const newText = currentLang === 'en' && UI_TRANSLATIONS[trText] ? UI_TRANSLATIONS[trText] : trText;
+      if (newText) el.textContent = newText;
+    }
   });
 
   // Render dynamic ui parts if needed
@@ -92,26 +92,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnTr = document.getElementById('lang-tr');
   const btnEn = document.getElementById('lang-en');
   if (btnTr && btnEn) {
-     btnTr.addEventListener('click', async () => {
-        currentLang = 'tr';
-        btnTr.classList.add('active');
-        btnEn.classList.remove('active');
-        updateStaticUI();
-     });
-     btnEn.addEventListener('click', async () => {
-        if (!quizDataEn) {
-           try {
-             const res = await fetch('./js/quiz-data-en.json');
-             quizDataEn = await res.json();
-           } catch(e) {
-             console.error("Failed to load English quiz data", e);
-           }
+    btnTr.addEventListener('click', async () => {
+      currentLang = 'tr';
+      btnTr.classList.add('active');
+      btnEn.classList.remove('active');
+      updateStaticUI();
+    });
+    btnEn.addEventListener('click', async () => {
+      if (!quizDataEn) {
+        try {
+          const res = await fetch('./js/quiz-data-en.json');
+          quizDataEn = await res.json();
+        } catch (e) {
+          console.error("Failed to load English quiz data", e);
         }
-        currentLang = 'en';
-        btnEn.classList.add('active');
-        btnTr.classList.remove('active');
-        updateStaticUI();
-     });
+      }
+      currentLang = 'en';
+      btnEn.classList.add('active');
+      btnTr.classList.remove('active');
+      updateStaticUI();
+    });
   }
 });
 
@@ -120,12 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
 let db = null;
 try {
   const firebaseConfig = {
-    apiKey:            import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain:        import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId:         import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket:     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId:             import.meta.env.VITE_FIREBASE_APP_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
   };
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   db = firebase.firestore();
@@ -136,51 +136,51 @@ try {
 
 // --- KATEGORİ SABİTLERİ ---
 const KATEGORILER = {
-    "SD": "Yazılım Geliştirme",
-    "DS-AI": "Veri Bilimi ve Yapay Zeka",
-    "CS-NET": "Siber Güvenlik ve Ağ",
-    "IS-MT": "Bilişim Sistemleri ve BT Yönetimi",
-    "CL-DN": "Bulut, Altyapı ve DevOps",
+  "SD": "Yazılım Geliştirme",
+  "DS-AI": "Veri Bilimi ve Yapay Zeka",
+  "CS-NET": "Siber Güvenlik ve Ağ",
+  "IS-MT": "Bilişim Sistemleri ve BT Yönetimi",
+  "CL-DN": "Bulut, Altyapı ve DevOps",
 };
 const AGIRLIKLANDIRMA_MATRISI = {
-    "Q1":  { "SD": 0.35, "DS-AI": 0.10, "CS-NET": 0.00, "IS-MT": 0.20, "CL-DN": 0.35 },
-    "Q2":  { "SD": 0.10, "DS-AI": 0.55, "CS-NET": 0.15, "IS-MT": 0.20, "CL-DN": 0.00 },
-    "Q3":  { "SD": 0.20, "DS-AI": 0.00, "CS-NET": 0.55, "IS-MT": 0.10, "CL-DN": 0.15 },
-    "Q4":  { "SD": 0.20, "DS-AI": 0.10, "CS-NET": 0.00, "IS-MT": 0.60, "CL-DN": 0.10 },
-    "Q5":  { "SD": 0.30, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.10, "CL-DN": 0.50 },
-    "Q6":  { "SD": 0.55, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.15, "CL-DN": 0.20 },
-    "Q7":  { "SD": 0.10, "DS-AI": 0.55, "CS-NET": 0.00, "IS-MT": 0.25, "CL-DN": 0.10 },
-    "Q8":  { "SD": 0.25, "DS-AI": 0.00, "CS-NET": 0.50, "IS-MT": 0.10, "CL-DN": 0.15 },
-    "Q9":  { "SD": 0.15, "DS-AI": 0.20, "CS-NET": 0.00, "IS-MT": 0.55, "CL-DN": 0.10 },
-    "Q10": { "SD": 0.35, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.15, "CL-DN": 0.40 },
-    "Q11": { "SD": 0.55, "DS-AI": 0.15, "CS-NET": 0.00, "IS-MT": 0.15, "CL-DN": 0.15 },
-    "Q12": { "SD": 0.15, "DS-AI": 0.65, "CS-NET": 0.00, "IS-MT": 0.20, "CL-DN": 0.00 },
-    "Q13": { "SD": 0.00, "DS-AI": 0.00, "CS-NET": 0.60, "IS-MT": 0.20, "CL-DN": 0.20 },
-    "Q14": { "SD": 0.10, "DS-AI": 0.00, "CS-NET": 0.25, "IS-MT": 0.20, "CL-DN": 0.45 },
-    "Q15": { "SD": 0.45, "DS-AI": 0.00, "CS-NET": 0.00, "IS-MT": 0.45, "CL-DN": 0.10 },
-    "Q16": { "SD": 0.20, "DS-AI": 0.00, "CS-NET": 0.65, "IS-MT": 0.15, "CL-DN": 0.00 },
-    "Q17": { "SD": 0.10, "DS-AI": 0.45, "CS-NET": 0.00, "IS-MT": 0.35, "CL-DN": 0.10 },
-    "Q18": { "SD": 0.40, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.10, "CL-DN": 0.40 },
-    "Q19": { "SD": 0.00, "DS-AI": 0.00, "CS-NET": 0.55, "IS-MT": 0.25, "CL-DN": 0.20 },
-    "Q20": { "SD": 0.25, "DS-AI": 0.20, "CS-NET": 0.00, "IS-MT": 0.10, "CL-DN": 0.45 },
-    "Q21": { "SD": 0.50, "DS-AI": 0.00, "CS-NET": 0.00, "IS-MT": 0.30, "CL-DN": 0.20 },
-    "Q22": { "SD": 0.15, "DS-AI": 0.00, "CS-NET": 0.15, "IS-MT": 0.60, "CL-DN": 0.10 },
-    "Q23": { "SD": 0.10, "DS-AI": 0.55, "CS-NET": 0.00, "IS-MT": 0.25, "CL-DN": 0.10 },
-    "Q24": { "SD": 0.35, "DS-AI": 0.00, "CS-NET": 0.45, "IS-MT": 0.10, "CL-DN": 0.10 },
-    "Q25": { "SD": 0.25, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.15, "CL-DN": 0.50 },
-    "Q26": { "SD": 0.30, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.10, "CL-DN": 0.50 },
-    "Q27": { "SD": 0.45, "DS-AI": 0.15, "CS-NET": 0.00, "IS-MT": 0.30, "CL-DN": 0.10 },
-    "Q28": { "SD": 0.00, "DS-AI": 0.25, "CS-NET": 0.50, "IS-MT": 0.25, "CL-DN": 0.00 },
-    "Q29": { "SD": 0.00, "DS-AI": 0.40, "CS-NET": 0.30, "IS-MT": 0.20, "CL-DN": 0.10 },
-    "Q30": { "SD": 0.45, "DS-AI": 0.00, "CS-NET": 0.00, "IS-MT": 0.30, "CL-DN": 0.25 },
+  "Q1": { "SD": 0.35, "DS-AI": 0.10, "CS-NET": 0.00, "IS-MT": 0.20, "CL-DN": 0.35 },
+  "Q2": { "SD": 0.10, "DS-AI": 0.55, "CS-NET": 0.15, "IS-MT": 0.20, "CL-DN": 0.00 },
+  "Q3": { "SD": 0.20, "DS-AI": 0.00, "CS-NET": 0.55, "IS-MT": 0.10, "CL-DN": 0.15 },
+  "Q4": { "SD": 0.20, "DS-AI": 0.10, "CS-NET": 0.00, "IS-MT": 0.60, "CL-DN": 0.10 },
+  "Q5": { "SD": 0.30, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.10, "CL-DN": 0.50 },
+  "Q6": { "SD": 0.55, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.15, "CL-DN": 0.20 },
+  "Q7": { "SD": 0.10, "DS-AI": 0.55, "CS-NET": 0.00, "IS-MT": 0.25, "CL-DN": 0.10 },
+  "Q8": { "SD": 0.25, "DS-AI": 0.00, "CS-NET": 0.50, "IS-MT": 0.10, "CL-DN": 0.15 },
+  "Q9": { "SD": 0.15, "DS-AI": 0.20, "CS-NET": 0.00, "IS-MT": 0.55, "CL-DN": 0.10 },
+  "Q10": { "SD": 0.35, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.15, "CL-DN": 0.40 },
+  "Q11": { "SD": 0.55, "DS-AI": 0.15, "CS-NET": 0.00, "IS-MT": 0.15, "CL-DN": 0.15 },
+  "Q12": { "SD": 0.15, "DS-AI": 0.65, "CS-NET": 0.00, "IS-MT": 0.20, "CL-DN": 0.00 },
+  "Q13": { "SD": 0.00, "DS-AI": 0.00, "CS-NET": 0.60, "IS-MT": 0.20, "CL-DN": 0.20 },
+  "Q14": { "SD": 0.10, "DS-AI": 0.00, "CS-NET": 0.25, "IS-MT": 0.20, "CL-DN": 0.45 },
+  "Q15": { "SD": 0.45, "DS-AI": 0.00, "CS-NET": 0.00, "IS-MT": 0.45, "CL-DN": 0.10 },
+  "Q16": { "SD": 0.20, "DS-AI": 0.00, "CS-NET": 0.65, "IS-MT": 0.15, "CL-DN": 0.00 },
+  "Q17": { "SD": 0.10, "DS-AI": 0.45, "CS-NET": 0.00, "IS-MT": 0.35, "CL-DN": 0.10 },
+  "Q18": { "SD": 0.40, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.10, "CL-DN": 0.40 },
+  "Q19": { "SD": 0.00, "DS-AI": 0.00, "CS-NET": 0.55, "IS-MT": 0.25, "CL-DN": 0.20 },
+  "Q20": { "SD": 0.25, "DS-AI": 0.20, "CS-NET": 0.00, "IS-MT": 0.10, "CL-DN": 0.45 },
+  "Q21": { "SD": 0.50, "DS-AI": 0.00, "CS-NET": 0.00, "IS-MT": 0.30, "CL-DN": 0.20 },
+  "Q22": { "SD": 0.15, "DS-AI": 0.00, "CS-NET": 0.15, "IS-MT": 0.60, "CL-DN": 0.10 },
+  "Q23": { "SD": 0.10, "DS-AI": 0.55, "CS-NET": 0.00, "IS-MT": 0.25, "CL-DN": 0.10 },
+  "Q24": { "SD": 0.35, "DS-AI": 0.00, "CS-NET": 0.45, "IS-MT": 0.10, "CL-DN": 0.10 },
+  "Q25": { "SD": 0.25, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.15, "CL-DN": 0.50 },
+  "Q26": { "SD": 0.30, "DS-AI": 0.00, "CS-NET": 0.10, "IS-MT": 0.10, "CL-DN": 0.50 },
+  "Q27": { "SD": 0.45, "DS-AI": 0.15, "CS-NET": 0.00, "IS-MT": 0.30, "CL-DN": 0.10 },
+  "Q28": { "SD": 0.00, "DS-AI": 0.25, "CS-NET": 0.50, "IS-MT": 0.25, "CL-DN": 0.00 },
+  "Q29": { "SD": 0.00, "DS-AI": 0.40, "CS-NET": 0.30, "IS-MT": 0.20, "CL-DN": 0.10 },
+  "Q30": { "SD": 0.45, "DS-AI": 0.00, "CS-NET": 0.00, "IS-MT": 0.30, "CL-DN": 0.25 },
 };
 
 const DOGRU_CEVAPLAR = {
-    "Q1": "B", "Q2": "C", "Q3": "D", "Q4": "C", "Q5": "C", "Q6": "C",
-    "Q7": "B", "Q8": "E", "Q9": "C", "Q10": "C", "Q11": "C", "Q12": "B",
-    "Q13": "B", "Q14": "C", "Q15": "C", "Q16": "C", "Q17": "C", "Q18": "C",
-    "Q19": "C", "Q20": "C", "Q21": "A", "Q22": "B", "Q23": "C", "Q24": "C",
-    "Q25": "C", "Q26": "C", "Q27": "C", "Q28": "C", "Q29": "C", "Q30": "C",
+  "Q1": "B", "Q2": "C", "Q3": "D", "Q4": "C", "Q5": "C", "Q6": "C",
+  "Q7": "B", "Q8": "E", "Q9": "C", "Q10": "C", "Q11": "C", "Q12": "B",
+  "Q13": "B", "Q14": "C", "Q15": "C", "Q16": "C", "Q17": "C", "Q18": "C",
+  "Q19": "C", "Q20": "C", "Q21": "A", "Q22": "B", "Q23": "C", "Q24": "C",
+  "Q25": "C", "Q26": "C", "Q27": "C", "Q28": "C", "Q29": "C", "Q30": "C",
 };
 
 // A, B, C, D harflerini tutan dizi
@@ -1067,89 +1067,72 @@ function startDomainTest(domainCode) {
   startQuizSession();
 }
 
+function startExpertiseTest(domainCode, expertiseId, label) {
+  const pack = getExpertiseQuestionSet(domainCode, expertiseId, label);
+  if (!pack || !pack.questions.length) {
+    console.warn("Uzmanlık testi bulunamadı:", domainCode, expertiseId);
+    return;
+  }
+  quizKind = "expertise";
+  activeDomainCode = domainCode;
+  activeQuestions = pack.questions;
+  activeExpertiseDogru = pack.dogruCevaplar;
+  activeExpertiseMeta = { domainCode, expertiseId, label: pack.title };
+  activeAnswers = new Array(activeQuestions.length).fill(null);
+  startQuizSession();
+}
+
 
 function renderQuestion() {
-    const q = activeQuestions[currentQuestionIndex];
-    let qText = q.text;
-    let qOptions = q.options;
+  const q = activeQuestions[currentQuestionIndex];
+  let qText = q.text;
+  let qOptions = q.options;
 
-    if (currentLang === 'en' && quizDataEn) {
-        if (quizKind === 'general' && quizDataEn.appQuestions) {
-            const enQ = quizDataEn.appQuestions.find(x => x.id === q.id);
-            if (enQ) {
-               qText = enQ.text;
-               qOptions = enQ.options;
-            }
-        } else if (quizKind === 'domain' || quizKind === 'expertise') {
-            const enQ = quizDataEn.SD_QUESTIONS ? quizDataEn.SD_QUESTIONS.find(x => x.id === q.id) : null;
-            if (enQ) {
-               qText = enQ.text;
-               qOptions = enQ.options;
-            } else {
-               // Might be from SD_BANK or SHARED
-               // Finding deeply is slow, so we can just use simple string replacement lookup if we flattened it
-               // or we rely on the translations JSON structure
-               let found = false;
-               for (const key in quizDataEn.SD_BANK) {
-                   const foundEnQ = quizDataEn.SD_BANK[key].find((b, idx) => b.text && q.text && b.text === q.text); // Wait, this doesn't work if q.text is TR and we look up EN.
-               }
-            }
+  if (currentLang === 'en' && quizDataEn) {
+    // Lookup general questions
+    const enAppQ = quizDataEn.appQuestions?.find(x => x.id === q.id && quizKind === 'general');
+    const enSdQ = quizDataEn.SD_QUESTIONS?.find(x => x.id === q.id && (quizKind === 'domain' || quizKind === 'expertise'));
+
+    if (enAppQ) {
+      qText = enAppQ.text;
+      qOptions = enAppQ.options;
+    } else if (enSdQ) {
+      qText = enSdQ.text;
+      qOptions = enSdQ.options;
+    } else {
+      // Check SD_BANK and SHARED based on index if we can, or just fallback.
+      // Since expertise questions are recreated in getExpertiseQuestionSet, their `text` is the TR text.
+      // We can find the English equivalent by matching the index!
+      // But `q` has `id` which is `i + 1`. So we can use activeExpertiseMeta to find the bank!
+      if (activeExpertiseMeta) {
+        const domCode = activeExpertiseMeta.domainCode;
+        const expId = activeExpertiseMeta.expertiseId;
+        let enBlock = null;
+        if (domCode === 'SD' && quizDataEn.SD_BANK && quizDataEn.SD_BANK[expId]) {
+          enBlock = quizDataEn.SD_BANK[expId][q.id - 1];
+        } else if (quizDataEn.SHARED && quizDataEn.SHARED[domCode]) {
+          enBlock = quizDataEn.SHARED[domCode][q.id - 1];
         }
+        if (enBlock) {
+          qText = enBlock.text;
+          qOptions = enBlock.options;
+        }
+      }
     }
+  }
 
-    // Wait, the easiest way to translate questions from external datasets is to lookup by the original TR string!
-    // Since we ran translation on the arrays, maybe we can just create a global map?
-    // Let's create a getTranslatedText(trText) that looks inside quizDataEn.
-    
-    // Simpler logic using global dictionary approach:
-    // We can just use t(text) if we added all questions to UI_TRANSLATIONS, but we didn't.
-    // Let's implement a dynamic lookup in quizDataEn.
-    
-    if (currentLang === 'en' && quizDataEn) {
-       // Lookup general questions
-       const enAppQ = quizDataEn.appQuestions?.find(x => x.id === q.id && quizKind === 'general');
-       const enSdQ = quizDataEn.SD_QUESTIONS?.find(x => x.id === q.id && (quizKind === 'domain' || quizKind === 'expertise'));
-       
-       if (enAppQ) {
-          qText = enAppQ.text;
-          qOptions = enAppQ.options;
-       } else if (enSdQ) {
-          qText = enSdQ.text;
-          qOptions = enSdQ.options;
-       } else {
-          // Check SD_BANK and SHARED based on index if we can, or just fallback.
-          // Since expertise questions are recreated in getExpertiseQuestionSet, their `text` is the TR text.
-          // We can find the English equivalent by matching the index!
-          // But `q` has `id` which is `i + 1`. So we can use activeExpertiseMeta to find the bank!
-          if (activeExpertiseMeta) {
-              const domCode = activeExpertiseMeta.domainCode;
-              const expId = activeExpertiseMeta.expertiseId;
-              let enBlock = null;
-              if (domCode === 'SD' && quizDataEn.SD_BANK && quizDataEn.SD_BANK[expId]) {
-                 enBlock = quizDataEn.SD_BANK[expId][q.id - 1];
-              } else if (quizDataEn.SHARED && quizDataEn.SHARED[domCode]) {
-                 enBlock = quizDataEn.SHARED[domCode][q.id - 1];
-              }
-              if (enBlock) {
-                 qText = enBlock.text;
-                 qOptions = enBlock.options;
-              }
-          }
-       }
-    }
+  questionTextEl.textContent = qText;
 
-    questionTextEl.textContent = qText;
+  optionsEl.innerHTML = "";
 
-    optionsEl.innerHTML = "";
+  qOptions.forEach((optionText, index) => {
+    const optionLetter = optionLabels[index];
+    const soruName = `Q${q.id}`;
+    const uniqueId = `${soruName}_${optionLetter}`;
 
-    qOptions.forEach((optionText, index) => {
-        const optionLetter = optionLabels[index];
-        const soruName = `Q${q.id}`;
-        const uniqueId = `${soruName}_${optionLetter}`;
+    const isChecked = activeAnswers[currentQuestionIndex] === optionLetter;
 
-        const isChecked = activeAnswers[currentQuestionIndex] === optionLetter;
-
-        const optionHTML = `
+    const optionHTML = `
             <label for="${uniqueId}" class="option-label">
                 <div class="option-letter">${optionLetter}</div> 
                 <input type="radio" 
@@ -1161,14 +1144,14 @@ function renderQuestion() {
                 <span>${optionText}</span>
             </label>
         `;
-        optionsEl.innerHTML += optionHTML;
-    });
+    optionsEl.innerHTML += optionHTML;
+  });
 
-    syncSelectedUI();
-    saveState();
+  syncSelectedUI();
+  saveState();
 
-    errorMessageEl.classList.add("hidden");
-    errorMessageEl.textContent = "";
+  errorMessageEl.classList.add("hidden");
+  errorMessageEl.textContent = "";
 }
 
 function updateProgress() {
@@ -1208,7 +1191,7 @@ function saveState() {
       payload.expertiseLabel = activeExpertiseMeta.label;
     }
     localStorage.setItem(UNIFIED_STORAGE_KEY, JSON.stringify(payload));
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function rehydrateFromPayload(parsed) {
@@ -1233,8 +1216,15 @@ function rehydrateFromPayload(parsed) {
     quizKind = "domain";
     activeAnswers = parsed.answers;
     activeDomainCode = parsed.domainCode || null;
-    activeExpertiseDogru = null;
-    activeExpertiseMeta = null;
+    // Reload dogruCevaplar so scoring works correctly on resume
+    if (activeDomainCode) {
+      const pack = getDomainCareerSet(activeDomainCode);
+      activeExpertiseDogru = pack ? pack.dogruCevaplar : null;
+      activeExpertiseMeta = pack ? { domainCode: activeDomainCode, label: pack.title, matrix: pack.matrix } : null;
+    } else {
+      activeExpertiseDogru = null;
+      activeExpertiseMeta = null;
+    }
     return true;
   }
   if (kind === "expertise") {
@@ -1276,7 +1266,7 @@ function loadState() {
       }
       return null;
     }
-  } catch (e) {}
+  } catch (e) { }
 
   try {
     const raw = localStorage.getItem(LEGACY_STORAGE_KEY);
@@ -1302,7 +1292,7 @@ function loadState() {
       warningShown = !!parsed.warningShown;
       return "active";
     }
-  } catch (e) {}
+  } catch (e) { }
   return null;
 }
 
@@ -1310,7 +1300,7 @@ function clearState() {
   try {
     localStorage.removeItem(UNIFIED_STORAGE_KEY);
     localStorage.removeItem(LEGACY_STORAGE_KEY);
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function syncSelectedUI() {
@@ -1328,25 +1318,25 @@ function syncSelectedUI() {
 
 
 function handleNext() {
-    const q = activeQuestions[currentQuestionIndex];
-    const currentQName = `Q${q.id}`;
-    const selected = document.querySelector(`input[name="${currentQName}"]:checked`);
-    
-    if (!selected) {
-      showError(t("Devam etmek için bir seçenek işaretlemen gerekiyor."));
-      return;
-    }
-    const selectedValue = selected.value; 
-    activeAnswers[currentQuestionIndex] = selectedValue;
+  const q = activeQuestions[currentQuestionIndex];
+  const currentQName = `Q${q.id}`;
+  const selected = document.querySelector(`input[name="${currentQName}"]:checked`);
 
-    if (currentQuestionIndex < activeQuestions.length - 1) {
-        currentQuestionIndex += 1;
-        saveState();
-        renderQuestion();
-        updateProgress();
-    } else {
-        showResults();
-    }
+  if (!selected) {
+    showError(t("Devam etmek için bir seçenek işaretlemen gerekiyor."));
+    return;
+  }
+  const selectedValue = selected.value;
+  activeAnswers[currentQuestionIndex] = selectedValue;
+
+  if (currentQuestionIndex < activeQuestions.length - 1) {
+    currentQuestionIndex += 1;
+    saveState();
+    renderQuestion();
+    updateProgress();
+  } else {
+    showResults();
+  }
 }
 
 function handleFinishQuiz() {
@@ -1424,7 +1414,7 @@ function renderResultFollowupDomain(domainCode) {
 function showResults() {
   stopQuizTimer();
   quizEndTime = null;
-  fiveMinWarningShown = false;
+  warningShown = false;
   if (timerWarningBannerEl) timerWarningBannerEl.classList.add("hidden");
   saveState();
 
@@ -1470,7 +1460,7 @@ function showResults() {
       if (activeExpertiseDogru && activeExpertiseDogru[key] === activeAnswers[i]) dogru += 1;
     }
     const pct = Math.round((dogru / activeQuestions.length) * 1000) / 10;
-    
+
     // Calculate expertise scores using the specific matrix
     const kategoriSkorlari = skorlariHesapla(
       activeAnswers,
@@ -1478,55 +1468,79 @@ function showResults() {
       activeExpertiseDogru,
       activeQuestions
     );
-    
+
     let enYuksekSkor = -1;
     let enGucluKategoriKodu = null;
-    
+
     // Filter the matrix to only the specialties for this domain
     const domainDef = UZMANLIK_YAPISI.find(d => d.code === activeDomainCode);
     const validSpecialties = domainDef ? domainDef.specialties.map(s => s.id) : [];
-    
+
     for (const kategoriKodu in kategoriSkorlari) {
-        if (kategoriKodu === activeDomainCode) continue; // Skip the main domain itself for the winner
-        if (!validSpecialties.includes(kategoriKodu) && validSpecialties.length > 0) continue;
-        
-        if (kategoriSkorlari[kategoriKodu] > enYuksekSkor) {
-            enYuksekSkor = kategoriSkorlari[kategoriKodu];
-            enGucluKategoriKodu = kategoriKodu;
-        }
+      if (kategoriKodu === activeDomainCode) continue; // Skip the main domain itself for the winner
+      if (!validSpecialties.includes(kategoriKodu) && validSpecialties.length > 0) continue;
+
+      if (kategoriSkorlari[kategoriKodu] > enYuksekSkor) {
+        enYuksekSkor = kategoriSkorlari[kategoriKodu];
+        enGucluKategoriKodu = kategoriKodu;
+      }
     }
-    
+
     let baslik = activeExpertiseMeta?.label || t("Uzmanlık Alanı Kariyer Testi");
-    
+
     let enGucluUzmanlikAd = t("Belirlenemedi");
     if (domainDef) {
-        const spec = domainDef.specialties.find(s => s.id === enGucluKategoriKodu);
-        if (spec) enGucluUzmanlikAd = spec.label;
+      const spec = domainDef.specialties.find(s => s.id === enGucluKategoriKodu);
+      if (spec) enGucluUzmanlikAd = spec.label;
     }
-    
+
     resultScoreEl.textContent = `${baslik}${t(" Sonucu")}`;
-    
+
     let summary = `
       <p><strong>${dogru}</strong> / ${activeQuestions.length}${t(" genel doğru oranı · ")}<strong>%${pct}</strong></p>
       <p>${t("Cevaplarına göre bu alandaki alt uzmanlık eğilimin ")}<strong>${enGucluUzmanlikAd}</strong>${t(" tarafında daha ağır basıyor.")}</p>
       <p>${t("Ağırlıklı uzmanlık özeti:")}</p>
     `;
-    
+
     for (const specId of validSpecialties) {
       if (kategoriSkorlari[specId] !== undefined) {
-         const specAd = domainDef.specialties.find(s => s.id === specId)?.label || specId;
-         summary += `<br/>— ${specAd}: ${kategoriSkorlari[specId].toFixed(2)}${t(" puan")}`;
+        const specAd = domainDef.specialties.find(s => s.id === specId)?.label || specId;
+        summary += `<br/>— ${specAd}: ${kategoriSkorlari[specId].toFixed(2)}${t(" puan")}`;
       }
     }
-    
+
     resultSummaryEl.innerHTML = summary;
     resultTagEl.textContent = enGucluUzmanlikAd;
-    
+
     renderResultFollowupDomain(activeDomainCode);
-    
+
     saveResultWithProfile(kategoriSkorlari, enGucluUzmanlikAd, {
       testKind: "domain-career",
       domainCode: activeDomainCode,
+      dogruSayisi: dogru,
+      soruSayisi: activeQuestions.length,
+      yuzde: pct,
+    });
+  } else if (quizKind === "expertise") {
+    let dogru = 0;
+    for (let i = 0; i < activeQuestions.length; i++) {
+      const key = `Q${activeQuestions[i].id}`;
+      if (activeExpertiseDogru && activeExpertiseDogru[key] === activeAnswers[i]) dogru += 1;
+    }
+    const pct = Math.round((dogru / activeQuestions.length) * 1000) / 10;
+    const baslik = activeExpertiseMeta?.label || t("Uzmanlık Alanı Kariyer Testi");
+    resultScoreEl.textContent = `${baslik}${t(" Sonucu")}`;
+    let summary = `
+      <p><strong>${dogru}</strong> / ${activeQuestions.length}${t(" genel doğru oranı · ")}<strong>%${pct}</strong></p>
+      <p>${t("Uzmanlık testini tamamladın.")}</p>
+    `;
+    resultSummaryEl.innerHTML = summary;
+    resultTagEl.textContent = baslik;
+    renderResultFollowupDomain(activeExpertiseMeta?.domainCode || "");
+    saveResultWithProfile({}, baslik, {
+      testKind: "expertise",
+      domainCode: activeExpertiseMeta?.domainCode,
+      expertiseId: activeExpertiseMeta?.expertiseId,
       dogruSayisi: dogru,
       soruSayisi: activeQuestions.length,
       yuzde: pct,
@@ -1546,7 +1560,7 @@ function saveResultWithProfile(kategoriSkorlari, enGucluKategori, extra = {}) {
     try {
       const raw = localStorage.getItem(PROFILE_KEY);
       if (raw) currentProfile = JSON.parse(raw);
-    } catch {}
+    } catch { }
   }
 
   const testKind = extra.testKind || "general";
@@ -1596,7 +1610,7 @@ function saveResultWithProfile(kategoriSkorlari, enGucluKategori, extra = {}) {
 
   try {
     localStorage.removeItem(PROFILE_KEY);
-  } catch {}
+  } catch { }
 
   submitToFirestore(entry);
 }
@@ -1624,8 +1638,8 @@ function renderResultProfileRow() {
 
   rowEl.innerHTML = [
     chip("👤", "Takma Ad", profile.nickname),
-    chip("🎓", "Sınıf",    profile.egitim),
-    chip("📚", "Bölüm",    profile.bolum),
+    chip("🎓", "Sınıf", profile.egitim),
+    chip("📚", "Bölüm", profile.bolum),
   ].join("");
   rowEl.classList.remove("hidden");
 }
@@ -1654,35 +1668,35 @@ optionsEl.addEventListener("change", (e) => {
 
 // --- SKOR HESAPLAMA FONKSİYONU (Eksik olan kısım buraya eklendi) ---
 function skorlariHesapla(kullaniciCevaplari, matris, dogruCevaplar, questionList) {
-    const list = questionList || questions;
-    const skorlar = {};
+  const list = questionList || questions;
+  const skorlar = {};
 
-    // Dinamik olarak matristeki tüm olası anahtarları (kategorileri) topla
-    for (const key in matris) {
-        for (const cat in matris[key]) {
-            skorlar[cat] = 0.0;
-        }
+  // Dinamik olarak matristeki tüm olası anahtarları (kategorileri) topla
+  for (const key in matris) {
+    for (const cat in matris[key]) {
+      skorlar[cat] = 0.0;
     }
+  }
 
-    // Default fallback in case matrix is empty but we still want the 5 main domains (for general test)
-    const defaults = ["SD", "DS-AI", "CS-NET", "IS-MT", "CL-DN"];
-    defaults.forEach(d => { if (skorlar[d] === undefined) skorlar[d] = 0.0; });
+  // Default fallback in case matrix is empty but we still want the 5 main domains (for general test)
+  const defaults = ["SD", "DS-AI", "CS-NET", "IS-MT", "CL-DN"];
+  defaults.forEach(d => { if (skorlar[d] === undefined) skorlar[d] = 0.0; });
 
-    for (let i = 0; i < list.length; i++) {
-        const soruNo = `Q${list[i].id}`;
-        const secilenCevap = kullaniciCevaplari[i];
+  for (let i = 0; i < list.length; i++) {
+    const soruNo = `Q${list[i].id}`;
+    const secilenCevap = kullaniciCevaplari[i];
 
-        if (!secilenCevap) continue;
+    if (!secilenCevap) continue;
 
-        if (dogruCevaplar[soruNo] === secilenCevap && matris[soruNo]) {
-            const row = matris[soruNo];
-            for (const kategoriKodu in skorlar) {
-                skorlar[kategoriKodu] += row[kategoriKodu] || 0.0;
-            }
-        }
+    if (dogruCevaplar[soruNo] === secilenCevap && matris[soruNo]) {
+      const row = matris[soruNo];
+      for (const kategoriKodu in skorlar) {
+        skorlar[kategoriKodu] += row[kategoriKodu] || 0.0;
+      }
     }
+  }
 
-    return skorlar;
+  return skorlar;
 }
 
 
@@ -1717,10 +1731,10 @@ function initTestHub() {
     // UZMANLIK_YAPISI might be dynamically translated if we load quizDataEn, or we just look it up
     let dLabel = domain.label;
     if (currentLang === 'en' && quizDataEn && quizDataEn.UZMANLIK_YAPISI) {
-       const enDom = quizDataEn.UZMANLIK_YAPISI.find(x => x.code === domain.code);
-       if (enDom) dLabel = enDom.label;
+      const enDom = quizDataEn.UZMANLIK_YAPISI.find(x => x.code === domain.code);
+      if (enDom) dLabel = enDom.label;
     } else {
-       dLabel = t(domain.label);
+      dLabel = t(domain.label);
     }
     h.textContent = dLabel;
     block.appendChild(h);
@@ -1754,7 +1768,7 @@ function tryResumeQuiz() {
     try {
       const raw = localStorage.getItem(PROFILE_KEY);
       if (raw) currentProfile = JSON.parse(raw);
-    } catch {}
+    } catch { }
   }
 
   if (status === "expired") {
@@ -1769,7 +1783,7 @@ function tryResumeQuiz() {
     quizSection.classList.remove("hidden");
     resultSection.classList.remove("is-visible");
     afterQuizActions.classList.add("hidden");
-    if (fiveMinWarningShown && timerWarningBannerEl) {
+    if (warningShown && timerWarningBannerEl) {
       timerWarningBannerEl.classList.remove("hidden");
     }
     renderQuestion();
@@ -1801,9 +1815,9 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================
 
 /** localStorage anahtarları */
-const RESULTS_KEY   = "it_test_results_v1";      // tüm sonuçlar dizisi
-const PROFILE_KEY   = "it_test_current_profile_v1"; // aktif kullanıcı profili
-const USERS_KEY     = "it_test_users_v1"; // nickname + parola hash kayıtları
+const RESULTS_KEY = "it_test_results_v1";      // tüm sonuçlar dizisi
+const PROFILE_KEY = "it_test_current_profile_v1"; // aktif kullanıcı profili
+const USERS_KEY = "it_test_users_v1"; // nickname + parola hash kayıtları
 
 /** Bölüm listesi */
 const BOLUMLER = [
@@ -1836,7 +1850,7 @@ function getAllResults() {
 }
 
 function saveAllResults(arr) {
-  try { localStorage.setItem(RESULTS_KEY, JSON.stringify(arr)); } catch {}
+  try { localStorage.setItem(RESULTS_KEY, JSON.stringify(arr)); } catch { }
 }
 
 // ---------- Kullanıcı hesabı yardımcıları ----------
@@ -1852,7 +1866,7 @@ function getAllUsers() {
 }
 
 function saveAllUsers(arr) {
-  try { localStorage.setItem(USERS_KEY, JSON.stringify(arr)); } catch {}
+  try { localStorage.setItem(USERS_KEY, JSON.stringify(arr)); } catch { }
 }
 
 async function hashPassword(rawPassword) {
@@ -1918,38 +1932,38 @@ async function authenticateOrRegisterNickname(nickRaw, passwordRaw) {
 // ---------- Modal DOM referansları ----------
 
 let regOverlay, regForm, inputNickname, inputPassword, nicknameStatus, nicknameMsg, passwordStatus, passwordMsg,
-    inputEgitim, egitimMsg, inputBolum, bolumMsg,
-    bolumTrigger, bolumDisplay, bolumDropdown, bolumSearchInput, bolumList,
-    regSubmitBtn;
+  inputEgitim, egitimMsg, inputBolum, bolumMsg,
+  bolumTrigger, bolumDisplay, bolumDropdown, bolumSearchInput, bolumList,
+  regSubmitBtn;
 
 function initRegModule() {
-  regOverlay        = document.getElementById("reg-overlay");
-  regForm           = document.getElementById("reg-form");
-  inputNickname     = document.getElementById("input-nickname");
-  inputPassword     = document.getElementById("input-password");
-  nicknameStatus    = document.getElementById("nickname-status");
-  nicknameMsg       = document.getElementById("nickname-msg");
-  passwordStatus    = document.getElementById("password-status");
-  passwordMsg       = document.getElementById("password-msg");
-  inputEgitim       = document.getElementById("input-egitim");
-  egitimMsg         = document.getElementById("egitim-msg");
-  inputBolum        = document.getElementById("input-bolum");
-  bolumMsg          = document.getElementById("bolum-msg");
-  bolumTrigger      = document.getElementById("bolum-trigger");
-  bolumDisplay      = document.getElementById("bolum-display");
-  bolumDropdown     = document.getElementById("bolum-dropdown");
-  bolumSearchInput  = document.getElementById("bolum-search-input");
-  bolumList         = document.getElementById("bolum-list");
-  regSubmitBtn      = document.getElementById("reg-submit-btn");
+  regOverlay = document.getElementById("reg-overlay");
+  regForm = document.getElementById("reg-form");
+  inputNickname = document.getElementById("input-nickname");
+  inputPassword = document.getElementById("input-password");
+  nicknameStatus = document.getElementById("nickname-status");
+  nicknameMsg = document.getElementById("nickname-msg");
+  passwordStatus = document.getElementById("password-status");
+  passwordMsg = document.getElementById("password-msg");
+  inputEgitim = document.getElementById("input-egitim");
+  egitimMsg = document.getElementById("egitim-msg");
+  inputBolum = document.getElementById("input-bolum");
+  bolumMsg = document.getElementById("bolum-msg");
+  bolumTrigger = document.getElementById("bolum-trigger");
+  bolumDisplay = document.getElementById("bolum-display");
+  bolumDropdown = document.getElementById("bolum-dropdown");
+  bolumSearchInput = document.getElementById("bolum-search-input");
+  bolumList = document.getElementById("bolum-list");
+  regSubmitBtn = document.getElementById("reg-submit-btn");
 
   buildBolumList(BOLUMLER);
   bindBolumDropdown();
   bindNicknameValidation();
   bindFormSubmit();
-  
-    // Close button event
+
+  // Close button event
   document.getElementById("reg-close-btn").addEventListener("click", closeRegModal);
-  
+
   // Overlay dışına tıklama ile kapatma iptal (istersen açarsın)
   // regOverlay.addEventListener("click", (e) => { if (e.target === regOverlay) closeRegModal(); });
 }
@@ -2197,12 +2211,12 @@ function bindFormSubmit() {
 
     // Profili kaydet
     currentProfile = {
-      nickname : authResult.nickname,
-      egitim   : inputEgitim.value,
-      bolum    : inputBolum.value,
+      nickname: authResult.nickname,
+      egitim: inputEgitim.value,
+      bolum: inputBolum.value,
       startedAt: new Date().toISOString(),
     };
-    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(currentProfile)); } catch {}
+    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(currentProfile)); } catch { }
 
     closeRegModal();
 
